@@ -12,7 +12,7 @@ const Index = () => {
 
     return (
         <>
-            <nav className="bg-gradient-to-b from-cyan-600 to-cyan-400 max-w-screen">
+            <nav className="bg-gradient-to-b from-sky-600 to-cyan-400 max-w-screen">
                 <div className="container mx-auto flex flex-row justify-between lg:items-center py-4 ">
                     <div className="shrink-0 grow flex flex-col md:flex-row justify-start items-center gap-4 px-2">
                         <Link to={"/"} className="flex items-center gap-1">
