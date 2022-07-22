@@ -12,12 +12,12 @@ const Index = () => {
 
     return (
         <>
-            <nav className="bg-gradient-to-b from-sky-600 to-cyan-400">
+            <nav className="bg-gradient-to-b from-cyan-600 to-cyan-400 max-w-screen">
                 <div className="container mx-auto flex flex-row justify-between lg:items-center py-4 ">
                     <div className="shrink-0 grow flex flex-col md:flex-row justify-start items-center gap-4 px-2">
                         <Link to={"/"} className="flex items-center gap-1">
                             <span className="text-4xl text-zinc-800 shrink-0"><TiCode /></span>
-                            <span className="font-semibold text-white text-zinc-800 shrink-0">Leandro Viegas</span>
+                            <span className="font-semibold text-zinc-800 shrink-0">Leandro Viegas</span>
                         </Link>
                         <form className="w-full md:w-auto flex items-center bg-white h-7 rounded border border-zinc-200 text-sm text-zinc-600">
                             <button className="px-2 text-zinc-700 h-full text-center border-r border-zinc-300"><FaSearch /></button>

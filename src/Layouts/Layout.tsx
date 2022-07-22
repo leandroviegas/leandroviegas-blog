@@ -9,7 +9,7 @@ const Index = ({ children }: LayoutProps) => {
     return (
         <div className="flex flex-col justify between min-h-screen">
             <Navbar />
-            <div className="grow">
+            <div className="grow bg-zinc-100">
                 {children}
             </div>
             <Footer />

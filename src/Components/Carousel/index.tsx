@@ -1,4 +1,4 @@
-import React, { RefObject, useEffect, useState } from "react";
+import React, { RefObject, useState } from "react";
 
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs"
 
@@ -12,15 +12,15 @@ const Index = ({ children }: CarouselProps) => {
 
     const [slideProps, setSlideProps] = useState<{ clientWidth: number, scrollWidth: number, scrollLeft: number }>({
         clientWidth: 0,
-        scrollLeft: -1,
+        scrollLeft: -11,
         scrollWidth: 0
     })
 
     const SlideRight = () => {
-        Slide.current?.scrollTo({ left: Slide.current?.scrollLeft + (Slide.current.clientWidth * 0.80), behavior: "smooth" })
+        Slide.current?.scrollTo({ left: Slide.current?.scrollLeft + (Slide.current.clientWidth - (Slide.current.clientWidth <= 640 ? 0 : 256)), behavior: "smooth" })
     }
     const SlideLeft = () => {
-        Slide.current?.scrollTo({ left: Slide.current?.scrollLeft - (Slide.current.clientWidth * 0.80), behavior: "smooth" })
+        Slide.current?.scrollTo({ left: Slide.current?.scrollLeft - (Slide.current.clientWidth - (Slide.current.clientWidth <= 640 ? 0 : 256)), behavior: "smooth" })
     }
 
     const HandleSetSlideProps = () => setSlideProps({
@@ -40,7 +40,7 @@ const Index = ({ children }: CarouselProps) => {
                         <button className="h-full sm:w-32 sm:bg-gradient-to-r from-black/70 flex items-center text-3xl text-black sm:text-white px-4 py-3"><BsFillArrowLeftCircleFill onClick={SlideLeft} /></button>
                         : <div></div>
                     }
-                    {slideProps.scrollLeft < (slideProps.scrollWidth - slideProps.clientWidth) ?
+                    {(slideProps.scrollLeft + 10) < (slideProps.scrollWidth - slideProps.clientWidth) ?
                         <button className="h-full sm:w-32 sm:bg-gradient-to-l from-black/70 flex items-center text-3xl text-black sm:text-white px-4 py-3 justify-end"><BsFillArrowRightCircleFill onClick={SlideRight} /></button>
                         : <div></div>
                     }
