@@ -1,7 +1,7 @@
 const Index = () => {
     return (
         <>
-            not Found
+            Not Found
         </>
     )
 }

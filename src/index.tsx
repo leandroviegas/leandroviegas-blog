@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Routes from './routes';
 
-import './index.css';
+import './css/tailwind.css';
+import './css/index.css';
 import "aos/dist/aos.css";
 
 import AOS from "aos";

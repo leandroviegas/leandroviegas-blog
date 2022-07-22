@@ -17,10 +17,10 @@ const Index = ({ children }: CarouselProps) => {
     })
 
     const SlideRight = () => {
-        Slide.current?.scrollTo({ left: Slide.current?.scrollLeft + (Slide.current.clientWidth * 0.66), behavior: "smooth" })
+        Slide.current?.scrollTo({ left: Slide.current?.scrollLeft + (Slide.current.clientWidth * 0.80), behavior: "smooth" })
     }
     const SlideLeft = () => {
-        Slide.current?.scrollTo({ left: Slide.current?.scrollLeft - (Slide.current.clientWidth * 0.66), behavior: "smooth" })
+        Slide.current?.scrollTo({ left: Slide.current?.scrollLeft - (Slide.current.clientWidth * 0.80), behavior: "smooth" })
     }
 
     const HandleSetSlideProps = () => setSlideProps({
@@ -31,20 +31,20 @@ const Index = ({ children }: CarouselProps) => {
 
     return (
         <>
-            <div className="h-0">
-                <div className="relative z-10 h-48 flex justify-between">
+            <span onScroll={HandleSetSlideProps} ref={Slide} className="carousel flex overflow-x-auto">
+                {children}
+            </span>
+            <div className="sm:h-0">
+                <div className="sm:-translate-y-full relative z-10 sm:h-48 flex justify-between sm:bg-transparent">
                     {slideProps.scrollLeft > 0 ?
-                        <div className="h-full w-32 bg-gradient-to-r from-black/70 flex items-center text-3xl text-white p-4"><BsFillArrowLeftCircleFill onClick={SlideLeft} /></div>
+                        <button className="h-full sm:w-32 sm:bg-gradient-to-r from-black/70 flex items-center text-3xl text-black sm:text-white px-4 py-3"><BsFillArrowLeftCircleFill onClick={SlideLeft} /></button>
                         : <div></div>
                     }
                     {slideProps.scrollLeft < (slideProps.scrollWidth - slideProps.clientWidth) ?
-                        <div className="h-full w-32 bg-gradient-to-l from-black/70 flex items-center text-3xl text-white p-4 justify-end"><BsFillArrowRightCircleFill onClick={SlideRight} /></div>
+                        <button className="h-full sm:w-32 sm:bg-gradient-to-l from-black/70 flex items-center text-3xl text-black sm:text-white px-4 py-3 justify-end"><BsFillArrowRightCircleFill onClick={SlideRight} /></button>
                         : <div></div>
                     }
                 </div>
-            </div>
-            <div onScroll={HandleSetSlideProps} ref={Slide} className="flex overflow-x-hidden">
-                {children}
             </div>
         </>
     )

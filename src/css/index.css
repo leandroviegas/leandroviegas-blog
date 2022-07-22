@@ -1,0 +1,39 @@
+.carousel::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    height: 0;
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+
+
+@keyframes navbar {
+    from {
+        max-width: 0px;
+        overflow: hidden;
+    }
+
+    to {
+        overflow: hidden;
+        max-width: 16rem;
+    }
+}
+
+@media (max-width: 1280px) {
+    .max-w-64 {
+        max-width: 16rem;
+    }
+
+    .navbar.max-w-64 {
+        animation-name: navbar;
+        animation-duration: .5s;
+    }
+    .carousel::-webkit-scrollbar {
+        width: 0;  /* Remove scrollbar space */
+        height: 5px;
+        background: transparent;  /* Optional: just make scrollbar invisible */
+    }
+
+    .carousel::-webkit-scrollbar-thumb {
+        background: #303030;
+    }
+}
