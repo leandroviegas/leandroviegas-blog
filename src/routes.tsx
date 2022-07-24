@@ -11,8 +11,10 @@ import NotFound from './Pages/NotFound';
 
 import Dashboard from './Pages/Admin/Dashboard';
 import ListCategories from './Pages/Admin/Categories/List';
+import PostsForm from './Pages/Admin/Posts/Form';
 
 import NotFoundAdmin from './Pages/Admin/NotFound';
+import ListPosts from './Pages/Admin/Posts/List';
 
 function Index() {
   return (
@@ -27,10 +29,17 @@ function Index() {
             <Route element={<Contact />} path="/contato" />
             <Route element={<NotFound />} path="*" />
 
+
             // Admin Routes
             <Route element={<Dashboard />} path="/admin" />
             <Route element={<Dashboard />} path="/admin/dashboard" />
+
             <Route element={<ListCategories />} path="/admin/categorias/listar" />
+
+            <Route element={<ListPosts />} path="/admin/postagens/listar" />
+            <Route element={<PostsForm />} path="/admin/postagens/nova-postagem" />
+            <Route element={<PostsForm />} path="/admin/postagens/:link/editar" />
+            
             <Route element={<NotFoundAdmin />} path="/admin/*" />
 
           </Routes>

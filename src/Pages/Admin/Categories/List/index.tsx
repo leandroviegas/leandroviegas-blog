@@ -32,9 +32,9 @@ const Index = () => {
             console.error(err)
             setCategories({ status: "error", data: [] });
             if (err.response.data?.message)
-                setAlerts([{ type: "error", message: err.response.data.message, input: "category-form" }])
+                setAlerts([{ type: "error", message: err.response.data.message, input: "category-list" }])
             else
-                setAlerts([{ type: "error", message: "Ocorreu um erro ao cadastrar categorias!", input: "category-form" }])
+                setAlerts([{ type: "error", message: "Ocorreu um erro ao carregar categorias!", input: "category-list" }])
         })
     }
 
