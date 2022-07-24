@@ -1,6 +1,16 @@
-import mongoose from "mongoose";
-import { UserModelT } from "../Entity/User";
+import mongoose, { Types } from "mongoose";
 import { UserSchema } from "../Schemas/UserSchema";
+
+export type UserModelT = {
+  _id?: Types.ObjectId;
+  username: string;
+  email: string;
+  profilePicture?: string;
+  password: string;
+  link: string;
+  admin?: boolean;
+  active: boolean;
+};
 
 export let UserModel = () => {
   try {

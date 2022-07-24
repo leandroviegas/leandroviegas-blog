@@ -59,17 +59,17 @@ class UserController {
     user.password = await hash(password, 8);
 
     // Creating the schema
-    const postUser = new User(user);
+    const UserS = new User(user);
 
     // Saving the informations
-    await postUser.save();
+    await UserS.save();
 
-    let userJson = postUser.toJSON()
+    let userJSON = UserS.toJSON()
 
-    delete userJson.password;
+    delete userJSON.password;
 
     // Return the data
-    return response.send({ user: userJson });
+    return response.send({ user: userJSON });
   }
 
   async update(request: Request, response: Response) {
@@ -93,17 +93,17 @@ class UserController {
     user.password = await hash(password, 8);
 
     // Creating the schema
-    const postUser = new User(user);
+    const UserS = new User(user);
 
     // Saving the informations
-    await postUser.save();
+    await UserS.save();
 
-    let userJson = postUser.toJSON()
+    let userJSON = UserS.toJSON()
 
-    delete userJson.password;
+    delete userJSON.password;
 
     // Return the data
-    return response.send({ user: userJson });
+    return response.send({ user: userJSON });
   }
 
   async delete(request: Request, response: Response) {
@@ -114,7 +114,7 @@ class UserController {
 
     // If is _id string
     if (typeof _id !== 'string')
-      throw new Error("user/field/id/invalid-id")
+      throw new Error("user/id/invalid-id")
 
     // tje function "ConvertId" also verify if the id is valid
     const user = await User.findById(_id).exec()

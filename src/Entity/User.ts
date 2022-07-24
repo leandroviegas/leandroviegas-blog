@@ -1,18 +1,7 @@
 import { Types } from "mongoose";
 import validator from "validator";
-import { User } from "../Model/UserModel";
+import { User, UserModelT } from "../Model/UserModel";
 import dbConnect from "../utils/dbConnect";
-
-export type UserModelT = {
-    _id?: Types.ObjectId;
-    username: string;
-    email: string;
-    profilePicture?: string;
-    password: string;
-    link: string;
-    admin?: boolean;
-    active: boolean;
-};
 
 class UserEntity {
     readonly _id?: Types.ObjectId;
@@ -38,7 +27,7 @@ class UserEntity {
 
         if (!validator.isEmail(this.email)) throw new Error("user/email/invalid-email")
 
-        if (!validator.isStrongPassword(this.password)) throw new Error("user/password/password-not-strong")
+        if (!validator.isStrongPassword(this.password)) throw new Error("user/password/weak-password")
 
         if (!this._id) {
             // Verify if the username is already in use
