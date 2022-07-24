@@ -28,7 +28,7 @@ const Index = () => {
                 <div className="bg-white mx-2 md:mx-0 p-4 pt-8 rounded-lg shadow-xl flex flex-col gap-4">
                     <img className="mx-auto h-40 max-w-screen" src="/images/frontend.svg" alt="frontend image" />
                     <h1 className="text-2xl text-center underline decoration-cyan-500 underline-offset-2">Frontend</h1>
-                    <div className="text-cyan-500 font-thin text-center">
+                    <div className="text-cyan-400 font-thin text-center">
                         {[
                             "css",
                             "Javascript",
@@ -40,9 +40,9 @@ const Index = () => {
                 </div>
 
                 <div className="bg-white mx-2 md:mx-0 p-4 pt-8 rounded-lg shadow-xl flex flex-col gap-4">
-                    <img className="mx-auto h-40 max-w-screen" src="/images/backend.svg" alt="frontend image" />
+                    <img className="mx-auto h-40 max-w-screen" src="/images/backend.svg" alt="backend image" />
                     <h1 className="text-2xl text-center underline decoration-cyan-500 underline-offset-2">Backend</h1>
-                    <div className="text-cyan-500 font-thin text-center">
+                    <div className="text-cyan-400 font-thin text-center">
                         {[
                             "Express.js",
                             "Javascript",
@@ -53,9 +53,9 @@ const Index = () => {
                 </div>
 
                 <div className="bg-white mx-2 md:mx-0 p-4 pt-8 rounded-lg shadow-xl flex flex-col gap-4">
-                    <img className="mx-auto h-40 max-w-screen" src="/images/database.svg" alt="frontend image" />
+                    <img className="mx-auto h-40 max-w-screen" src="/images/database.svg" alt="database image" />
                     <h1 className="text-2xl text-center underline decoration-cyan-500 underline-offset-2">Banco de dados</h1>
-                    <div className="text-cyan-500 font-thin text-center">
+                    <div className="text-cyan-400 font-thin text-center">
                         {[
                             "MongoDB",
                             "MySql",
@@ -65,14 +65,14 @@ const Index = () => {
                 </div>
 
                 <div className="bg-white mx-2 md:mx-0 p-4 pt-8 rounded-lg shadow-xl flex flex-col gap-4 sm:col-start-2">
-                    <img className="mx-auto h-40 max-w-screen" src="/images/database.svg" alt="frontend image" />
+                    <img className="mx-auto h-40 max-w-screen" src="/images/tools.svg" alt="tools image" />
                     <h1 className="text-2xl text-center underline decoration-cyan-500 underline-offset-2">Ferramentas</h1>
-                    <div className="text-cyan-500 font-thin text-center">
+                    <div className="text-cyan-400 font-thin text-center">
                         {[
                             "Visual Studio Code",
                             "Visual Studio",
                             "Github"
-                        ].map(item => <span key={item} className="inline-block border px-3 rounded-lg border-cyan-400 m-1 mx-2">{item}</span>)}
+                        ].map(item => <span key={item} className="inline-block border px-3 rounded-lg border-cyan-500 m-1 mx-2">{item}</span>)}
                     </div>
                 </div>
             </div>

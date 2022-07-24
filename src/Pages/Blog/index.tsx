@@ -1,4 +1,4 @@
-import Carousel from "../../Components/Carousel"
+import { Helmet } from "react-helmet-async"
 import Layout from "../../Layouts/Layout"
 
 
@@ -21,6 +21,9 @@ const Index = () => {
 
     return (
         <Layout>
+            <Helmet>
+                <title>Leandro Viegas | Blog</title>
+            </Helmet>
             <div className="container mx-auto">
 
                 {categories.map(category => {
@@ -28,7 +31,7 @@ const Index = () => {
                         <div className="my-5" key={category.name}>
                             <h1 className="text-2xl font-semibold text-zinc-700">{category.name}</h1>
                             <div className="my-5">
-                                
+
                             </div>
                             <hr />
                         </div>
