@@ -61,18 +61,21 @@ class CategoryController {
     // Connect to the database
     await DbConnect();
 
-    const category = new CategoryEntity({ _id, name, link, description, image });
+    const categoryEntity = new CategoryEntity({ _id, name, link, description, image });
 
     // Validating the informations
-    await category.validate()
+    await categoryEntity.validate()
 
-    // Creating the schema
-    const CategoryS = new Category(category);
+    // Find category
+    const category = await Category.findById(_id).exec()
+
+    // Updating the fields
+    category.set(categoryEntity)
 
     // Saving the informations
-    await CategoryS.save();
+    await category.save();
 
-    let categoryJSON = CategoryS.toJSON()
+    let categoryJSON = category.toJSON()
 
     // Return the data
     return response.send({ category: categoryJSON });

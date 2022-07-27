@@ -46,7 +46,7 @@ class PostController {
       readTime,
       active,
       category,
-      author,
+      author: request.user_id,
       keywords,
       description,
       modifiedAt,
@@ -74,7 +74,7 @@ class PostController {
     // Connect to the database
     await DbConnect();
 
-    const post = new PostEntity({
+    const postEntity = new PostEntity({
       _id,
       title,
       content,
@@ -83,23 +83,25 @@ class PostController {
       readTime,
       active,
       category,
-      author,
+      author: request.user_id,
       keywords,
       description,
       modifiedAt,
       postedAt
     });
 
-    // Validating the informations
-    await post.validate()
+    await postEntity.validate()
 
     // Creating the schema
-    const PostS = new Post(post);
+    const post = await Post.findOne({ _id: postEntity._id, author: postEntity.author }).exec()
 
     // Saving the informations
-    await PostS.save();
+    post.set(postEntity)
 
-    let postJSON = PostS.toJSON();
+    // Saving the informations
+    await post.save();
+
+    let postJSON = post.toJSON();
 
     // Return the data
     return response.send({ post: postJSON });
