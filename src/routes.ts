@@ -36,6 +36,7 @@ router.delete("/users", ensureAuthenticated, userController.delete);
 
 // Post routes
 router.get("/posts/list", postController.list);
+router.get("/posts/by-category", postController.byCategory);
 router.get("/posts", postController.get);
 router.post("/posts", ensureAuthenticated, postController.post);
 router.put("/posts", ensureAuthenticated, postController.update);

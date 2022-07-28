@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import CategoryEntity from "../Entity/Category";
-import { Category } from "../Model/CategoryModel";
+import CategoryEntity from "../Entity/Category.entity";
+import { Category } from "../Model/Category.model";
 import DbConnect from "./../utils/dbConnect";
 
 class CategoryController {
@@ -38,18 +38,18 @@ class CategoryController {
     // Connect to the database
     await DbConnect();
 
-    const category = new CategoryEntity({ name, link, description, image });
+    const categoryEntity = new CategoryEntity({ name, link, description, image });
 
     // Validating the informations
-    await category.validate()
+    await categoryEntity.validate()
 
     // Creating the schema
-    const CategoryS = new Category(category);
+    const category = new Category(categoryEntity);
 
     // Saving the informations
-    await CategoryS.save();
+    await category.save();
 
-    let categoryJSON = CategoryS.toJSON()
+    let categoryJSON = category.toJSON()
 
     // Return the data
     return response.send({ category: categoryJSON });

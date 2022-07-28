@@ -7,8 +7,14 @@ export let PostSchema = new Schema({
     link: { type: String, unique: true },
     readTime: { type: Number },
     active: { type: Boolean },
-    category: { type: Schema.Types.ObjectId },
-    author: { type: Schema.Types.ObjectId },
+    category: {
+        ref: 'category',
+        type: Schema.Types.ObjectId,
+      },
+    author: {
+        ref: 'users',
+        type: Schema.Types.ObjectId,
+      },
     keywords: { type: String },
     description: { type: String },
     modifiedAt: { type: Date },

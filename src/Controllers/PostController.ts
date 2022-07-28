@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
-import PostEntity from "../Entity/Post";
-import { Post } from "../Model/PostModel";
+import { Types } from "mongoose";
+import PostEntity from "../Entity/Post.entity";
+import { Category } from "../Model/Category.model";
+import { Post } from "../Model/Post.model";
 import DbConnect from "./../utils/dbConnect";
 
 class PostController {
@@ -22,7 +24,7 @@ class PostController {
     // Connect to the database
     await DbConnect();
 
-    const post = await Post.findOne({ $or: [{ _id }, { link }] }).select("").exec()
+    const post = await Post.findOne({ $or: [{ _id }, { link }] }).select("").populate('author', "-password").exec()
 
     // Verifiy if found the post
     if (post) {
@@ -30,6 +32,22 @@ class PostController {
     }
     else
       throw new Error("posts/not-found")
+  }
+
+  async byCategory(request: Request, response: Response) {
+    let { quantity, category, select_post, select_category } = request.query;
+
+    // Connect to the database
+    await DbConnect();
+
+    const categories = await Category.find({}).select((select_category || "").toString()).exec()
+
+    const posts = await Promise.all(categories.map(async category => ({
+      category,
+      posts: await (async () => (await Post.find({ category: category._id }).select((select_post || "").toString()).populate("author", "username profilePicture link").exec()))()
+    })))
+
+    return response.send(posts);
   }
 
   async post(request: Request, response: Response) {
@@ -45,12 +63,12 @@ class PostController {
       link,
       readTime,
       active,
-      category,
-      author: request.user_id,
       keywords,
       description,
       modifiedAt,
-      postedAt
+      postedAt,
+      category: new Types.ObjectId(category),
+      author: new Types.ObjectId(request.user_id)
     });
 
     // Validating the informations
@@ -75,19 +93,19 @@ class PostController {
     await DbConnect();
 
     const postEntity = new PostEntity({
-      _id,
+      _id: new Types.ObjectId(_id),
       title,
       content,
       image,
       link,
       readTime,
       active,
-      category,
-      author: request.user_id,
       keywords,
       description,
       modifiedAt,
-      postedAt
+      postedAt,
+      category: new Types.ObjectId(category),
+      author: new Types.ObjectId(request.user_id)
     });
 
     await postEntity.validate()
@@ -96,10 +114,7 @@ class PostController {
     const post = await Post.findOne({ _id: postEntity._id, author: postEntity.author }).exec()
 
     // Saving the informations
-    post.set(postEntity)
-
-    // Saving the informations
-    await post.save();
+    await post.updateOne(postEntity);
 
     let postJSON = post.toJSON();
 

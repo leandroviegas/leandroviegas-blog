@@ -1,9 +1,9 @@
 import { Types } from "mongoose";
 import validator from "validator";
-import { User, UserModelT } from "../Model/UserModel";
+import { User } from "../Model/User.model";
 import dbConnect from "../utils/dbConnect";
 
-class UserEntity {
+export default class UserEntity {
     readonly _id?: Types.ObjectId;
 
     readonly username: string;
@@ -21,7 +21,7 @@ class UserEntity {
     readonly active: boolean;
 
     // Validation function
-    async validate() {
+    async validate?() {
         // Connect to the database
         await dbConnect()
 
@@ -40,9 +40,8 @@ class UserEntity {
         }
     }
 
-    constructor({ _id, username, email, profilePicture, password, link, admin, active }: Omit<UserModelT, "active"> & { _id?: string, active?: boolean }) {
-        if (_id)
-            this._id = new Types.ObjectId(_id);
+    constructor({ _id, username, email, profilePicture, password, link, admin, active }: UserEntity) {
+        this._id = _id;
         this.link = link;
         this.email = email;
         this.admin = admin;
@@ -52,5 +51,3 @@ class UserEntity {
         this.profilePicture = profilePicture;
     }
 }
-
-export default UserEntity;

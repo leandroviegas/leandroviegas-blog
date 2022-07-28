@@ -1,6 +1,6 @@
 import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
-import { User } from "../Model/UserModel";
+import { User } from "../Model/User.model";
 import dbConnect from "../utils/dbConnect";
 
 interface IAuthenticateRequest {

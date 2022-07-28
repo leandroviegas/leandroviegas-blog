@@ -22,7 +22,8 @@ async function dbConnect() {
     if (!cached.promise) {
         cached.promise = mongoose.connect(MONGODB_URI, {
             maxPoolSize: 10,
-            minPoolSize: 2
+            minPoolSize: 2,
+           
         }).then((mongoose) => {
             return mongoose
         })

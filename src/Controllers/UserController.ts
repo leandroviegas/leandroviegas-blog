@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { hash } from "bcryptjs";
-import UserEntity from "../Entity/User";
-import { User } from "../Model/UserModel";
+import UserEntity from "../Entity/User.entity";
+import { User } from "../Model/User.model";
 import DbConnect from "./../utils/dbConnect";
 
 class UserController {
@@ -44,27 +44,28 @@ class UserController {
     // Connect to the database
     await DbConnect();
 
-    const user = new UserEntity({
+    const userEntity = new UserEntity({
       username,
       password,
       email,
       link,
       profilePicture,
+      active: true,
       admin: false
     });
 
     // Validating the informations
-    await user.validate()
+    await userEntity.validate()
 
-    user.password = await hash(password, 8);
+    userEntity.password = await hash(password, 8);
 
     // Creating the schema
-    const UserS = new User(user);
+    const user = new User(userEntity);
 
     // Saving the informations
-    await UserS.save();
+    await user.save();
 
-    let userJSON = UserS.toJSON()
+    let userJSON = user.toJSON()
 
     delete userJSON.password;
 
@@ -73,32 +74,33 @@ class UserController {
   }
 
   async update(request: Request, response: Response) {
-    const { _id, username, password, email, link, profilePicture } = request.body;
+    const { _id, username, password, active, email, link, profilePicture } = request.body;
 
     // Connect to the database
     await DbConnect();
 
-    const user = new UserEntity({
+    const userEntity = new UserEntity({
       _id,
       username,
       password,
+      active,
       email,
       link,
       profilePicture
     });
 
     // Validating the informations
-    await user.validate()
+    await userEntity.validate()
 
-    user.password = await hash(password, 8);
+    userEntity.password = await hash(password, 8);
 
     // Creating the schema
-    const UserS = new User(user);
+    const user = new User();
 
     // Saving the informations
-    await UserS.save();
+    await user.updateOne(userEntity);
 
-    let userJSON = UserS.toJSON()
+    let userJSON = user.toJSON()
 
     delete userJSON.password;
 

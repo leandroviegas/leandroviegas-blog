@@ -1,8 +1,8 @@
 import { Types } from "mongoose";
-import { Category, CategoryModelT } from "../Model/CategoryModel";
+import { Category } from "../Model/Category.model";
 import dbConnect from "../utils/dbConnect";
 
-class CategoryEntity {
+export default class CategoryEntity {
     readonly _id?: Types.ObjectId;
 
     readonly name: string;
@@ -14,7 +14,7 @@ class CategoryEntity {
     readonly image?: string;
 
     // Validation function
-    async validate() {
+    async validate?() {
         // Connect to the database
         await dbConnect()
 
@@ -24,14 +24,11 @@ class CategoryEntity {
             throw new Error("category/link/alredy-in-use")
     }
 
-    constructor({ _id, name, link, description, image }: CategoryModelT & { _id?: string }) {
-        if (_id)
-            this._id = new Types.ObjectId(_id);
+    constructor({ _id, name, link, description, image }: CategoryEntity) {
+        this._id = _id;
         this.name = name;
         this.link = link;
         this.description = description;
         this.image = image;
     }
 }
-
-export default CategoryEntity;

@@ -1,8 +1,8 @@
 import { Types } from "mongoose";
-import { Post, PostModelT } from "../Model/PostModel";
+import { Post } from "../Model/Post.model";
 import dbConnect from "../utils/dbConnect";
 
-class PostEntity {
+export default class PostEntity {
     readonly _id?: Types.ObjectId;
 
     readonly title: string;
@@ -30,7 +30,7 @@ class PostEntity {
     readonly postedAt: Date;
 
     // Validation function
-    async validate() {
+    async validate?() {
         // Connect to the database
         await dbConnect()
 
@@ -40,12 +40,10 @@ class PostEntity {
             throw new Error("post/link/alredy-in-use")
     }
 
-    constructor({ _id, title, image, content, description, keywords, link, modifiedAt, postedAt, readTime, active, author, category }: Omit<PostModelT, "active" | "author" | "category"> & { _id?: string, author: string, category: string, active?: boolean }) {
-        if (_id)
-            this._id = new Types.ObjectId(_id);
-        this.author = new Types.ObjectId(author);
-        this.category = new Types.ObjectId(category);
-
+    constructor({ _id, title, image, content, description, keywords, link, modifiedAt, postedAt, readTime, active, author, category }: PostEntity) {
+        this._id = _id;
+        this.author = author;
+        this.category = category;
         this.title = title;
         this.content = content;
         this.image = image;
@@ -58,5 +56,3 @@ class PostEntity {
         this.postedAt = postedAt;
     }
 }
-
-export default PostEntity;
