@@ -35,16 +35,23 @@ class PostController {
   }
 
   async byCategory(request: Request, response: Response) {
-    let { quantity, category, select_post, select_category } = request.query;
+    let { post_quantity, category_list, select_post, select_category } = request.query;
+
+    let p_quantity = Number(post_quantity || 5)
 
     // Connect to the database
     await DbConnect();
 
-    const categories = await Category.find({}).select((select_category || "").toString()).exec()
+    let categoy_query = {}
+
+    if (category_list)
+      categoy_query = { ...categoy_query, 'link': { $in: category_list } }
+
+    const categories = await Category.find(categoy_query).select((select_category || "").toString()).exec()
 
     const posts = await Promise.all(categories.map(async category => ({
       category,
-      posts: await (async () => (await Post.find({ category: category._id }).select((select_post || "").toString()).populate("author", "username profilePicture link").exec()))()
+      posts: await (async () => (await Post.find({ category: category._id }).select((select_post || "").toString()).limit(p_quantity).populate("author", "username profilePicture link").exec()))()
     })))
 
     return response.send(posts);

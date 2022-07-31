@@ -5,6 +5,6 @@ export let UserSchema = new Schema({
     email: { type: String },
     profilePicture: { type: String },
     password: { type: String },
-    admin: { type: Boolean },
+    role: { type: String },
     active: { type: Boolean }
 });
