@@ -49,9 +49,9 @@ class UserController {
       password,
       email,
       link,
+      role: "user",
       profilePicture,
       active: true,
-      admin: false
     });
 
     // Validating the informations
@@ -79,6 +79,8 @@ class UserController {
     // Connect to the database
     await DbConnect();
 
+
+
     const userEntity = new UserEntity({
       _id,
       username,
@@ -95,10 +97,12 @@ class UserController {
     userEntity.password = await hash(password, 8);
 
     // Creating the schema
-    const user = new User();
+    const user = await User.findOne({ _id: userEntity._id }).exec()
+
+    await user.set(userEntity)
 
     // Saving the informations
-    await user.updateOne(userEntity);
+    user.save()
 
     let userJSON = user.toJSON()
 

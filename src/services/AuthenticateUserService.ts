@@ -15,7 +15,7 @@ class AuthenticateUserService {
         // Connecting to the database
         await dbConnect()
 
-        let user = await User.findOne({ $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }] }).select("_id username email profilePicture password admin").exec();
+        let user = await User.findOne({ $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }] }).select("_id username email profilePicture password role").exec();
 
         if (!user) throw new Error("authentication/email-password-incorrect");
 
@@ -24,7 +24,7 @@ class AuthenticateUserService {
         if (!passwordMatch) throw new Error("authentication/email-password-incorrect");
 
         const token = sign(
-            { email: user.email, admin: user.admin },
+            { email: user.email, role: user.role },
             process.env.JSONWEBTOKEN_DECODE_KEY,
             { subject: user.id, expiresIn: "30d" }
         );
@@ -36,7 +36,7 @@ class AuthenticateUserService {
                 username: user.username,
                 email: user.email,
                 profilePicture: user.profilePicture,
-                admin: user.admin
+                role: user.role
             }
         };
     }

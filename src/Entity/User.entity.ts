@@ -8,6 +8,8 @@ export default class UserEntity {
 
     readonly username: string;
 
+    readonly role?: string;
+
     readonly email: string;
 
     readonly profilePicture?: string;
@@ -15,8 +17,6 @@ export default class UserEntity {
     readonly link: string;
 
     password: string;
-
-    readonly admin?: boolean;
 
     readonly active: boolean;
 
@@ -40,11 +40,11 @@ export default class UserEntity {
         }
     }
 
-    constructor({ _id, username, email, profilePicture, password, link, admin, active }: UserEntity) {
+    constructor({ _id, username, email, profilePicture, password, link, active, role }: UserEntity) {
         this._id = _id;
         this.link = link;
+        this.role = role;
         this.email = email;
-        this.admin = admin;
         this.active = active ?? false;
         this.username = username;
         this.password = password;

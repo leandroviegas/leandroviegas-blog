@@ -6,7 +6,7 @@ class ShowloggedUserService {
         // Connecting to the database
         await dbConnect()
 
-        const users = await User.findById(user_id).select("_id username email profilePicture admin").exec();
+        const users = await User.findById(user_id).select("_id username email profilePicture role").exec();
 
         return users
     }
