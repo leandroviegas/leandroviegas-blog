@@ -4,7 +4,7 @@ import { Link } from "gatsby"
 import Layout from "../../../layouts/Layout"
 import api from "../../../services/api"
 
-import { Category, Post } from "../../../Types/blog.type"
+import { Category, Post } from "../../../types/blog.type"
 
 import Alert, { AlertProps } from "../../../components/Alert"
 import PostCard from "../../../components/PostCard"

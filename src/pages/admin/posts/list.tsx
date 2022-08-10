@@ -3,9 +3,9 @@ import { Link } from "gatsby"
 
 import api from "../../../services/api"
 import moment from "moment"
-import truncate from "../../../Utils/truncate"
+import truncate from "../../../utils/truncate"
 
-import { Post } from "../../../Types/blog.type"
+import { Post } from "../../../types/blog.type"
 
 import AdminLayout from "../../../layouts/AdminLayout"
 import Alert, { AlertProps } from "../../../components/Alert"

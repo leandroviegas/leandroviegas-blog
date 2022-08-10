@@ -5,7 +5,7 @@ import api from "../services/api"
 
 import Alert, { AlertProps } from "../components/Alert"
 
-import { Category, Post } from "../Types/blog.type"
+import { Category, Post } from "../types/blog.type"
 import PostCard from "../components/PostCard"
 
 const BlogPage = () => {

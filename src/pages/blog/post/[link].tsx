@@ -3,10 +3,10 @@ import { Link } from "gatsby"
 
 import api from "../../../services/api"
 import moment from "moment"
-import truncate from "../../../Utils/truncate"
+import truncate from "../../../utils/truncate"
 import '../../../css/suneditor-contents.min.css';
 
-import { Category, Post } from "../../../Types/blog.type"
+import { Category, Post } from "../../../types/blog.type"
 
 import Layout from "../../../layouts/Layout"
 

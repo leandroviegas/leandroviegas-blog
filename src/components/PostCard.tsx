@@ -1,7 +1,7 @@
 import React from "React"
 import { Link } from "gatsby"
 
-import truncate from "../Utils/truncate"
+import truncate from "../utils/truncate"
 import moment from "moment"
 
 import { FaUser } from "react-icons/fa"

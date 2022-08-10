@@ -8,7 +8,7 @@ import Alert, { AlertProps } from "../../../components/Alert"
 import Outclick from "../../../components/Outclick"
 import ReactTextareaAutosize from "react-textarea-autosize"
 
-import { Category } from "../../../Types/blog.type"
+import { Category } from "../../../types/blog.type"
 
 import { VscLoading } from "react-icons/vsc"
 import { BiCategoryAlt } from "react-icons/bi"
