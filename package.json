@@ -1,0 +1,53 @@
+{
+  "name": "blog-pessoal",
+  "private": true,
+  "description": "Meu blog pessoal feito utilizando o gatsby",
+  "version": "0.1.0",
+  "author": "Leandro Viegas <l3androviegas@gmail.com>",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "gatsby": "^4.20.0",
+    "gatsby-plugin-htaccess": "^1.4.0",
+    "gatsby-plugin-image": "^2.20.0",
+    "gatsby-plugin-manifest": "^4.20.0",
+    "gatsby-plugin-page-creator": "^4.20.0",
+    "gatsby-plugin-sharp": "^4.20.0",
+    "gatsby-source-filesystem": "^4.20.0",
+    "gatsby-transformer-sharp": "^4.20.0",
+    "prop-types": "^15.8.1",
+    "react": "^18.1.0",
+    "react-cookie": "^4.1.1",
+    "react-dom": "^18.1.0",
+    "react-icons": "^4.4.0",
+    "react-textarea-autosize": "^8.3.4",
+    "react-toggle": "^4.1.3",
+    "suneditor": "^2.43.14",
+    "suneditor-react": "^3.4.1",
+    "validator": "^13.7.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.8",
+    "gatsby-plugin-postcss": "^5.20.0",
+    "postcss": "^8.4.16",
+    "prettier": "^2.7.1",
+    "tailwindcss": "^3.1.8"
+  },
+  "keywords": [
+    "gatsby"
+  ],
+  "scripts": {
+    "build": "gatsby build",
+    "develop": "gatsby develop",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,css}\"",
+    "start": "gatsby develop",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gatsbyjs/gatsby-starter-default"
+  },
+  "bugs": {
+    "url": "https://github.com/gatsbyjs/gatsby/issues"
+  }
+}
