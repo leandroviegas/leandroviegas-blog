@@ -12,7 +12,7 @@ import { VscLoading } from "react-icons/vsc"
 import Outclick from "./Outclick"
 import Alert, { AlertProps } from "./Alert"
 
-import { useAuth } from "../Hooks/Auth"
+import { useAuth } from "../hooks/Auth"
 
 import validator from "validator"
 

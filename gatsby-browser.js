@@ -1,6 +1,6 @@
 import React from "react";
 
-import { AuthContextProvider } from "./src/Context/AuthContext";
+import { AuthContextProvider } from "./src/context/AuthContext";
 
 // style imports
 import 'suneditor/dist/css/suneditor.min.css';

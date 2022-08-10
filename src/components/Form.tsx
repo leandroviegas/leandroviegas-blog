@@ -15,7 +15,7 @@ import "react-toggle/style.css";
 import { Category, Post } from "../types/blog.type";
 import api from "../services/api";
 import { VscLoading } from "react-icons/vsc";
-import { useAuth } from "../Hooks/Auth";
+import { useAuth } from "../hooks/Auth";
 
 const Index = ({ link }) => {
     const { cookies } = useAuth()

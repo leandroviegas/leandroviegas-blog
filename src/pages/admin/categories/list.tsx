@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 
 import api from "../../../services/api"
-import { useAuth } from "../../../Hooks/Auth"
+import { useAuth } from "../../../hooks/Auth"
 
 import AdminLayout from "../../../layouts/AdminLayout"
 import Alert, { AlertProps } from "../../../components/Alert"
