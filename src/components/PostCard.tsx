@@ -1,4 +1,4 @@
-import React from "React"
+import React from "react"
 import { Link } from "gatsby"
 
 import truncate from "../utils/truncate"

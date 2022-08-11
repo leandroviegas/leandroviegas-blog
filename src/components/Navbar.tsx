@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Link } from "gatsby"
 import { useLocation } from '@reach/router';
 
