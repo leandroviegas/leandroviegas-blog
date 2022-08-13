@@ -9,6 +9,14 @@ module.exports = {
     'gatsby-plugin-postcss',
     `gatsby-plugin-react-helmet`,
     {
+      resolve: `gatsby-plugin-nprogress`,
+      options: {
+        color: `#191919`,
+        minimum: 0.5,
+        trickle: false,
+      },
+    },
+    {
       resolve: `gatsby-plugin-page-creator`,
       options: {
         path: `${__dirname}/src/pages/`,

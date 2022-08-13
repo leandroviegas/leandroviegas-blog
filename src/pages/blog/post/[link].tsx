@@ -17,6 +17,7 @@ import '../../../css/suneditor-contents.min.css';
 import postplaceholderImage from "../../../images/post_placeholder.jpg"
 import notFoundImage from "../../../images/notfound.svg"
 
+
 export async function getServerData({ params }) {
     try {
         let data = await api.get("posts", { params }).then(resp => ({ ...resp.data, status: resp.status })).catch(err => ({ status: err?.response?.status || 500, post: {} }))
@@ -30,11 +31,8 @@ export async function getServerData({ params }) {
     }
 }
 
-
 const Index = ({ serverData }) => {
     const post: Post = serverData?.post;
-
-    console.log(serverData)
 
     const [categories, setCategories] = useState<{ status: "success" | "error" | "loading" | "", data: Category[] }>({ status: "", data: [] })
 
