@@ -9,7 +9,7 @@
     "dev": "ts-node-dev src/server.ts",
     "start": "ts-node src/server.ts",
     "build": "tsc --build",
-    "tsc": "tsc"
+    "tsc": "npm install typescript && tsc"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
