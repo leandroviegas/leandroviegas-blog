@@ -1,6 +1,7 @@
 import React from "react";
 
 import Layout from "../layouts/Layout"
+import Head from "../components/head";
 
 import frontendImage from "../images/frontend.svg"
 import backendImage from "../images/backend.svg"
@@ -12,6 +13,7 @@ import developerperfilImage from "../images/developer_perfil.svg"
 const Index = () => {
     return (
         <Layout>
+            <Head title="Bem vindo - Leandro Viegas" description="Sou desenvolvedor e trabalho com diversas tecnologias." />
             <div className="text-center flex flex-col gap-8 py-24">
                 <div className="flex flex-col gap-1">
                     <h1 className="text-2xl md:text-4xl font-bold text-zinc-800">Desenvolvedor fullstack</h1>

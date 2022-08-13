@@ -8,7 +8,7 @@ import PostCard from "../components/PostCard"
 
 export async function getServerData() {
     try {
-        let data = await api.get("posts/by-category").then(resp => resp.data)
+        let data = await api.get("/posts/by-category").then(resp => resp.data)
 
         return {
             props: data,
