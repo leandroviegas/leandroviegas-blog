@@ -8,8 +8,7 @@
   "scripts": {
     "dev": "ts-node-dev src/server.ts",
     "start": "ts-node src/server.ts",
-    "build": "tsc --build",
-    "tsc": "tsc"
+    "build": "tsc --build"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
