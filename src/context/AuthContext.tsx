@@ -2,11 +2,13 @@ import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import api from "../services/api";
 import { User } from "../types/blog.type";
+import validateCookies from "../utils/validateCookies";
 
 type AuthContextType = {
     user?: User;
     cookies: {
         authentication?: any;
+        role?: any;
     };
     signOut: () => Promise<void>;
     signInWithGoogle: () => Promise<void>;
@@ -23,16 +25,17 @@ type AuthContextProviderProps = {
 export function AuthContextProvider(props: AuthContextProviderProps) {
     const [user, setUser] = useState<User>()
 
-    const [cookies, setCookie, removeCookie] = useCookies(['authentication']);
+    const [cookies, setCookie, removeCookie] = useCookies(['authentication', "role"]);
 
     useEffect(() => {
         if (cookies.authentication) {
-            if (String(cookies.authentication).split(".").length === 3) {
+            if (validateCookies(cookies.authentication)) {
                 api.get("/login", { headers: { authorization: `Bearer ${cookies.authentication}` } }).then(response => {
                     setUser(response.data.user);
+                    setCookie("role", response.data.user.role, { path: '/' });
                 }).catch(err => { console.error(err) })
             } else {
-                signOut()
+                signOut();
             }
         } else {
             signOut();
@@ -46,6 +49,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     async function signIn(usernameOrEmail: string, password: string) {
         return api.post("/login", { usernameOrEmail, password }).then(response => {
             setUser(response.data.user);
+            setCookie("role", response.data.user.role, { path: '/' });
             setCookie("authentication", response.data.token, { path: '/' });
         }).catch(err => { console.error(err); throw err; })
     }
@@ -59,6 +63,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     async function signOut() {
         setUser(undefined);
         removeCookie("authentication");
+        removeCookie("role");
     }
 
     return (

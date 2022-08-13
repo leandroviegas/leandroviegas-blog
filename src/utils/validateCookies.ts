@@ -1,0 +1,1 @@
+export default (authentication) => String(authentication).split(".").length === 3
