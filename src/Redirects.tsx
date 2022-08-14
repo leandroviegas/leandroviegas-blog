@@ -19,14 +19,13 @@ function Redirects({ children }) {
 
     const routePermissions = permissions.find(permission => permission.optionalFunction ? permission.optionalFunction(location.pathname) : RouteTreat(permission.route) === RouteTreat(location.pathname));
 
-    if (routePermissions) {
-        if (!validateCookies(cookies.authentication) || !routePermissions.roles.includes(cookies?.role || "")) {
-            console.log("opa")
-            return <Redirect noThrow to="/"/>
-        }
-    }
+    let hasPermission = true;
 
-    return children
+    if (routePermissions) {
+        hasPermission = validateCookies(cookies.authentication);
+        hasPermission = hasPermission && routePermissions.roles.includes(cookies?.role || "");
+    }
+    return hasPermission ? children : <Redirect noThrow to="/" />
 };
 
 export default Redirects
