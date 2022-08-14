@@ -8,7 +8,6 @@ module.exports = {
   plugins: [
     'gatsby-plugin-postcss',
     `gatsby-plugin-react-helmet`,
-    `gatsby-plugin-client-side-redirect`,
     {
       resolve: `gatsby-plugin-page-creator`,
       options: {
