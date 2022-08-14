@@ -1,5 +1,5 @@
 import React from "react";
-import { navigate, useLocation } from "@reach/router"
+import { useNavigate, useLocation } from "@reach/router"
 import { useAuth } from "./hooks/Auth";
 import validateCookies from "./utils/validateCookies"
 
@@ -16,6 +16,7 @@ const RouteTreat = (route) => route.replace(new RegExp("/", 'g'), " ").trim().re
 export function Admin({ children }) {
     const location = useLocation();
     const { cookies } = useAuth();
+    const navigate = useNavigate();
 
     const routePermissions = permissions.find(permission => permission.optionalFunction ? permission.optionalFunction(location.pathname) : RouteTreat(permission.route) === RouteTreat(location.pathname));
 
