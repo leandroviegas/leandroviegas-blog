@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: process.env.CONTENTFUL_API_URL,
+    baseURL: process.env.API_URL || "https://leandroviegasapi.onrender.com",
     withCredentials: true
 });
 
