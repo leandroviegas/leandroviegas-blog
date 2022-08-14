@@ -22,8 +22,9 @@ export function Admin({ children }) {
     let hasPermission = true;
 
     if (routePermissions) {
-        hasPermission = validateCookies(cookies.authentication);
+        hasPermission = validateCookies(cookies?.authentication);
         hasPermission = hasPermission && routePermissions.roles.includes(cookies?.role || "");
     }
+
     return hasPermission ? children : <><Redirect noThrow to="/" /></>
 };
