@@ -27,7 +27,8 @@ export function Admin({ children }) {
         hasPermission = hasPermission && routePermissions.roles.includes(cookies?.role || "");
     }
 
-    !hasPermission && navigate("/")
+    if (typeof window !== "undefined")
+        !hasPermission && navigate("/")
 
     return hasPermission ? children : <></>
 };
