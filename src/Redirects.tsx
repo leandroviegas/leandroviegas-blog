@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, useLocation } from "@reach/router"
+import { navigate, useLocation } from "@reach/router"
 import { useAuth } from "./hooks/Auth";
 import validateCookies from "./utils/validateCookies"
 
@@ -26,5 +26,7 @@ export function Admin({ children }) {
         hasPermission = hasPermission && routePermissions.roles.includes(cookies?.role || "");
     }
 
-    return hasPermission ? children : <><Redirect noThrow to="/" /> <p>loading</p>  </>
+    hasPermission && navigate("/")
+
+    return hasPermission ? children : <></>
 };
