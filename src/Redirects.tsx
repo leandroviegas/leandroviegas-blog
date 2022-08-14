@@ -13,7 +13,7 @@ const permissions = [
 
 const RouteTreat = (route) => route.replace(new RegExp("/", 'g'), " ").trim().replace(new RegExp(" ", 'g'), "/").toLowerCase();
 
-function Redirects({ children }) {
+export function Admin({ children }) {
     const location = useLocation();
     const { cookies } = useAuth();
 
@@ -25,7 +25,5 @@ function Redirects({ children }) {
         hasPermission = validateCookies(cookies.authentication);
         hasPermission = hasPermission && routePermissions.roles.includes(cookies?.role || "");
     }
-    return hasPermission ? children : <Redirect noThrow to="/" />
+    return hasPermission ? children : <><Redirect noThrow to="/" /></>
 };
-
-export default Redirects
