@@ -1,5 +1,5 @@
 import React from "react";
-import { navigate, useLocation } from "@reach/router"
+import { Redirect, useLocation } from "@reach/router"
 import { useAuth } from "./hooks/Auth";
 import validateCookies from "./utils/validateCookies"
 
@@ -13,7 +13,7 @@ const permissions = [
 
 const RouteTreat = (route) => route.replace(new RegExp("/", 'g'), " ").trim().replace(new RegExp(" ", 'g'), "/").toLowerCase();
 
-function Redirect({ children }) {
+function Redirects({ children }) {
     const location = useLocation();
     const { cookies } = useAuth();
 
@@ -21,12 +21,12 @@ function Redirect({ children }) {
 
     if (routePermissions) {
         if (!validateCookies(cookies.authentication) || !routePermissions.roles.includes(cookies?.role || "")) {
-            navigate('/');
-            return <></>
+            console.log("opa")
+            return <Redirect noThrow to="/"/>
         }
     }
 
     return children
 };
 
-export default Redirect
+export default Redirects
