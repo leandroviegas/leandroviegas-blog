@@ -179,14 +179,14 @@ const Index = () => {
                     <div className="bg-white rounded-lg p-4 mx-4 my-8 shadow-lg">
                         <div className="flex gap-2 my-4">
                             <form className="h-8 flex items-center">
-                                <button className="h-full text-center flex items-center px-2 bg-indigo-700 hover:bg-indigo-800 text-white rounded-l">
+                                <button className="h-full text-center flex items-center px-2 bg-purple-800 hover:bg-purple-900 text-white rounded-l">
                                     <FaSearch />
                                 </button>
                                 <input type="text" placeholder="Procurar" className="outline-none h-full px-2 py-1 text-gray-600 border" />
                             </form>
                         </div>
                         <hr className="my-4" />
-                        <button onClick={() => setPopup("category-form")} className="bg-indigo-600 hover:bg-indigo-700 transition font-semibold text-white px-3 py-1 rounded">Nova Categoria</button>
+                        <button onClick={() => setPopup("category-form")} className="bg-purple-700 hover:bg-purple-800 transition font-semibold text-white px-3 py-1 rounded">Nova Categoria</button>
                         <div className="my-4 grid sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
                             {categories.data.map(category => {
                                 return (

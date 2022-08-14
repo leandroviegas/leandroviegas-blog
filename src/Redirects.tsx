@@ -2,6 +2,9 @@ import React from "react";
 import { navigate } from "gatsby"
 import { useLocation } from "@reach/router"
 import { useAuth } from "./hooks/Auth";
+
+import { BiLoaderAlt } from "react-icons/bi"
+
 import validateCookies from "./utils/validateCookies"
 
 const permissions = [
@@ -30,5 +33,9 @@ export function Admin({ children }) {
     if (typeof window !== "undefined")
         !hasPermission && navigate("/")
 
-    return hasPermission ? children : <></>
+    return hasPermission ? children : (
+        <div className="fixed h-screen w-screen top-0 left-0 flex items-center jusfify-center bg-gradient-to-b from-purple-600 to-indigo-500">
+            <BiLoaderAlt className="w-[50vw] h-[50vh] max-w-[8em] animate-spin fill-zinc-800 mx-auto" />
+        </div>
+    )
 };
