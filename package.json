@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "author": "Leandro Viegas <l3androviegas@gmail.com>",
   "dependencies": {
+    "aos": "^2.3.4",
     "axios": "^0.27.2",
     "gatsby": "^4.20.0",
     "gatsby-plugin-nprogress": "^4.20.0",

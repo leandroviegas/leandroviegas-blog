@@ -7,18 +7,22 @@ import truncate from "../../../utils/truncate"
 
 import { Post } from "../../../types/blog.type"
 
-import AdminLayout from "../../../layouts/AdminLayout"
+import Outclick from "../../../components/outclick"
 import Alert, { AlertProps } from "../../../components/Alert"
+import AdminLayout from "../../../layouts/AdminLayout"
 
 import { VscLoading } from "react-icons/vsc"
 import { FaSearch } from "react-icons/fa"
 import { BsFileEarmarkPost } from "react-icons/bs"
+import { IoIosClose } from "react-icons/io"
 
+
+type Status = "loading" | "success" | "error" | ""
 
 const Index = () => {
     const [alerts, setAlerts] = useState<(AlertProps & { input: string })[]>([])
 
-    const [posts, setPosts] = useState<{ status: "loading" | "success" | "error" | "", data: Post[] }>({ status: "", data: [] })
+    const [posts, setPosts] = useState<{ status: Status, data: Post[] }>({ status: "", data: [] })
 
     const HandleLoadPosts = () => {
         if (posts.status === "loading") return;
@@ -36,21 +40,46 @@ const Index = () => {
         })
     }
 
-    
+    const [deleteFormStatus, setDeleteFormStatus] = useState<Status>()
+    const [selectedPost, setSelectedPost] = useState<Post>()
+
+    const HandleDeletePost = () => {
+        if (deleteFormStatus === "loading") return;
+        setDeleteFormStatus("loading");
+
+        api.delete(`/posts`, { params: { id: selectedPost?._id } }).then(resp => {
+            setSelectedPost(undefined)
+        })
+    }
+
     useEffect(() => {
         HandleLoadPosts()
     }, [])
 
-
-    
     return (
         <AdminLayout>
+            {selectedPost &&
+                <div className="fixed h-screen w-screen flex items-center justify-center top-0 left-0 bg-black/50 z-20">
+                    <Outclick callback={() => setSelectedPost(undefined)}>
+                        <div className="bg-white max-w-[720px] flex flex-col w-screen h-full max-h-[16rem] rounded-lg">
+                            <div className="grow">
+                                <div className="flex justify-end">
+                                    <button onClick={() => setSelectedPost(undefined)} className="m-2" >
+                                        <IoIosClose size={35} />
+                                    </button>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </Outclick>
+                </div>}
+
             {(posts.status === "success" && posts.data.length > 0) &&
                 <div className="container">
                     <div className="bg-white rounded-lg p-4 mx-4 my-8 shadow-lg">
                         <div className="flex gap-2 my-4">
                             <form className="h-8 flex items-center">
-                                <button className="h-full text-center flex items-center px-2 bg-purple-800 hover:bg-purple-900 text-white rounded-l">
+                                <button className="h-full text-center flex items-center px-2 bg-violet-800 hover:bg-violet-900 text-white rounded-l">
                                     <FaSearch />
                                 </button>
                                 <input type="text" placeholder="Procurar" className="outline-none h-full px-2 py-1 text-gray-600 border" />
@@ -58,7 +87,7 @@ const Index = () => {
                         </div>
                         <hr className="my-4" />
                         <Link to="/admin/posts/new-post">
-                            <button className="bg-purple-700 hover:bg-purple-800 px-3 py-1 h-auto transition font-semibold text-white rounded">
+                            <button className="bg-violet-700 hover:bg-violet-800 px-3 py-1 h-auto transition font-semibold text-white rounded">
                                 Nova Postagem
                             </button>
                         </Link>
@@ -79,7 +108,7 @@ const Index = () => {
                                                     Editar
                                                 </button>
                                             </Link>
-                                            <button className="bg-red-500 mb-3 text-white hover:bg-red-600 px-3 transition py-0.5">Apagar</button>
+                                            <button onClick={() => setSelectedPost(post)} className="bg-red-500 mb-3 text-white hover:bg-red-600 px-3 transition py-0.5">Apagar</button>
                                         </div>
                                     </div>
                                 )

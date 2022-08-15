@@ -8,7 +8,7 @@ import { MdClose } from "react-icons/md"
 import { BiMenu } from "react-icons/bi"
 import { VscLoading } from "react-icons/vsc"
 
-import Outclick from "./Outclick"
+import Outclick from "./outclick"
 import Alert, { AlertProps } from "./Alert"
 
 import { useAuth } from "../hooks/Auth"

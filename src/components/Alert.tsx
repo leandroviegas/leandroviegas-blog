@@ -13,9 +13,9 @@ const Index = ({ message, type }: AlertProps) => {
     return (
         <>
             {type === "error" &&
-                <div className="rounded gap-1 text-sm py-1 px-2 bg-red-100 border border-red-600 text-red-700 flex items-center">
-                    <VscError />
-                    {message}
+                <div className="rounded gap-2 text-white text-sm py-1 px-2 bg-red-500 flex items-center">
+                    <VscError className="stroke-1 text-lg" />
+                    <span className="font-thin">{message}</span>
                 </div>
             }
 

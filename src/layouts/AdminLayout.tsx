@@ -27,7 +27,7 @@ const Index = ({ children }: AdminLayoutProps) => {
                         <span className="border-l pl-3"><FaUser /></span>
                     </div>
                 </div>
-                <div className="flex grow">
+                <div className="flex grow overflow-auto">
                     <div className="w-64 h-full bg-gradient-to-b from-purple-800 to-indigo-800 p-4">
                         <Link to={"/admin/dashboard"} className="flex items-center gap-2 font-semibold my-4 text-lg text-purple-100"><AiFillDashboard /> <span>Dashboard</span></Link>
 
@@ -46,7 +46,7 @@ const Index = ({ children }: AdminLayoutProps) => {
                             </div>
                         </div>
                     </div>
-                    <div className="grow overflow-auto overflow-x-hidden">
+                    <div className="grow overflow-y-auto">
                         {children}
                     </div>
                 </div>

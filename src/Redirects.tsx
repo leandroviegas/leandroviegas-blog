@@ -11,7 +11,7 @@ const permissions = [
     {
         roles: ["admin"],
         route: "/admin",
-        optionalFunction: (route: string) => route.startsWith("/admin")
+        valid: (route: string) => route.startsWith("/admin")
     },
 ];
 
@@ -21,7 +21,7 @@ export function Admin({ children }) {
     const location = useLocation();
     const { cookies } = useAuth();
 
-    const routePermissions = permissions.find(permission => permission.optionalFunction ? permission.optionalFunction(location.pathname) : RouteTreat(permission.route) === RouteTreat(location.pathname));
+    const routePermissions = permissions.find(permission => permission.valid ? permission.valid(location.pathname) : RouteTreat(permission.route) === RouteTreat(location.pathname));
 
     let hasPermission = true;
 

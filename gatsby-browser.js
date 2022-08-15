@@ -6,6 +6,10 @@ import { AuthContextProvider } from "./src/context/AuthContext";
 import 'suneditor/dist/css/suneditor.min.css';
 import "./src/css/index.css";
 import "./src/css/tailwind.css";
+import "aos/dist/aos.css";
+
+import AOS from "aos"
+AOS.init();
 
 export const wrapRootElement = ({ element }) => {
     return (

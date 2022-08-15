@@ -63,7 +63,7 @@ const Index = ({ serverData }) => {
                                 <p className="text-white text text-gray-100  md:mr-16 my-2">{truncate(post.description, 180)}</p>
                                 <div className="flex items-center gap-2 sm:gap-6 flex-wrap">
                                     <span className="text-gray-300 text-semibold text-sm"><span>Postado em: </span>{moment(post?.postedAt).format("DD/MM/YYYY hh:mm")}</span>
-                                    <Link to={`/usuario/${post.author.link}`} className="flex items-center gap-2">
+                                    <Link to={``} className="flex items-center gap-2">
                                         <span className="h-6 w-6 flex items-center justify-center">
                                             {post?.author?.profilePicture ?
                                                 <img className="w-full h-full object-cotain rounded-full bg-gray-300" src={post.author.profilePicture} alt={post.author.username} />
