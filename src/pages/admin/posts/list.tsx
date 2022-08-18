@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from "react"
 import { Link } from "gatsby"
 
-import api from "../../../services/api"
 import moment from "moment"
+import api from "../../../services/api"
+import { useAuth } from "../../../hooks/Auth"
 import truncate from "../../../utils/truncate"
 
 import { Post } from "../../../types/blog.type"
 
-import Outclick from "../../../components/outclick"
-import Alert, { AlertProps } from "../../../components/Alert"
+import Head from "../../../components/Head"
 import AdminLayout from "../../../layouts/AdminLayout"
+import DeletePopup from "../../../components/Popups/DeletePopup"
 
 import { VscLoading } from "react-icons/vsc"
 import { FaSearch } from "react-icons/fa"
 import { BsFileEarmarkPost } from "react-icons/bs"
-import { IoIosClose } from "react-icons/io"
 
+import postplaceholderImage from "../../../images/post_placeholder.jpg"
 
 type Status = "loading" | "success" | "error" | ""
 
 const Index = () => {
-    const [alerts, setAlerts] = useState<(AlertProps & { input: string })[]>([])
+    const { cookies } = useAuth()
+
+    const [alerts, setAlerts] = useState<{ [key: string]: string[] }>({})
 
     const [posts, setPosts] = useState<{ status: Status, data: Post[] }>({ status: "", data: [] })
 
@@ -33,22 +36,27 @@ const Index = () => {
         }).catch(err => {
             console.error(err)
             setPosts({ status: "error", data: [] });
-            if (err.response.data?.message)
-                setAlerts([{ type: "error", message: err.response.data.message, input: "post-list" }])
-            else
-                setAlerts([{ type: "error", message: "Ocorreu um erro ao carregar postagens!", input: "post-list" }])
+            setAlerts({ ...alerts, "post-list": [err?.response?.data?.message || "Ocorreu um erro ao carregar postagens!"] })
         })
     }
 
-    const [deleteFormStatus, setDeleteFormStatus] = useState<Status>()
+    const [deleteStatus, setDeleteStatus] = useState<Status>()
+
     const [selectedPost, setSelectedPost] = useState<Post>()
 
     const HandleDeletePost = () => {
-        if (deleteFormStatus === "loading") return;
-        setDeleteFormStatus("loading");
+        if (deleteStatus === "loading") return;
+        setDeleteStatus("loading");
 
-        api.delete(`/posts`, { params: { id: selectedPost?._id } }).then(resp => {
+        api.delete(`/posts`, { params: { _id: selectedPost?._id }, headers: { authorization: `Bearer ${cookies.authentication}` } }).then(resp => {
+            HandleLoadPosts(); 
             setSelectedPost(undefined)
+            setDeleteStatus("success")
+            setAlerts({ ...alerts, "post-delete": [] });
+        }).catch(err => {
+            console.error(err)
+            setDeleteStatus("error")
+            setAlerts({ ...alerts, "post-delete": [err?.response?.data?.message || "Ocorreu um erro ao deletar postagem!"] })
         })
     }
 
@@ -58,22 +66,10 @@ const Index = () => {
 
     return (
         <AdminLayout>
-            {selectedPost &&
-                <div className="fixed h-screen w-screen flex items-center justify-center top-0 left-0 bg-black/50 z-20">
-                    <Outclick callback={() => setSelectedPost(undefined)}>
-                        <div className="bg-white max-w-[720px] flex flex-col w-screen h-full max-h-[16rem] rounded-lg">
-                            <div className="grow">
-                                <div className="flex justify-end">
-                                    <button onClick={() => setSelectedPost(undefined)} className="m-2" >
-                                        <IoIosClose size={35} />
-                                    </button>
-                                </div>
-                            </div>
-                            <div></div>
-                        </div>
-                    </Outclick>
-                </div>}
+            <Head title="Listar postagens - Leandro Viegas" />
 
+            <DeletePopup status={deleteStatus === "loading" ? deleteStatus : ""} errors={alerts["post-delete"]} btnText="Apagar postagem" open={!!selectedPost} onDelete={HandleDeletePost} onCancel={() => { setSelectedPost(undefined); setAlerts({ ...alerts, "post-delete": [] }); }} text={`Você tem certeza que deseja apagar a categoria "${selectedPost?.title}". Caso você apague a categoria você não conseguirá recuperar os dados dela.`} />
+            
             {(posts.status === "success" && posts.data.length > 0) &&
                 <div className="container">
                     <div className="bg-white rounded-lg p-4 mx-4 my-8 shadow-lg">
@@ -86,29 +82,32 @@ const Index = () => {
                             </form>
                         </div>
                         <hr className="my-4" />
-                        <Link to="/admin/posts/new-post">
-                            <button className="bg-violet-700 hover:bg-violet-800 px-3 py-1 h-auto transition font-semibold text-white rounded">
-                                Nova Postagem
-                            </button>
-                        </Link>
+                        <div className="my-6">
+                            <Link to="/admin/posts/new-post">
+                                <button className="shadow-lg shadow-violet-500/30 hover:scale-110 bg-violet-700 hover:bg-violet-800 transition font-semibold text-white px-3 py-1 rounded">
+                                    Nova Postagem
+                                </button>
+                            </Link>
+                        </div>
                         <div className="my-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4">
                             {posts.data.map(post => {
                                 return (
-                                    <div key={post?._id} className="border px-4 rounded-lg flex flex-col">
-                                        <div className="grow my-2">
-                                            <p className="text-xl font-semibold text-zinc-600">{post?.title}</p>
-                                            <hr className="my-1" />
-                                            <p className="text-zinc-600">{truncate(post?.description, 100)}</p>
-                                            <span className="text-gray-500 font-thin text-sm my-1"><span>Postado em: </span>{moment(post?.postedAt).format("DD/MM/YYYY hh:mm")}</span>
+                                    <div key={post?._id} className="border border-zinc-300 rounded-xl flex flex-col">
+                                        <div className="grow break-words flex flex-col">
+                                            <img className="h-32 w-full object-cover rounded-t-xl" src={post.image || postplaceholderImage} alt={post?.title} />
+                                            <div className="my-2 grow px-4 flex flex-col gap-2">
+                                                <p className="text-xl font-semibold text-zinc-600">{post?.title}</p>
+                                                <hr className="border-zinc-300" />
+                                                <p className="text-zinc-600 grow">{truncate(post?.description, 100)}</p>
+                                                <span className="text-gray-500 font-thin text-sm"><span>Postado em: </span>{moment(post?.postedAt).format("DD/MM/YYYY hh:mm")}</span>
+                                            </div>
                                         </div>
                                         <hr />
-                                        <div className="font-semibold">
+                                        <div className="p-3 bg-violet-700 shadow-xl shadow-violet-700/40 rounded-b-xl font-semibold flex items-center gap-4 flex-wrap">
                                             <Link to={`/admin/posts/edit/${post.link}`}>
-                                                <button className="bg-yellow-400 my-3 mr-3 text-zinc-800 hover:bg-yellow-500 transition px-3 py-0.5">
-                                                    Editar
-                                                </button>
+                                                <button className="bg-yellow-400 text-zinc-800 hover:bg-yellow-500 transition rounded px-3 py-1">Editar</button>
                                             </Link>
-                                            <button onClick={() => setSelectedPost(post)} className="bg-red-500 mb-3 text-white hover:bg-red-600 px-3 transition py-0.5">Apagar</button>
+                                            <button onClick={() => setSelectedPost(post)} className="bg-red-600 text-white hover:bg-red-700 px-3 transition rounded py-1">Apagar</button>
                                         </div>
                                     </div>
                                 )

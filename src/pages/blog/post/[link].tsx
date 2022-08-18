@@ -5,7 +5,7 @@ import api from "../../../services/api"
 
 import moment from "moment"
 import Layout from "../../../layouts/Layout"
-import Head from "../../../components/head"
+import Head from "../../../components/Head"
 import truncate from "../../../utils/truncate"
 
 import { FaUser } from "react-icons/fa"

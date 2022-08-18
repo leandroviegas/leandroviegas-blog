@@ -1,12 +1,46 @@
-import React from "react";
-import Form from "../../../../components/form";
+import React, { useEffect, useState } from "react";
+
+import api from "../../../../services/api";
+
+import Form from "../../../../components/Forms/PostForm";
+import Head from "../../../../components/Head";
+import Alert from "../../../../components/Alert";
 import AdminLayout from "../../../../layouts/AdminLayout";
 
-const Index = ({params}) => {
+import { Post } from "../../../../types/blog.type";
+import { VscLoading } from "react-icons/vsc";
+
+const Index = ({ params }) => {
+    const [status, setStatus] = useState<"loading" | "success" | "error" | "">("")
+
+    const [post, setPost] = useState<Omit<Post, "category" | "author"> & { category: string, author: string }>();
+    const [alerts, setAlerts] = useState<{ [key: string]: string[] }>({})
+
+    useEffect(() => {
+        setStatus("loading");
+        api.get("/posts", { params: { link: params.link } }).then(resp => {
+            setStatus("success");
+            setPost(resp.data?.post)
+        }).catch(err => {
+            setStatus("error");
+            setAlerts({ "page": [err?.response?.data?.message || `Erro ao sa.`] })
+        })
+    }, [params.link])
+
     return (
         <AdminLayout>
+            <Head title={`${post?.title || "Editar postagem"} - Leandro Viegas`} />
+
             <div className="container pt-8 p-4 h-full">
-                <Form link={params.link} />
+                {status === "success" &&
+                    <Form {...post} />}
+
+                {status === "loading" &&
+                    <div className="flex justify-center my-44">
+                        <VscLoading className="text-5xl animate-spin text-indigo-800" />
+                    </div>}
+
+                {alerts["post-form"]?.map((message, index) => <Alert key={index} message={message} type="error" />)}
             </div>
         </AdminLayout>
     );

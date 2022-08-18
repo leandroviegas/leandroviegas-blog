@@ -2,19 +2,20 @@ import React, { useEffect, useState } from "react"
 
 import api from "../../../services/api"
 import { useAuth } from "../../../hooks/Auth"
+import truncate from "../../../utils/truncate"
 
+import OpaqueBackground from "../../../components/OpaqueBackground"
 import AdminLayout from "../../../layouts/AdminLayout"
+import DeletePopup from "../../../components/Popups/DeletePopup"
+import CategoryForm from "../../../components/Forms/CategoryForm"
 import Alert from "../../../components/Alert"
-import Outclick from "../../../components/outclick"
-import ReactTextareaAutosize from "react-textarea-autosize"
+import Head from "../../../components/Head"
 
 import { Category } from "../../../types/blog.type"
 
 import { VscLoading } from "react-icons/vsc"
 import { BiCategoryAlt } from "react-icons/bi"
 import { FaSearch } from "react-icons/fa"
-import { IoIosClose } from "react-icons/io"
-import { ImWarning } from "react-icons/im"
 
 type Status = "loading" | "success" | "error" | "input-warnings" | "";
 
@@ -25,55 +26,7 @@ const Index = () => {
 
     const [categories, setCategories] = useState<{ status: Status, data: Category[] }>({ status: "", data: [] })
 
-    const [categoryForm, setCategoryForm] = useState<Category>({ name: "", link: "", image: "", description: "" })
-
-    const [alerts, setAlerts] = useState<{ [key: string]: string[] }>({ "category-form": [] })
-
-    const [categoryStatus, setCategoryStatus] = useState<Status>("")
-
-    const HandleSaveCategory = async (evt: React.FormEvent<HTMLFormElement>) => {
-        evt.preventDefault()
-        if (categoryStatus === "loading") return;
-
-        if (["category-form-name", "category-form-link"].some(input => alerts[input].length > 0)) {
-            setCategoryStatus("input-warnings");
-        } else {
-            setCategoryStatus("loading");
-            try {
-                let headers = { authorization: `Bearer ${cookies.authentication}` }
-
-                if (categoryForm?._id) {
-                    await api.put("/categories", categoryForm, { headers })
-                } else {
-                    await api.post("/categories", categoryForm, { headers })
-                }
-
-                setCategoryStatus("success");
-                HandleLoadCategories();
-                setPopup("")
-            } catch (err) {
-                console.error(err)
-                setCategoryStatus("error");
-                setAlerts({ ...alerts, "category-form": [err?.response?.data?.message || `Ocorreu um erro ao ${categoryForm?._id ? "editar" : "adicionar"} categoria!`] })
-            }
-        }
-    }
-
-    const HandleDeleteCategory = () => {
-        if (categoryStatus === "loading") return;
-        setCategoryStatus("loading");
-
-        api.delete("/categories", { headers: { authorization: `Bearer ${cookies.authentication}` }, params: { _id: categoryForm?._id } })
-            .then(resp => {
-                setCategoryStatus("success");
-                HandleLoadCategories();
-                setPopup("");
-            }).catch(err => {
-                console.error(err)
-                setCategoryStatus("error");
-                setAlerts({ ...alerts, "category-delete": [err?.response?.data?.message || "Ocorreu um erro ao apagar categoria!"] })
-            })
-    }
+    const [alerts, setAlerts] = useState<{ [key: string]: string[] }>({})
 
     const HandleLoadCategories = () => {
         if (categories.status === "loading") return;
@@ -84,15 +37,34 @@ const Index = () => {
         }).catch(err => {
             console.error(err)
             setCategories({ status: "error", data: [] });
-            setAlerts({ ...alerts, "category-form": [err?.response?.data?.message || "Ocorreu um erro ao carregar categorias!"] })
+            setAlerts({ ...alerts, "category": [err?.response?.data?.message || "Ocorreu um erro ao carregar categorias!"] })
         })
+    }
+
+    const [selectedCategory, setSelectedCategory] = useState<Category>({ name: "", link: "", image: "", description: "" })
+
+    const [deleteStatus, setDeleteStatus] = useState<Status>("")
+
+    const HandleDeleteCategory = () => {
+        if (deleteStatus === "loading") return;
+        setDeleteStatus("loading");
+
+        api.delete("/categories", { headers: { authorization: `Bearer ${cookies.authentication}` }, params: { _id: selectedCategory?._id } })
+            .then(resp => {
+                setDeleteStatus("success");
+                HandleLoadCategories();
+                setPopup("");
+            }).catch(err => {
+                console.error(err)
+                setDeleteStatus("error");
+                setAlerts({ ...alerts, "category-delete": [err?.response?.data?.message || "Ocorreu um erro ao apagar categoria!"] })
+            })
     }
 
     useEffect(() => {
         if (popup === "") {
-            setCategoryStatus("");
             setAlerts({})
-            setCategoryForm({ name: "", link: "", image: "", description: "" });
+            setSelectedCategory({ name: "", link: "", image: "", description: "" });
         }
     }, [popup])
 
@@ -100,115 +72,17 @@ const Index = () => {
         HandleLoadCategories()
     }, [])
 
-    useEffect(() => {
-        if (!(categoryForm.name.length > 0))
-            setAlerts(a => ({ ...a, "category-form-name": [`Nome é obrigatório`] }))
-        else if (!(categoryForm.name.length > 3))
-            setAlerts(a => ({ ...a, "category-form-name": [`Nome deve ter no mínimo 3 caracteres`] }))
-        else
-            setAlerts(a => ({ ...a, "category-form-name": [] }))
-
-        if (!(categoryForm.link.length > 0))
-            setAlerts(a => ({ ...a, "category-form-link": [`Link é obrigatório`] }))
-        else if (!(categoryForm.link.length > 3))
-            setAlerts(a => ({ ...a, "category-form-link": [`Link deve ter no mínimo 3 caracteres`] }))
-        else
-            setAlerts(a => ({ ...a, "category-form-link": [] }))
-    }, [categoryForm])
-
     return (
         <AdminLayout>
-            {popup !== "" &&
-                <div className="fixed h-screen w-screen top-0 left-0 bg-black/50 flex items-center justify-center z-20">
-                    <Outclick callback={() => setPopup("")}>
-                        {popup === "category-form" &&
-                            <div data-aos="fade-down" className="bg-white shadow-lg shadow-violet-800/40 rounded-lg w-96 max-w-screen">
-                                <div className="flex gap-2 justify-between items-center rounded-t-lg bg-violet-700 text-white py-3">
-                                    <h1 className="px-4 text-xl font-bold text-white">{categoryForm?._id ? `Editar categoria - ${categoryForm.name}` : "Nova categoria"}</h1>
-                                    <button onClick={() => setPopup("")} className="mx-2 hover:opacity-90 transition hover:scale-110">
-                                        <IoIosClose size={35} />
-                                    </button>
-                                </div>
-                                <form onSubmit={HandleSaveCategory} className="m-6">
+            <Head title={`Listar categorias - Leandro Viegas`} />
 
-                                    {alerts["category-form"]?.map(message => <Alert key={message} type="error" message={message} />)}
-
-                                    <div className="my-4">
-                                        {(function () {
-                                            const error = categoryStatus === "input-warnings" && alerts["category-form-name"].length > 0;
-                                            return (
-                                                <>
-                                                    <div>
-                                                        <label>
-                                                            <span className={`${error ? "text-red-600" : "text-violet-800"} transition text-sm`}>Nome</span><br />
-                                                            <input defaultValue={categoryForm.name} onChange={evt => setCategoryForm({ ...categoryForm, name: evt.target.value })} name="name" autoComplete="off" className={`w-full focus:shadow-lg shadow-violet-700/80 outline-none border-b ${error ? "bg-red-50 border-red-500 text-red-600" : "bg-zinc-100 text-zinc-600"} focus:text-zinc-600 focus:bg-white px-1 pt-1 transition duration-300 ease-in focus:border-violet-800`} type="text" />
-                                                        </label>
-                                                    </div>
-                                                    {alerts["category-form-name"]?.map(message => <span key={message} className={`text-xs ${error ? "text-red-500" : "text-zinc-700"}`}>* {message}</span>)}
-                                                </>
-                                            )
-                                        }())}
-                                    </div>
-                                    <div className="my-4">
-                                        {(function () {
-                                            const error = categoryStatus === "input-warnings" && alerts["category-form-link"].length > 0;
-                                            return (
-                                                <>
-                                                    <div>
-                                                        <label>
-                                                            <span className={`${error ? "text-red-600" : "text-violet-800"} transition text-sm`}>Link</span><br />
-                                                            <input defaultValue={categoryForm.link} onChange={evt => setCategoryForm({ ...categoryForm, link: evt.target.value })} name="link" autoComplete="off" className={`w-full focus:shadow-lg shadow-violet-700/80 outline-none border-b ${error ? "bg-red-50 border-red-500 text-red-600" : "bg-zinc-100 text-zinc-600"} focus:text-zinc-600 focus:bg-white px-1 pt-1 transition duration-300 ease-in focus:border-violet-800`} type="text" />
-                                                        </label>
-                                                    </div>
-                                                    {alerts["category-form-link"]?.map(message => <span key={message} className={`text-xs ${categoryStatus === "input-warnings" ? "text-red-500" : "text-zinc-700"}`}>* {message}</span>)}
-                                                </>
-                                            )
-                                        }())}
-                                    </div>
-                                    <div className="my-4">
-                                        <label>
-                                            <span className="text-violet-800 text-sm">Descrição</span><br />
-                                            <ReactTextareaAutosize className="focus:shadow-lg shadow-violet-700/80 outline-none border-b bg-zinc-100 focus:bg-white rounded-t pt-1 px-1 transition duration-300 ease-in text-zinc-600 w-full focus:border-violet-800" value={categoryForm.description} onChange={evt => setCategoryForm({ ...categoryForm, description: evt.currentTarget.value })} minRows={2} />
-                                        </label>
-                                    </div>
-                                    <hr className="my-4" />
-                                    <div className="flex items-center justify-between gap-6 flex-wrap">
-                                        <button type="submit" className="bg-violet-700 hover:bg-violet-800 shadow-lg shadow-violet-700/30 rounded-xl text-white py-2 px-4 hover:scale-105 transition font-semibold">{categoryForm?._id ? `Salvar categoria` : "Criar categoria"}</button>
-                                        <button type="button" onClick={() => setPopup("")} className="py-2 transition px-4 text-zinc-800 bg-zinc-200 hover:bg-zinc-300 font-semibold rounded-lg">Cancelar</button>
-                                    </div>
-                                </form>
-                            </div>
-                        }
-
-                        {popup === "delete" &&
-                            <div data-aos="fade-down" className="bg-white max-w-[720px] flex flex-col w-screen h-screen sm:max-h-[16rem] rounded-lg">
-                                <div className="grow flex flex-col">
-                                    <div className="flex gap-2 justify-between items-center rounded-t-lg bg-violet-700 text-white py-3">
-                                        <h1 className="text-xl mx-4 rounded-t-lg">Confirmar exclusão</h1>
-                                        <button onClick={() => setPopup("")} className="mx-2 hover:opacity-90 transition hover:scale-110">
-                                            <IoIosClose size={35} />
-                                        </button>
-                                    </div>
-                                    <div className="mx-8 my-2 grow flex items-center">
-                                        <div className="mr-8">
-                                            <ImWarning size={60} />
-                                        </div>
-                                        <div className="grow">
-                                            <hr className="border-zinc-600" />
-                                            <p className="font-thin my-2 text-zinc-700">Você tem certeza que deseja apagar a categoria "{categoryForm?.name}". Caso você apague a categoria você não conseguirá recuperar os dados dela.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr />
-                                <div className="flex items-center justify-between gap-6 flex-wrap p-4">
-                                    <button onClick={HandleDeleteCategory} className="bg-red-600 hover:bg-red-700 hover:scale-105 text-white font-semibold px-3 transition py-2 rounded-lg">Apagar Categoria</button>
-                                    <button type="button" onClick={() => setPopup("")} className="py-2 transition px-4 text-zinc-800 bg-zinc-200 hover:bg-zinc-300 font-semibold rounded-lg">Cancelar</button>
-                                </div>
-                            </div>
-                        }
-                    </Outclick>
+            <OpaqueBackground open={popup === "category-form"} callback={() => setPopup("")}>
+                <div data-aos="fade-down" className="bg-white shadow-lg shadow-violet-800/40 rounded-lg w-96 max-w-screen">
+                    <CategoryForm onClose={() => setPopup("")} category={selectedCategory} />
                 </div>
-            }
+            </OpaqueBackground>
+
+            <DeletePopup status={deleteStatus === "loading" ? deleteStatus : ""} errors={alerts["category-delete"]} btnText="Apagar categoria" open={popup === "delete"} onDelete={HandleDeleteCategory} onCancel={() => setPopup("")} text={`Você tem certeza que deseja apagar a categoria "${selectedCategory?.name}". Caso você apague a categoria você não conseguirá recuperar os dados dela.`} />
 
             {(categories.status === "success" && categories.data.length > 0) &&
                 <div className="container">
@@ -222,22 +96,23 @@ const Index = () => {
                             </form>
                         </div>
                         <hr className="my-4" />
+                        {alerts[""]?.map((message, index) => <Alert key={index} message={message} type="error" />)}
                         <div className="my-6">
                             <button onClick={() => setPopup("category-form")} className="shadow-lg shadow-violet-500/30 hover:scale-110 bg-violet-700 hover:bg-violet-800 transition font-semibold text-white px-3 py-1 rounded">Nova Categoria</button>
                         </div>
                         <div className="my-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
                             {categories.data.map(category => {
                                 return (
-                                    <div key={category?._id} className="shadow-xl shadow-violet-700/40 border rounded-xl flex flex-col">
-                                        <div className="grow pt-2 pb-1 px-4 text-white bg-violet-700 rounded-t-lg">
+                                    <div key={category?._id} className="border border-zinc-300 rounded-xl flex flex-col">
+                                        <div className="grow pt-2 flex flex-col gap-2 pb-2 px-4 w-full text-zinc-700 rounded-t-lg break-words">
                                             <p className="text-xl font-semibold">{category?.name}</p>
-                                            <p className="font-thin opacity-80">{category?.description}</p>
-                                            <a href={`/blog/category/${category.link}`} target="_blank" className="font-thin text-sm opacity-80 underline">{window.location.hostname}/blog/category/{category.link}</a>
+                                            <p className="font-thin opacity-80 whitespace-normal">{truncate(category?.description, 100)}</p>
+                                            <a href={`/blog/category/${category.link}`} target="_blank" className="text-sm opacity-80 underline">/blog/category/{category.link}</a>
                                         </div>
                                         <hr />
-                                        <div className="m-3 font-semibold flex items-center gap-4 flex-wrap">
-                                            <button onClick={() => { setCategoryForm(category); setPopup("category-form"); }} className="bg-yellow-400 text-zinc-800 hover:bg-yellow-500 transition rounded px-3 py-1">Editar</button>
-                                            <button onClick={() => { setCategoryForm(category); setPopup("delete"); }} className="bg-red-600 text-white hover:bg-red-700 px-3 transition rounded py-1">Apagar</button>
+                                        <div className="p-3  bg-violet-700 shadow-xl shadow-violet-700/40 rounded-b-xl font-semibold flex items-center gap-4 flex-wrap">
+                                            <button onClick={() => { setSelectedCategory(category); setPopup("category-form"); }} className="bg-yellow-400 text-zinc-800 hover:bg-yellow-500 transition rounded px-3 py-1">Editar</button>
+                                            <button onClick={() => { setSelectedCategory(category); setPopup("delete"); }} className="bg-red-600 text-white hover:bg-red-700 px-3 transition rounded py-1">Apagar</button>
                                         </div>
                                     </div>
                                 )

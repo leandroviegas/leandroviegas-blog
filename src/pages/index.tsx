@@ -1,7 +1,7 @@
 import React from "react";
 
 import Layout from "../layouts/Layout"
-import Head from "../components/head";
+import Head from "../components/Head";
 
 import frontendImage from "../images/frontend.svg"
 import backendImage from "../images/backend.svg"

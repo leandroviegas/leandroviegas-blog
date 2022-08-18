@@ -1,6 +1,5 @@
 import React from "react";
 
-import { FaInfoCircle } from "react-icons/fa";
 import { VscError } from "react-icons/vsc";
 import { GrStatusGood } from "react-icons/gr";
 
@@ -20,16 +19,9 @@ const Index = ({ message, type }: AlertProps) => {
             }
 
             {type === "success" &&
-                <div className="rounded gap-1 text-sm py-1 px-2 bg-green-100 border border-green-600 text-green-700 flex items-center">
-                    <GrStatusGood />
-                    {message}
-                </div>
-            }
-
-            {type === "warning" &&
-                <div className="rounded gap-1 text-sm py-1 px-2 bg-yellow-100 border border-yellow-600 text-yellow-700 flex items-center">
-                    <FaInfoCircle />
-                    {message}
+                <div className="rounded gap-2 text-white text-sm py-1 px-2 bg-green-500 flex items-center">
+                    <GrStatusGood className="stroke-1 text-lg" />
+                    <span className="font-thin">{message}</span>
                 </div>
             }
         </>

@@ -19,7 +19,7 @@ const Index = ({ children }: AdminLayoutProps) => {
 
     return (
         <Redirects>
-            <div className="w-screen h-screen bg-zinc-100 flex flex-col">
+            <div className="w-screen h-screen bg-zinc-200 flex flex-col">
                 <div className="bg-gradient-to-r from-purple-800 to-indigo-600 flex justify-between shadow-lg z-10 shadow-black/20 p-4">
                     <div className="flex items-center font-bold text-xl gap-2 text-white"><span><ImBlog /></span><span>My Personal Blog</span></div>
                     <div className="flex items-center gap-3 text-white">
