@@ -1,0 +1,86 @@
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../../hooks/Auth";
+
+import Alert from "../Alert";
+import FloatingLabelInput from "./Inputs/FloatingLabelInput";
+import validator from "validator";
+
+import { VscLoading } from "react-icons/vsc";
+
+const SignInForm = ({ onSuccess }) => {
+    const { signUp } = useAuth()
+
+    const [status, setStatus] = useState<"error" | "loading" | "success" | "input-warnings" | "">("")
+
+    const [alerts, setAlerts] = useState<{ [key: string]: string[] }>({})
+
+    const [form, setForm] = useState<{ email: string, username: string, password: string }>({ email: "", username: "", password: "" })
+
+    const HandleSignUp = (evt: React.FormEvent<HTMLFormElement>) => {
+        evt.preventDefault()
+        if (status === "loading") return;
+
+        if (["username-error", "email-error", "password-error"].some(errors => alerts[errors]?.length > 0)) {
+            setStatus("input-warnings")
+        } else {
+            setStatus("loading")
+            signUp(form.username, form.email, form.password)
+                .then(() => {
+                    setStatus("success")
+                    onSuccess()
+                }).catch(err => {
+                    console.error(err)
+                    setStatus("error")
+                    setAlerts({ ...alerts, "signin-error": err.response.data.message || "Erro ao fazer login" })
+                })
+        }
+    }
+
+    useEffect(() => {
+        if (!(form.username.length > 0))
+            setAlerts(a => ({ ...a, "username-error": ["Nome é obrigatório"] }))
+        else if (!(form.username.length > 3))
+            setAlerts(a => ({ ...a, "username-error": ["Nome precisa ter ao menos 4 caracteres"] }))
+        else
+            setAlerts(a => ({ ...a, "username-error": [] }))
+
+        if (!(form.email.length > 0))
+            setAlerts(a => ({ ...a, "email-error": ["Email é obrigatório"] }))
+        else if (!validator.isEmail(form.email))
+            setAlerts(a => ({ ...a, "email-error": ["Formato de email inválido"] }))
+        else
+            setAlerts(a => ({ ...a, "email-error": [] }))
+
+        if (!(form.password.length > 0))
+            setAlerts(a => ({ ...a, "password-error": ["Senha é obrigatório"] }))
+        else if (!validator.isStrongPassword(form.password))
+            setAlerts(a => ({ ...a, "password-error": ["Senha muito fraca"] }))
+        else
+            setAlerts(a => ({ ...a, "password-error": [] }))
+    }, [form])
+
+    return (
+        <form onSubmit={HandleSignUp} className="flex flex-col gap-3">
+            <div>
+                {alerts["signup-error"]?.map(message => <Alert key={message} type="error" message={message} />)}
+            </div>
+            <div className="my-2">
+                <FloatingLabelInput label="Usuário" status={(status === "input-warnings" && alerts["username-error"]?.length > 0) ? "error" : "info"} messages={alerts["username-error"]} defaultValue="" onChange={evt => setForm({ ...form, username: evt.target.value })} />
+            </div>
+            <div className="my-2">
+                <FloatingLabelInput label="Email" status={(status === "input-warnings" && alerts["email-error"]?.length > 0) ? "error" : "info"} messages={alerts["email-error"]} defaultValue="" onChange={evt => setForm({ ...form, email: evt.target.value })} />
+            </div>
+            <div className="my-2">
+                <FloatingLabelInput label="Senha" status={(status === "input-warnings" && alerts["password-error"]?.length > 0) ? "error" : "info"} messages={alerts["password-error"]} defaultValue="" onChange={evt => setForm({ ...form, password: evt.target.value })} type="password" />
+            </div>
+            <hr className="py-1" />
+            <div className="w-full">
+                <button type="submit" className="from-purple-700 to-indigo-600 hover:from-purple-800 hover:to-indigo-700 rounded text-lg font-semibold w-full bg-gradient-to-b from-purple-700 to-indigo-600 hover:text-white text-zinc-50 px-3 py-2 hover:bg-purple-800 transition">
+                    {status === "loading" ? <VscLoading className="animate-spin mx-auto text-2xl" /> : "Registrar-se"}
+                </button>
+            </div>
+        </form>
+    )
+}
+
+export default SignInForm;

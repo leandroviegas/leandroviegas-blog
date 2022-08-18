@@ -7,7 +7,6 @@ import frontendImage from "../images/frontend.svg"
 import backendImage from "../images/backend.svg"
 import databaseImage from "../images/backend.svg"
 import toolsImage from "../images/tools.svg"
-
 import developerperfilImage from "../images/developer_perfil.svg"
 
 const Index = () => {

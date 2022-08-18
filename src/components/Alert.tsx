@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 
 import { VscError } from "react-icons/vsc";
 import { GrStatusGood } from "react-icons/gr";
@@ -8,7 +8,7 @@ export type AlertProps = {
     type: "success" | "error" | "warning";
 }
 
-const Index = ({ message, type }: AlertProps) => {
+const Alert = ({ message, type }: AlertProps) => {
     return (
         <>
             {type === "error" &&
@@ -28,4 +28,4 @@ const Index = ({ message, type }: AlertProps) => {
     )
 }
 
-export default Index;
+export default memo(Alert);

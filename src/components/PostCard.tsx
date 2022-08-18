@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo } from "react"
 import { Link } from "gatsby"
 
 import truncate from "../utils/truncate"
@@ -41,4 +41,4 @@ const PostCardComponent = ({ link, title, description, postedAt, author }) => {
 }
 
 
-export default PostCardComponent
+export default memo(PostCardComponent)

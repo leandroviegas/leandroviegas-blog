@@ -112,7 +112,7 @@ const Index = ({ serverData }) => {
                                     categories.data.map(category => {
                                         return (
                                             <Link key={category.link} to={`/blog/category/${category.link}`}>
-                                                <button className="border border-indigo-700 text-indigo-800 px-3 rounded" key={category._id}>
+                                                <button className="border-b-2 border-indigo-700 text-zinc-600 px-2 rounded" key={category._id}>
                                                     {category.name}
                                                 </button>
                                             </Link>
