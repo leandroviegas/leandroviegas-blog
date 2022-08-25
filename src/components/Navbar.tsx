@@ -32,7 +32,7 @@ const Index = () => {
     return (
         <>
             <SignPopup open={signOpen} setOpen={setSignOpen} setTab={setTab} tab={tab} />
-            <nav className="bg-gradient-to-b from-purple-600 to-indigo-500 w-full max-w-screen">
+            <nav className="bg-gradient-to-b from-purple-500 to-indigo-500 w-full max-w-screen">
                 <div className="container mx-auto flex flex-row justify-between lg:items-center py-4">
                     <div className="shrink-0 grow flex flex-col md:flex-row justify-start items-center gap-4 px-2">
                         <Link to={"/"} className="flex items-center gap-1">
