@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Types } from "mongoose";
 import PostEntity from "../Entity/Post.entity";
-import { Category } from "../Model/Category.model";
+import { Topic } from "../Model/Topic.model";
 import { Post } from "../Model/Post.model";
 import DbConnect from "./../utils/dbConnect";
 
@@ -34,31 +34,31 @@ class PostController {
       throw new Error("posts/not-found")
   }
 
-  async byCategory(request: Request, response: Response) {
-    let { post_quantity, category_list, select_post, select_category } = request.query;
+  async byTopic(request: Request, response: Response) {
+    let { post_quantity, topic_list, select_post, select_topic } = request.query;
 
     let p_quantity = Number(post_quantity || 5)
 
     // Connect to the database
     await DbConnect();
 
-    let categoy_query = {}
+    let topic_query = {}
 
-    if (category_list)
-      categoy_query = { ...categoy_query, 'link': { $in: category_list } }
+    if (topic_list)
+      topic_query = { ...topic_query, 'link': { $in: [].concat(topic_list) } }
 
-    const categories = await Category.find(categoy_query).select((select_category || "").toString()).exec()
+    const topics = await Topic.find(topic_query).select((select_topic || "").toString()).exec()
 
-    const posts = await Promise.all(categories.map(async category => ({
-      category,
-      posts: await (async () => (await Post.find({ category: category._id }).select((select_post || "").toString()).limit(p_quantity).populate("author", "username profilePicture link").exec()))()
+    const posts = await Promise.all(topics.map(async topic => ({
+      topic,
+      posts: await (async () => (await Post.find({ topics: { "$in": [].concat(topic._id) } }).select((select_post || "").toString()).limit(p_quantity).populate("author", "username profilePicture link").exec()))()
     })))
 
     return response.send(posts);
   }
 
   async post(request: Request, response: Response) {
-    const { title, content, image, link, readTime, active, category, author, keywords, description, modifiedAt, postedAt } = request.body;
+    const { title, content, image, link, readTime, active, topics, author, keywords, description, modifiedAt, postedAt } = request.body;
 
     // Connect to the database
     await DbConnect();
@@ -74,7 +74,7 @@ class PostController {
       description,
       modifiedAt,
       postedAt,
-      category: new Types.ObjectId(category),
+      topics: topics.map(topic => new Types.ObjectId(topic)),
       author: new Types.ObjectId(request.user_id)
     });
 
@@ -94,7 +94,7 @@ class PostController {
   }
 
   async update(request: Request, response: Response) {
-    const { _id, title, content, image, link, readTime, active, category, author, keywords, description, modifiedAt, postedAt } = request.body;
+    const { _id, title, content, image, link, readTime, active, topics, author, keywords, description, modifiedAt, postedAt } = request.body;
 
     // Connect to the database
     await DbConnect();
@@ -111,7 +111,7 @@ class PostController {
       description,
       modifiedAt,
       postedAt,
-      category: new Types.ObjectId(category),
+      topics: topics.map(topic => new Types.ObjectId(topic)),
       author: new Types.ObjectId(request.user_id)
     });
 
@@ -134,6 +134,7 @@ class PostController {
 
     // Connect to the database
     await DbConnect();
+
 
     // If is _id string
     if (typeof _id !== 'string')

@@ -23,6 +23,7 @@ app.use(
         if (err instanceof Error) {
             // Get the error translated to the language you want
             const error: { message: string, status: number } = GetError(err.message, process.env.LANGUAGE)
+            console.error(err)
             // If found the error
             if (error)
                 return response.status(error.status).json({ code: err.message, message: error.message });

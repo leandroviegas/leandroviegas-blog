@@ -1,6 +1,6 @@
 import { Schema } from "mongoose";
 
-export let CategorySchema = new Schema({
+export let TopicSchema = new Schema({
     name: { type: String },
     link: { type: String, unique: true },
     description: { type: String },

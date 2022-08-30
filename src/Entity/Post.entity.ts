@@ -17,7 +17,7 @@ export default class PostEntity {
 
     readonly active: boolean;
 
-    readonly category: Types.ObjectId;
+    readonly topics: Types.ObjectId[];
 
     readonly author: Types.ObjectId;
 
@@ -40,10 +40,10 @@ export default class PostEntity {
             throw new Error("post/link/alredy-in-use")
     }
 
-    constructor({ _id, title, image, content, description, keywords, link, modifiedAt, postedAt, readTime, active, author, category }: PostEntity) {
+    constructor({ _id, title, image, content, description, keywords, link, modifiedAt, postedAt, readTime, active, author, topics }: PostEntity) {
         this._id = _id;
         this.author = author;
-        this.category = category;
+        this.topics = topics;
         this.title = title;
         this.content = content;
         this.image = image;
