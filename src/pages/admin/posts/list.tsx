@@ -68,7 +68,7 @@ const Index = () => {
         <AdminLayout>
             <Head title="Listar postagens - Leandro Viegas" />
 
-            <DeletePopup status={deleteStatus === "loading" ? deleteStatus : ""} errors={alerts["post-delete"]} btnText="Apagar postagem" open={!!selectedPost} onDelete={HandleDeletePost} onCancel={() => { setSelectedPost(undefined); setAlerts({ ...alerts, "post-delete": [] }); }} text={`Você tem certeza que deseja apagar a categoria "${selectedPost?.title}". Caso você apague a categoria você não conseguirá recuperar os dados dela.`} />
+            <DeletePopup status={deleteStatus === "loading" ? deleteStatus : ""} errors={alerts["post-delete"]} btnText="Apagar postagem" open={!!selectedPost} onDelete={HandleDeletePost} onCancel={() => { setSelectedPost(undefined); setAlerts({ ...alerts, "post-delete": [] }); }} text={`Você tem certeza que deseja apagar essa postagem "${selectedPost?.title}". Caso você apague a postagem você não conseguirá recuperar os dados dela.`} />
             
             {(posts.status === "success" && posts.data.length > 0) &&
                 <div className="container">

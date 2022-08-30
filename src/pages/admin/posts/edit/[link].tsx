@@ -13,7 +13,7 @@ import { VscLoading } from "react-icons/vsc";
 const Index = ({ params }) => {
     const [status, setStatus] = useState<"loading" | "success" | "error" | "">("")
 
-    const [post, setPost] = useState<Omit<Post, "category" | "author"> & { category: string, author: string }>();
+    const [post, setPost] = useState<Omit<Post, "topics" | "author"> & { topics: string[], author: string }>();
     const [alerts, setAlerts] = useState<{ [key: string]: string[] }>({})
 
     useEffect(() => {
@@ -23,7 +23,7 @@ const Index = ({ params }) => {
             setPost(resp.data?.post)
         }).catch(err => {
             setStatus("error");
-            setAlerts({ "page": [err?.response?.data?.message || `Erro ao sa.`] })
+            setAlerts({ "page": [err?.response?.data?.message || `Erro ao carregar  postagem.`] })
         })
     }, [params.link])
 

@@ -47,8 +47,8 @@ const Index = () => {
                     </div>
 
                     <div className={`${showNavbar ? "" : "hidden "} lg:block w-screen h-screen lg:w-auto lg:h-auto fixed lg:relative right-0 top-0 z-20 flex justify-end backdrop-blur-sm bg-black/70 lg:bg-transparent`}>
-                        <div className={`${showNavbar ? "max-w-64 " : "max-w-0 "}w-full navbar lg:max-w-none lg:block duration-300 h-full bg-white lg:bg-transparent overflow-auto lg:max-w-auto text-gray-800 font-semibold`}>
-                            <div className="p-4 lg:p-0 justify-start flex flex-col lg:flex-row lg:items-center gap-4">
+                        <div className={`${showNavbar ? "max-w-64 " : "max-w-0 "}w-full navbar lg:max-w-none lg:block duration-300 h-full bg-white lg:bg-transparent overflow-auto lg:max-w-auto text-gray-800`}>
+                            <div className="p-4 lg:p-0 justify-start flex flex-col lg:flex-row lg:items-center gap-4 font-medium">
                                 {[
                                     { value: "Página Inicial", href: "/", openedPage: location.pathname === "/" },
                                     { value: "Blog", href: "/blog" }
@@ -72,9 +72,9 @@ const Index = () => {
                                             </Outclick>
                                         </div>
                                         :
-                                        <div className="flex gap-4 text-sm">
-                                            <button onClick={() => { setTab("SignIn"); setSignOpen(true); }} className="shrink-0 bg-gradient-to-b from-indigo-600 to-purple-400 lg:from-white lg:to-white hover:text-black text-gray-800 rounded py-1 px-4">Entrar</button>
-                                            <button onClick={() => { setTab("SignUp"); setSignOpen(true); }} className="shrink-0 bg-gradient-to-b from-indigo-600 to-purple-400 lg:from-white lg:to-white hover:text-black text-gray-800 rounded py-1 px-4">Registrar-se</button>
+                                        <div className="flex gap-4 text-sm font-semibold">
+                                            <button onClick={() => { setTab("SignIn"); setSignOpen(true); }} className="shrink-0 bg-gradient-to-b from-indigo-600 to-purple-400 lg:from-white lg:to-white hover:text-black text-gray-900 rounded py-1 px-4">Entrar</button>
+                                            <button onClick={() => { setTab("SignUp"); setSignOpen(true); }} className="shrink-0 bg-gradient-to-b from-indigo-600 to-purple-400 lg:from-white lg:to-white hover:text-black text-gray-900 rounded py-1 px-4">Registrar-se</button>
                                         </div>
                                     }
                                 </div>

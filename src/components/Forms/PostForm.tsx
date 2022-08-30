@@ -14,12 +14,12 @@ import { useAuth } from "../../hooks/Auth";
 import '../../css/suneditor-contents.min.css';
 import '../../css/suneditor.min.css';
 
-import { Category, Post } from "../../types/blog.type";
+import { Topic, Post } from "../../types/blog.type";
 
 import { VscLoading } from "react-icons/vsc";
 import FloatingLabelInput from "./Inputs/FloatingLabelInput";
 
-const PostForm = (post: Omit<Post, "category" | "author"> & { category: string, author: string }) => {
+const PostForm = (post: Omit<Post, "topics" | "author"> & { topics: string[], author: string }) => {
     const { cookies } = useAuth()
 
     const [alerts, setAlerts] = useState<{ [key: string]: string[] }>({})
@@ -30,11 +30,7 @@ const PostForm = (post: Omit<Post, "category" | "author"> & { category: string, 
 
     const [formStatus, setFormStatus] = useState<"loading" | "success" | "error" | "input-warnings" | "">("")
 
-    const [categories, setCategories] = useState<{ status: "loading" | "success" | "error" | "", data: Category[] }>({ status: "", data: [] })
-
-    useEffect(() => {
-        categories.data.length > 0 && setForm(f => ({ ...f, category: f.category || categories.data[0]?._id || "" }))
-    }, [categories])
+    const [topics, setTopics] = useState<{ status: "loading" | "success" | "error" | "", data: Topic[] }>({ status: "", data: [] })
 
     const HandleSendPost = async (evt?: React.FormEvent<HTMLFormElement>) => {
         evt?.preventDefault && evt.preventDefault()
@@ -62,14 +58,16 @@ const PostForm = (post: Omit<Post, "category" | "author"> & { category: string, 
         }
     }
 
-    const HandleLoadCategories = async () => {
-        await api.get("/categories/list").then(resp => {
-            setCategories({ status: "success", data: resp.data?.categories });
-            return resp.data?.categories
+    console.log(form)
+
+    const HandleLoadTopics = async () => {
+        await api.get("/topics/list").then(resp => {
+            setTopics({ status: "success", data: resp.data?.topics });
+            setForm(f => ({ ...f, topics: f.topics && [ resp.data?.topics?.map(topic => topic?._id)[0] ] }))
         }).catch(err => {
             console.log(err)
-            setCategories({ status: "error", data: [] });
-            setAlerts({ ...alerts, "post-form": [err?.response?.data?.message || `Ocorreu um erro ao recuperar dados da postagem.`] })
+            setTopics({ status: "error", data: [] });
+            setAlerts({ ...alerts, "post-form": [err?.response?.data?.message || `Ocorreu um erro ao carregar tópicos.`] })
         })
     }
 
@@ -92,7 +90,7 @@ const PostForm = (post: Omit<Post, "category" | "author"> & { category: string, 
     }, [form])
 
     useEffect(() => {
-        HandleLoadCategories()
+        HandleLoadTopics()
     }, [])
 
     return (
@@ -182,8 +180,8 @@ const PostForm = (post: Omit<Post, "category" | "author"> & { category: string, 
                                     </div>
 
                                     <div className="my-5">
-                                        <FloatingLabelInput type="select" label="Categoria" name="category" defaultValue={form.category} onChange={evt => setForm({ ...form, category: evt.currentTarget.value })} status={(formStatus === "input-warnings" && alerts["post-form-category"]?.length > 0) ? "error" : "info"} messages={alerts["post-form-category"]} >
-                                            {categories.data.map(category => <option key={category._id} value={category._id}>{category.name}</option>)}
+                                        <FloatingLabelInput type="select" label="Tópicos" name="topic" onChange={evt => setForm({ ...form, topics: [evt.currentTarget.value] })} status={(formStatus === "input-warnings" && alerts["post-form-topics"]?.length > 0) ? "error" : "info"} messages={alerts["post-form-topics"]} >
+                                            {topics.data.map(topic => <option key={topic._id} value={topic._id}>{topic.name}</option>)}
                                         </FloatingLabelInput>
                                     </div>
                                 </div>
@@ -227,7 +225,7 @@ PostForm.defaultProps = {
     image: ``,
     content: ``,
     link: ``,
-    category: ``,
+    topics: [],
     author: ``,
     active: true,
     modifiedAt: new Date(),

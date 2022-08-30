@@ -4,32 +4,27 @@ import { Link } from "gatsby"
 import Layout from "../../../layouts/Layout"
 import api from "../../../services/api"
 
-import { Category, Post } from "../../../types/blog.type"
+import { Topic, Post } from "../../../types/blog.type"
 
-import Alert, { AlertProps } from "../../../components/Alert"
 import PostCard from "../../../components/PostCard"
 
-const CategoryPage = ({ params }) => {
-
+const TopicPage = ({ params }) => {
     const link = params.link
 
-    const [data, setData] = useState<{ category: Category, posts: Post[] }[]>([])
+    const [data, setData] = useState<{ topic: Topic, posts: Post[] }[]>([])
 
     const [status, setStatus] = useState<"success" | "error" | "loading" | "">("")
 
-    const [alerts, setAlerts] = useState<(AlertProps & { input: string })[]>([])
+    const [alerts, setAlerts] = useState<{ [key: string]: string[] }>({})
 
     const HandleLoadData = () => {
-        api.get("posts/by-category", { params: { category_list: [link], post_quantity: 25 } }).then(resp => {
+        api.get("posts/by-topic", { params: { topic_list: [link], post_quantity: 25 } }).then(resp => {
             setData(resp.data)
             setStatus("success");
         }).catch(err => {
             console.error(err)
             setStatus("error");
-            if (err.response.data?.message)
-                setAlerts([{ type: "error", message: err.response.data.message, input: "form-post" }])
-            else
-                setAlerts([{ type: "error", message: "Ocorreu um erro ao carregar categorias!", input: "form-post" }])
+            setAlerts(a => ({ ...a, "form-post": [err.response.data?.message || "Ocorreu um erro ao carregar tópicos!"] }));
         })
     }
 
@@ -41,16 +36,16 @@ const CategoryPage = ({ params }) => {
         <Layout>
             <div className="container grid grid-cols-1 lg:grid-cols-4 mx-auto">
                 <div className="col-span-3 px-4 md:px-8">
-                    {data.map(categoryAndPosts => {
+                    {data.map(topicAndPosts => {
                         return (
-                            <div className="my-12" key={categoryAndPosts.category._id}>
-                                <h1 className="text-2xl mx-4 font-semibold text-zinc-900">{categoryAndPosts.category.name}</h1>
+                            <div className="my-12" key={topicAndPosts.topic._id}>
+                                <h1 className="text-2xl mx-4 font-semibold text-zinc-900">{topicAndPosts.topic.name}</h1>
                                 <hr className="my-2 border-gray-800" />
                                 <div className="md:my-6">
-                                    {categoryAndPosts.posts.map(p => <PostCard key={p?._id} {...p} />)}
+                                    {topicAndPosts.posts.map(p => <PostCard key={p?._id} {...p} />)}
                                 </div>
                                 <div className="my-4 flex justify-center">
-                                    <Link to={`/blog/categoria/${categoryAndPosts.category.link}`}>
+                                    <Link to={`/blog/topic/${topicAndPosts.topic.link}`}>
                                         <button className="rounded-xl hover:bg-gray-200 text-gray-600 hover:text-gray-700 transition border px-3 py-1">
                                             Mais postagens
                                         </button>
@@ -65,4 +60,4 @@ const CategoryPage = ({ params }) => {
     )
 }
 
-export default CategoryPage
+export default TopicPage

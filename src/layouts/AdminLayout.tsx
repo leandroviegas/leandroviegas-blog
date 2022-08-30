@@ -32,9 +32,9 @@ const Index = ({ children }: AdminLayoutProps) => {
                         <Link to={"/admin/dashboard"} className="flex items-center gap-2 font-semibold my-4 text-lg text-purple-100"><AiFillDashboard /> <span>Dashboard</span></Link>
 
                         <div className="my-4">
-                            <h3 className="flex items-center gap-2 text-lg text-purple-100 font-semibold cursor-pointer"><span><BiCategoryAlt /></span><span>Categorias</span></h3>
+                            <h3 className="flex items-center gap-2 text-lg text-purple-100 font-semibold cursor-pointer"><span><BiCategoryAlt /></span><span>Tópicos</span></h3>
                             <div className="text-purple-200 mx-3 flex flex-col gap-2 py-3">
-                                <Link to={"/admin/categories/list"} className="flex items-center gap-2 hover:text-purple-100 transition"><span><FaList /></span><span>Listar</span></Link>
+                                <Link to={"/admin/topics/list"} className="flex items-center gap-2 hover:text-purple-100 transition"><span><FaList /></span><span>Listar</span></Link>
                             </div>
                         </div>
 

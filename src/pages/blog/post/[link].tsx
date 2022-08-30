@@ -10,7 +10,7 @@ import truncate from "../../../utils/truncate"
 
 import { FaUser } from "react-icons/fa"
 
-import { Category, Post } from "../../../types/blog.type"
+import { Topic, Post } from "../../../types/blog.type"
 
 import '../../../css/suneditor-contents.min.css';
 
@@ -34,22 +34,23 @@ export async function getServerData({ params }) {
 const Index = ({ serverData }) => {
     const post: Post = serverData?.post;
 
-    const [categories, setCategories] = useState<{ status: "success" | "error" | "loading" | "", data: Category[] }>({ status: "", data: [] })
+    const [topics, setTopics] = useState<{ status: "success" | "error" | "loading" | "", data: Topic[] }>({ status: "", data: [] })
 
     useEffect(() => {
-        if (categories.status === "loading") return;
-        setCategories({ status: "loading", data: [] });
+        if (topics.status === "loading") return;
+        setTopics({ status: "loading", data: [] });
 
-        api.get("/categories/list").then(resp => {
-            setCategories({ status: "success", data: resp.data?.categories });
+        api.get("/topics/list").then(resp => {
+            setTopics({ status: "success", data: resp.data?.topics });
         }).catch(err => {
             console.error(err)
-            setCategories({ status: "error", data: [] });
+            setTopics({ status: "error", data: [] });
         })
     }, [])
 
     return (
         <Layout>
+            <div className="h-full w-full bg-white">
 
             <div className="container mx-auto">
                 {serverData?.status === 200 &&
@@ -60,7 +61,7 @@ const Index = ({ serverData }) => {
                             <div className="h-full md:h-36 flex flex-col bg-gradient-to-t from-black via-black/70 -translate-y-full p-4">
                                 <div className="grow"></div>
                                 <h1 className="text-2xl text-white font-bold">{post.title}</h1>
-                                <p className="text-white text text-gray-100  md:mr-16 my-2">{truncate(post.description, 180)}</p>
+                                <p className="text-gray-100  md:mr-16 my-2">{truncate(post.description, 180)}</p>
                                 <div className="flex items-center gap-2 sm:gap-6 flex-wrap">
                                     <span className="text-gray-300 text-semibold text-sm"><span>Postado em: </span>{moment(post?.postedAt).format("DD/MM/YYYY hh:mm")}</span>
                                     <Link to={``} className="flex items-center gap-2">
@@ -79,7 +80,7 @@ const Index = ({ serverData }) => {
                     <div className="overflow-x-auto max-w-screen col-span-4 lg:col-span-3">
                         {serverData?.status === 200 ?
                             <>
-                                <div className="mb-4 bg-white rounded-lg sun-editor-editable" dangerouslySetInnerHTML={{ __html: post.content }}></div>
+                                <div className="mb-4 rounded-lg sun-editor-editable" dangerouslySetInnerHTML={{ __html: post.content }}></div>
                                 <hr className="my-4" />
                                 <div className="mx-4 my-4 flex flex-wrap gap-4">
                                     <span className="text-gray-800 text-semibold text-sm"><span>Postado em: </span>{moment(post?.postedAt).format("DD/MM/YYYY hh:mm")}</span>
@@ -104,16 +105,16 @@ const Index = ({ serverData }) => {
                             </div>}
                     </div>
                     <div className="col-span-4 lg:col-span-1">
-                        <div className="bg-white rounded-lg w-full p-4 sticky top-2">
-                            <h2 className="text-lg text-zinc-700 font-semibold">Categorias</h2>
+                        <div className="shadow-lg border-zinc-200 rounded-lg w-full p-4 sticky top-2">
+                            <h2 className="text-lg text-zinc-700 font-semibold">Tópicos</h2>
                             <hr />
                             <div className="flex flex-wrap gap-2 my-3">
                                 {
-                                    categories.data.map(category => {
+                                    topics.data.map(topic => {
                                         return (
-                                            <Link key={category.link} to={`/blog/category/${category.link}`}>
-                                                <button className="border-b-2 border-indigo-700 text-zinc-600 px-2 rounded" key={category._id}>
-                                                    {category.name}
+                                            <Link key={topic.link} to={`/blog/topic/${topic.link}`}>
+                                                <button className="border-b-2 border-indigo-700 text-zinc-600 px-1" key={topic._id}>
+                                                    {topic.name}
                                                 </button>
                                             </Link>
                                         )
@@ -124,6 +125,8 @@ const Index = ({ serverData }) => {
                     </div>
                 </div>
             </div>
+            </div>
+
         </Layout >
     )
 }

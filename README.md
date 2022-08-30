@@ -44,5 +44,5 @@ For the user:
 
 Administrative área:
 
-- [x] Create/Edit/Delete Category;
+- [x] Create/Edit/Delete Topic;
 - [x] Create/Edit/Delete Post.

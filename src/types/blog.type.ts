@@ -1,4 +1,4 @@
-export type Category = {
+export type Topic = {
     _id?: string;
     name: string;
     link: string;
@@ -27,6 +27,6 @@ export type Post = {
     description: string;
     modifiedAt: Date;
     postedAt: Date;
-    category: Category;
+    topics: Topic[];
     author: User;
 }

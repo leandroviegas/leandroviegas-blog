@@ -18,6 +18,7 @@
     "react-helmet": "^6.1.0",
     "react-icons": "^4.4.0",
     "react-textarea-autosize": "^8.3.4",
+    "redis": "^4.3.0",
     "suneditor": "^2.43.14",
     "suneditor-react": "^3.4.1",
     "validator": "^13.7.0"
