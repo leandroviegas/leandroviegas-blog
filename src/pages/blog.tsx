@@ -18,7 +18,7 @@ export async function getServerData() {
 
             client.on('error', (err) => console.log('Redis Client Error', err));
 
-            await client.connect();
+            await client.connect().catch(console.error);
 
             const data = await client.get('page/blog').then(async data => {
                 if (data) {
