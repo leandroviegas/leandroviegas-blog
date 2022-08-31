@@ -2,7 +2,6 @@ import React from "react"
 import { Link } from "gatsby"
 import Layout from "../layouts/Layout"
 import api from "../services/api"
-import { createClient } from 'redis';
 
 import { Topic, Post } from "../types/blog.type"
 import PostCard from "../components/PostCard"
@@ -10,37 +9,10 @@ import Head from "../components/Head"
 
 export async function getServerData() {
     try {
-        const getData = api.get("/posts/by-topic").then(resp => resp.data)
-        try {
-            const client = createClient({
-                url: process.env.REDIS_URL
-            });
+        const data = await api.get("/posts/by-topic").then(resp => resp.data)
 
-            client.on('error', (err) => console.log('Redis Client Error', err));
-
-            await client.connect().catch(console.error);
-
-            const data = await client.get('page/blog').then(async data => {
-                if (data) {
-                    getData.then(data => {
-                        client.set('page/blog', JSON.stringify(data ?? "[]"))
-                    })
-                    data = JSON.parse(data)
-                } else {
-                    data = await getData
-                }
-                return data
-            });
-
-            return {
-                props: data,
-            }
-        } catch (error) {
-            const data = await getData
-
-            return {
-                props: data,
-            }
+        return {
+            props: data,
         }
     } catch (error) {
         return {
