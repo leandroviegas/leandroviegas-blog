@@ -24,7 +24,6 @@ export async function getServerData() {
 }
 
 const BlogPage = ({ serverData }) => {
-    console.log(serverData)
     const data: { topic: Topic, posts: Post[] }[] = serverData
 
     return (
