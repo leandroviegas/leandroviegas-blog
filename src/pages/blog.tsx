@@ -10,7 +10,7 @@ import Head from "../components/Head"
 
 export async function getServerData() {
     try {
-        const apiGet = api.get("/posts/by-topic");
+        const getData = api.get("/posts/by-topic").then(resp => resp.data)
         try {
             const client = createClient({
                 url: process.env.REDIS_URL
@@ -20,22 +20,23 @@ export async function getServerData() {
 
             await client.connect();
 
-            const data = await client.get('page/blog');
+            const data = await client.get('page/blog').then(async data => {
+                if (data) {
+                    getData.then(data => {
+                        client.set('page/blog', JSON.stringify(data ?? "[]"))
+                    })
+                    data = JSON.parse(data)
+                } else {
+                    data = await getData
+                }
+                return data
+            });
 
-            const redisStore = apiGet.then(resp => { client.set('page/blog', JSON.stringify(resp.data ?? "[]")); return resp; })
-
-            if (data) {
-                await redisStore
-                return {
-                    props: JSON.parse(data ?? "[]"),
-                } 
-            } else {
-                return {
-                    props: await redisStore,
-                }  
+            return {
+                props: data,
             }
         } catch (error) {
-            const data = await apiGet.then(resp => resp.data)
+            const data = await getData
 
             return {
                 props: data,
