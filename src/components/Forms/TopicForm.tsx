@@ -32,7 +32,7 @@ const TopicForm = ({ topic, onClose, onSuccess }) => {
         evt.preventDefault()
         if (status === "loading") return;
 
-        if (["topic-form-name", "topic-form-link"].some(input => alerts[input].length > 0)) {
+        if (["topic-form-name", "topic-form-link"].some(input => alerts[input]?.length > 0)) {
             setStatus("input-warnings");
         } else {
             setStatus("loading");
@@ -83,13 +83,13 @@ const TopicForm = ({ topic, onClose, onSuccess }) => {
             <form onSubmit={HandleSaveTopic} className="m-6">
                 {alerts["topic-form"]?.map(message => <Alert key={message} type="error" message={message} />)}
                 <div className="my-5">
-                    <FloatingLabelInput label="Nome" name="name" defaultValue={form.name} onChange={evt => setForm({ ...form, name: evt.target.value, link: linkfy(evt.target.value) })} status={(status === "input-warnings" && alerts["topic-form-name"].length > 0) ? "error" : "info"} messages={alerts["topic-form-name"]} />
+                    <FloatingLabelInput label="Nome" name="name" defaultValue={form.name} onChange={evt => setForm({ ...form, name: evt.target.value, link: linkfy(evt.target.value) })} status={(status === "input-warnings" && alerts["topic-form-name"]?.length > 0) ? "error" : "info"} messages={alerts["topic-form-name"]} />
                 </div>
                 <div className="my-5">
-                    <FloatingLabelInput label="Nome" name="link" value={form.link} onChange={evt => setForm({ ...form, link: linkfy(evt.target.value) })} status={(status === "input-warnings" && alerts["topic-form-link"].length > 0) ? "error" : "info"} messages={alerts["topic-form-link"]} />
+                    <FloatingLabelInput label="Link" name="link" value={form.link} onChange={evt => setForm({ ...form, link: linkfy(evt.target.value) })} status={(status === "input-warnings" && alerts["topic-form-link"]?.length > 0) ? "error" : "info"} messages={alerts["topic-form-link"]} />
                 </div>
                 <div className="my-5">
-                    <FloatingLabelInput label="Descrição" name="description" type="textarea" value={form.description} onChange={evt => setForm({ ...form, description: evt.currentTarget.value })} status={(status === "input-warnings" && alerts["topic-form-description"].length > 0) ? "error" : "info"} messages={alerts["topic-form-description"]} />
+                    <FloatingLabelInput label="Descrição" name="description" type="textarea" value={form.description} onChange={evt => setForm({ ...form, description: evt.currentTarget.value })} status={(status === "input-warnings" && alerts["topic-form-description"]?.length > 0) ? "error" : "info"} messages={alerts["topic-form-description"]} />
                 </div>
                 <hr className="my-4" />
                 <div className="flex items-center justify-between gap-6 flex-wrap">

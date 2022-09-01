@@ -29,25 +29,26 @@ const Index = () => {
                     <h1 className="flex flex-col mt-2">
                         <span className="order-3 text-2xl text-zinc-800">Desenvolvedor Fullstack</span>
                         <span className="order-1 text-2xl font-semibold text-zinc-800 -mb-3">Eu sou</span>
-                        <span className="order-2 text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 leading-snug">Leandro Viegas</span>
+                        <span style={{textShadow: "-3.5px -3.5px 0px #111111"}} className="order-2 text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 leading-snug">Leandro Viegas</span>
                     </h1>
                     <p className="text-xl font-thin text-zinc-600 mt-4">Muito mais do que uma paixão por aprender sobre tecnologia, sou focado em gerar resultado.</p>
                     <h2 className="text-md italic text-zinc-700 mt-2">“Resultado move o mundo!”</h2>
                     <hr className="mt-4 border-zinc-300" />
-                    <div className="flex flex-wrap my-2 text-violet-600 gap-2 justify-end text-lg">
-                        <a target="_blink" className="hover:scale-125 transition hover:text-violet-800" href="https://www.linkedin.com/in/l3androviegas">
+                    <div className="flex flex-wrap my-2 gap-2 justify-end text-lg">
+                        <a target="_blink" className="hover:scale-125 transition hover:text-indigo-800" href="https://www.linkedin.com/in/l3androviegas">
                             <FaLinkedinIn />
                         </a>
-                        <a target="_blink" className="hover:scale-125 transition hover:text-violet-800" href="https://github.com/leandroviegas">
+                        <a target="_blink" className="hover:scale-125 transition hover:text-indigo-800" href="https://github.com/leandroviegas">
                             <FaGithub />
                         </a>
                     </div>
-                    <button className="bg-gradient-to-b from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 mt-3 text-white font-semibold text-sm hover:scale-110 transition-all hover:shadow-lg hover:shadow-indigo-600/50 rounded px-4 py-2">Mais sobre mim</button>
+                    {/* <button className="bg-gradient-to-b from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 mt-3 text-white font-semibold text-sm hover:scale-110 transition-all hover:shadow-lg hover:shadow-indigo-600/50 rounded px-4 py-2">Mais sobre mim</button> */}
                 </div>
                 <div className="order-1">
                     <div className="max-w-[280px] relative mx-3">
+                        
                         <img className="w-full rotate-6 position absolute bottom-0 drop-shadow-2xl" src={perfilBackground} alt="" />
-                        <img style={{ borderRadius: "7.4rem" }} className="w-full relative z-10 grayscale hover:grayscale-[30%] transition-all hover:scale-110 ease-in delay-150" src={leandroViegasVintage} alt="" />
+                        <img style={{ borderRadius: "7.4rem" }} className="w-full relative z-10 grayscale hover:grayscale-[30%] transition-all hover:scale-110 ease-in delay-150" src={leandroViegasVintage} alt="" />                        
                     </div>
                 </div>
             </section>
@@ -136,7 +137,7 @@ const Index = () => {
                     <div className="container mx-auto py-16">
                         <div className="flex justify-center flex-wrap items-center gap-6 mx-6">
                             <div className="mx-4 my-8 max-w-[580px] order-2 lg:order-1">
-                                <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Meus aprendizados</h1>
+                                <h1 style={{textShadow: "-2.5px -2.5px 0px #333"}} className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Meus aprendizados</h1>
                                 <p className="text-xl font-thin text-zinc-800 mt-4">Comecei aprendendo sobre programação em 2018 com 2 cursos técnicos da escola técnica estadual de São Paulo (ETEC). Desde então venho aprimorando minhas habilidades de várias formas, seja com conhecimento teórico em conteúdo pela internet ou na prática.</p>
                                 <hr className="my-2" />
                                 <h2 className="text-md italic text-zinc-700">“Conhecimento é o melhor investimento!”</h2>

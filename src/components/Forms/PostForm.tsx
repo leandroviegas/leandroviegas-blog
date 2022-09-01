@@ -58,14 +58,12 @@ const PostForm = (post: Omit<Post, "topics" | "author"> & { topics: string[], au
         }
     }
 
-    console.log(form)
-
     const HandleLoadTopics = async () => {
         await api.get("/topics/list").then(resp => {
             setTopics({ status: "success", data: resp.data?.topics });
             setForm(f => ({ ...f, topics: f.topics && [ resp.data?.topics?.map(topic => topic?._id)[0] ] }))
         }).catch(err => {
-            console.log(err)
+            console.error(err)
             setTopics({ status: "error", data: [] });
             setAlerts({ ...alerts, "post-form": [err?.response?.data?.message || `Ocorreu um erro ao carregar tópicos.`] })
         })
