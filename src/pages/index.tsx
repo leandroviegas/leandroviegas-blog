@@ -34,7 +34,7 @@ const Index = () => {
                     <p className="text-xl font-thin text-zinc-600 mt-4">Muito mais do que uma paixão por aprender sobre tecnologia, sou focado em gerar resultado.</p>
                     <h2 className="text-md italic text-zinc-700 mt-2">“Resultado move o mundo!”</h2>
                     <hr className="mt-4 border-zinc-300" />
-                    <div className="flex flex-wrap my-2 gap-2 justify-end text-lg">
+                    <div className="flex flex-wrap my-2 text-zinc-700 gap-2 justify-end text-lg">
                         <a target="_blink" className="hover:scale-125 transition hover:text-indigo-800" href="https://www.linkedin.com/in/l3androviegas">
                             <FaLinkedinIn />
                         </a>
@@ -62,9 +62,9 @@ const Index = () => {
 
                 </div>
                 <div className="mx-auto gap-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 pb-8 container z-10 relative">
-                    <div className="delay-150 lg:hover:scale-105 transition ease-in bg-white mx-2 md:mx-0 px-6 py-8 rounded-lg shadow-xl flex flex-col gap-3">
+                    <div style={{boxShadow: "0px 0px 20px #00000035, -5px -7px 1px #F4F4F599, -10px -14px 1px #F4F4F599"}} className="delay-150 transition ease-in bg-white mx-2 md:mx-0 px-6 py-8 rounded-lg flex flex-col gap-3">
                         <img className="mx-auto h-40 my-4 max-w-screen" src={frontendImage} alt="frontend image" />
-                        <h1 className="text-2xl text-center font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-500">Frontend</h1>
+                        <h1 style={{textShadow: "-2px -2px 0px #333333"}} className="text-2xl text-center font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-500">Frontend</h1>
                         <div className="text-zinc-600 font-thin text-center">
                             {[[
                                 "css",
@@ -86,9 +86,9 @@ const Index = () => {
                         </div>
                     </div>
 
-                    <div className="delay-150 lg:hover:scale-105 transition ease-in bg-white mx-2 md:mx-0 px-6 py-8 rounded-lg shadow-xl flex flex-col gap-3">
+                    <div style={{boxShadow: "0px 0px 20px #00000035, -5px -7px 1px #F4F4F599, -10px -14px 1px #F4F4F599"}} className="delay-150 lg:scale-105 transition ease-in bg-white mx-2 md:mx-0 px-6 py-8 rounded-lg flex flex-col gap-3">
                         <img className="mx-auto h-40 my-4 max-w-screen" src={backendImage} alt="backend image" />
-                        <h1 className="text-2xl text-center font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-500">Backend</h1>
+                        <h1 style={{textShadow: "-2px -2px 0px #333333"}} className="lg:scale-95 text-2xl text-center font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-500">Backend</h1>
                         <div className="text-zinc-600 font-thin text-center">
                             {[
                                 [
@@ -110,9 +110,9 @@ const Index = () => {
                         </div>
                     </div>
 
-                    <div className="delay-150 lg:hover:scale-105 transition ease-in col-span-full lg:col-span-1 bg-white mx-2 md:mx-0 px-6 py-8 rounded-lg shadow-xl flex flex-col gap-3">
+                    <div style={{boxShadow: "0px 0px 20px #00000035, -5px -7px 1px #F4F4F599, -10px -14px 1px #F4F4F599"}} className="delay-150 transition ease-in col-span-full lg:col-span-1 bg-white mx-2 md:mx-0 px-6 py-8 rounded-lg flex flex-col gap-3">
                         <img className="mx-auto h-40 my-4 max-w-screen" src={databaseImage} alt="database image" />
-                        <h1 className="text-2xl text-center font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-500">Banco de dados</h1>
+                        <h1 style={{textShadow: "-2px -2px 0px #333333"}} className="text-2xl text-center font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-500">Banco de dados</h1>
                         <div className="text-zinc-600 font-thin text-center">
                             {[[
                                 "MySql",
@@ -148,8 +148,6 @@ const Index = () => {
                         </div>
                     </div>
                 </div>
-
-
             </section>
             <div className="bg-gradient-to-b from-purple-600 to-indigo-600 h-44 w-full absolute"></div>
             <div className="bg-zinc-100 container mx-auto my-16 py-16 z-10 relative border shadow-lg shadow-black/10 rounded-lg">

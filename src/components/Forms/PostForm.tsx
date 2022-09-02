@@ -18,11 +18,15 @@ import { Topic, Post } from "../../types/blog.type";
 
 import { VscLoading } from "react-icons/vsc";
 import FloatingLabelInput from "./Inputs/FloatingLabelInput";
+import OpaqueBackground from "../OpaqueBackground";
+import TopicForm from "./TopicForm";
 
 const PostForm = (post: Omit<Post, "topics" | "author"> & { topics: string[], author: string }) => {
     const { cookies } = useAuth()
 
     const [alerts, setAlerts] = useState<{ [key: string]: string[] }>({})
+
+    const [popup, setPopup] = useState<"topic-form" | "">("");
 
     const [content, setContent] = useState(post.content)
 
@@ -61,7 +65,6 @@ const PostForm = (post: Omit<Post, "topics" | "author"> & { topics: string[], au
     const HandleLoadTopics = async () => {
         await api.get("/topics/list").then(resp => {
             setTopics({ status: "success", data: resp.data?.topics });
-            setForm(f => ({ ...f, topics: f.topics && [ resp.data?.topics?.map(topic => topic?._id)[0] ] }))
         }).catch(err => {
             console.error(err)
             setTopics({ status: "error", data: [] });
@@ -93,6 +96,12 @@ const PostForm = (post: Omit<Post, "topics" | "author"> & { topics: string[], au
 
     return (
         <div className="bg-white rounded-lg shadow-lg shadow-black-50/10">
+            <OpaqueBackground open={popup === "topic-form"} callback={() => setPopup("")}>
+                <div data-aos="fade-down" className="bg-white shadow-lg shadow-violet-800/40 rounded-lg w-96 max-w-screen">
+                    <TopicForm onClose={() => setPopup("")} onSuccess={() => { setPopup(""); HandleLoadTopics(); }} />
+                </div>
+            </OpaqueBackground>
+
             <div className="flex items-center px-4 py-2 rounded-t-lg bg-gradient-to-r from-violet-700 to-indigo-600 text-white justify-between">
                 <h1 className="text-xl font-bold">Nova postagem</h1>
                 <div className="flex items-center my-2">
@@ -170,20 +179,19 @@ const PostForm = (post: Omit<Post, "topics" | "author"> & { topics: string[], au
                             </div>
                         </div>
                         <div className="px-3">
-                            <form onSubmit={HandleSendPost}>
-                                <div className="w-full flex gap-1 md:gap-2 lg:gap-4 flex-wrap">
-
-                                    <div className="my-5 min-w-[192px]">
-                                        <FloatingLabelInput label="Tempo de leitura (minutos)" type="number" name="readTime" defaultValue={form.readTime} onChange={evt => setForm({ ...form, readTime: Number(evt.target.value) })} status={(formStatus === "input-warnings" && alerts["post-form-readTime"]?.length > 0) ? "error" : "info"} messages={alerts["post-form-readTime"]} />
+                            <div className="my-5">
+                                <div className="flex">
+                                    <div className="grow">
+                                        <FloatingLabelInput label="Procurar por tópico" name="topic-input" />
                                     </div>
-
-                                    <div className="my-5">
-                                        <FloatingLabelInput type="select" label="Tópicos" name="topic" onChange={evt => setForm({ ...form, topics: [evt.currentTarget.value] })} status={(formStatus === "input-warnings" && alerts["post-form-topics"]?.length > 0) ? "error" : "info"} messages={alerts["post-form-topics"]} >
-                                            {topics.data.map(topic => <option key={topic._id} value={topic._id}>{topic.name}</option>)}
-                                        </FloatingLabelInput>
-                                    </div>
+                                    <button type="button" onClick={() => setPopup("topic-form")} className="shadow-lg shadow-violet-500/30 bg-violet-700 hover:bg-violet-800 my-0.5 transition font-semibold text-white px-3 rounded">Novo tópico</button>
                                 </div>
-
+                                <div className="flex flex-wrap gap-2 pt-3">
+                                    {topics.data.filter(topic => form.topics.includes(topic?._id ?? "")).map(topic => <button type="button" onClick={() => setForm(f => ({ ...f, topics: f.topics.filter(t => t !== topic?._id) }))} className="cursor-pointer text-sm px-2 border border-violet-700 text-violet-700 rounded" key={topic?._id}>{topic.name}</button>)}
+                                    {topics.data.filter(topic => !form.topics.includes(topic?._id ?? "")).map(topic => <button type="button" onClick={() => setForm(f => ({ ...f, topics: [...f.topics, topic?._id ?? ""] }))} className="cursor-pointer text-sm px-2 border border-zinc-400 text-zinc-600 rounded" key={topic?._id}>{topic.name}</button>)}
+                                </div>
+                            </div>
+                            <form onSubmit={HandleSendPost}>
                                 <div className="w-full flex flex-col flex-wrap sm:flex-row gap-1 md:gap-2 lg:gap-4">
                                     <div className="my-5">
                                         <FloatingLabelInput label={`${true ? "Postar" : "Postado"} em`} type="datetime-local" name="postedAt" defaultValue={moment(form.postedAt).format("YYYY-MM-DDThh:mm")} onChange={evt => setForm({ ...form, postedAt: new Date(evt.target.value) })} status={(formStatus === "input-warnings" && alerts["post-form-postedAt"]?.length > 0) ? "error" : "info"} messages={alerts["post-form-postedAt"]} />
@@ -199,6 +207,11 @@ const PostForm = (post: Omit<Post, "topics" | "author"> & { topics: string[], au
 
                                 <div className="w-full my-5">
                                     <FloatingLabelInput label="Descrição" type="textarea" name="description" defaultValue={form.description} onChange={evt => setForm({ ...form, description: evt.target.value })} status={(formStatus === "input-warnings" && alerts["post-form-description"]?.length > 0) ? "error" : "info"} messages={alerts["post-form-description"]} />
+                                </div>
+                                <div className="w-full my-5">
+                                    <div className="my-5 w-[192px]">
+                                        <FloatingLabelInput label="Tempo de leitura (minutos)" type="number" name="readTime" defaultValue={form.readTime} onChange={evt => setForm({ ...form, readTime: Number(evt.target.value) })} status={(formStatus === "input-warnings" && alerts["post-form-readTime"]?.length > 0) ? "error" : "info"} messages={alerts["post-form-readTime"]} />
+                                    </div>
                                 </div>
                                 <input type="submit" className="hidden" />
                             </form>

@@ -98,7 +98,7 @@ const Index = () => {
                         <hr className="my-4" />
                         {alerts[""]?.map((message, index) => <Alert key={index} message={message} type="error" />)}
                         <div className="my-6">
-                            <button onClick={() => setPopup("topic-form")} className="shadow-lg shadow-violet-500/30 hover:scale-110 bg-violet-700 hover:bg-violet-800 transition font-semibold text-white px-3 py-1 rounded">Nova Tópico</button>
+                            <button onClick={() => setPopup("topic-form")} className="shadow-lg shadow-violet-500/30 hover:scale-110 bg-violet-700 hover:bg-violet-800 transition font-semibold text-white px-3 py-1 rounded">Novo Tópico</button>
                         </div>
                         <div className="my-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
                             {topics.data.map(topic => {

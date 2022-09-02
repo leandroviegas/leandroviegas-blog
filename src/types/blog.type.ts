@@ -12,7 +12,7 @@ export type User = {
     link: string;
     username: string;
     profilePicture: string;
-    role: Roles;
+    role: Roles | string;
 }
 
 export type Post = {
@@ -27,6 +27,6 @@ export type Post = {
     description: string;
     modifiedAt: Date;
     postedAt: Date;
-    topics: Topic[];
-    author: User;
+    topics: Topic[] | string[];
+    author: User | string;
 }
