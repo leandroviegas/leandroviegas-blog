@@ -8,12 +8,12 @@ import { FaUser } from "react-icons/fa"
 
 import postplaceholderImage from "../images/post_placeholder.jpg"
 
-const PostCardComponent = ({ link, title, description, postedAt, author }) => {
+const PostCardComponent = ({ link, title, description, postedAt, author, image }) => {
     return (
         <div className="my-6 md:flex">
             <div className="w-full shrink-0 md:w-48 rounded order-2 md:flex items-center">
                 <Link to={`/blog/post/${link}`}>
-                    <img className="w-full h-32 object-cover px-4 md:px-0" src={postplaceholderImage} alt="" />
+                    <img className="w-full h-32 object-cover px-4 md:px-0" src={image || postplaceholderImage} alt="" />
                 </Link>
             </div>
             <div className="mx-4 md:mx-8 md:w-full flex flex-col">

@@ -11,7 +11,7 @@ const SignInForm = ({ onSuccess }) => {
 
     const [status, setStatus] = useState<"error" | "loading" | "success" | "input-warnings" | "">("")
 
-    const [alerts, setAlerts] = useState<{ [key: string]: string[] }>({})
+    const [alerts, setAlerts] = useState<{ [key: string]: string[] }>({})    
 
     const [form, setForm] = useState<{ usernameOrEmail: string, password: string }>({ usernameOrEmail: "", password: "" })
 

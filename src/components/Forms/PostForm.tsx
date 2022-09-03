@@ -101,7 +101,7 @@ const PostForm = (post: Omit<Post, "topics" | "author"> & { topics: string[], au
                     <TopicForm onClose={() => setPopup("")} onSuccess={() => { setPopup(""); HandleLoadTopics(); }} />
                 </div>
             </OpaqueBackground>
-
+            
             <div className="flex items-center px-4 py-2 rounded-t-lg bg-gradient-to-r from-violet-700 to-indigo-600 text-white justify-between">
                 <h1 className="text-xl font-bold">Nova postagem</h1>
                 <div className="flex items-center my-2">
@@ -224,6 +224,7 @@ const PostForm = (post: Omit<Post, "topics" | "author"> & { topics: string[], au
                     </button>
                 </div>
             </div>
+            
         </div>
     )
 }
