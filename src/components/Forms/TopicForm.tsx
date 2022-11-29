@@ -74,8 +74,8 @@ const TopicForm = ({ topic, onClose, onSuccess }) => {
 
     return (
         <>
-            <div className="flex gap-2 justify-between items-center rounded-t-lg bg-violet-700 text-white py-3">
-                <h1 className="px-4 text-xl font-bold text-white">{form?._id ? `Editar tópico - ${form.name}` : "Nova tópico"}</h1>
+            <div className="flex gap-2 justify-between items-center rounded-t-lg bg-violet-600 text-white py-3">
+                <h1 className="px-4 text-xl font-bold text-white">{form?._id ? `Editar tópico - ${form.name}` : "Novo tópico"}</h1>
                 <button onClick={onClose} className="mx-2 hover:opacity-90 transition hover:scale-110">
                     <IoIosClose size={35} />
                 </button>
@@ -93,7 +93,7 @@ const TopicForm = ({ topic, onClose, onSuccess }) => {
                 </div>
                 <hr className="my-4" />
                 <div className="flex items-center justify-between gap-6 flex-wrap">
-                    <button type="submit" className="bg-violet-700 hover:bg-violet-800 shadow-lg shadow-violet-700/30 rounded-xl text-white py-2 px-4 hover:scale-105 transition font-semibold">
+                    <button type="submit" className="bg-violet-600 hover:bg-violet-700 shadow-lg shadow-violet-700/30 rounded-xl text-white py-2 px-4 hover:scale-105 transition font-semibold">
                         {status === "loading" ? <VscLoading className="animate-spin text-lg mx-6 my-0.5" /> : form?._id ? `Salvar informações` : "Adicionar tópico"}
                     </button>
                     <button type="button" onClick={onClose} className="py-2 transition px-4 text-zinc-800 bg-zinc-200 hover:bg-zinc-300 font-semibold rounded-lg">Cancelar</button>

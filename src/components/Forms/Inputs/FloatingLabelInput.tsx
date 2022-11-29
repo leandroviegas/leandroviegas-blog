@@ -44,7 +44,7 @@ const Input = ({ status, messages, onChange, defaultValue, value, name, label, t
 Input.defaultProps = {
     status: "info",
     messages: [],
-    autoComplete: "on",
+    autoComplete: "off",
     onChange: () => { },
     defaultValue: "",
     name: "",

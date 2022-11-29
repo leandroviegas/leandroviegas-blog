@@ -1,6 +1,6 @@
 import React from "react"
 import { Link } from "gatsby"
-import Layout from "../layouts/Layout"
+import Layout from "../layouts/UserLayout"
 import api from "../services/api"
 
 import { Topic, Post } from "../types/blog.type"

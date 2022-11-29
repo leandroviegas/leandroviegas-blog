@@ -7,7 +7,7 @@ import { TiCode } from "react-icons/ti"
 import { MdClose } from "react-icons/md"
 import { BiMenu } from "react-icons/bi"
 
-import Outclick from "./Outclick"
+import Outclick from 'react-outclick-handler'
 
 import { useAuth } from "../hooks/Auth"
 import SignPopup from "./Popups/SignPopup"
@@ -32,7 +32,7 @@ const Index = () => {
     return (
         <>
             <SignPopup open={signOpen} setOpen={setSignOpen} setTab={setTab} tab={tab} />
-            <nav className="bg-gradient-to-b from-purple-500 to-indigo-500 w-full max-w-screen">
+            <nav className="bg-white w-full max-w-screen">
                 <div className="container mx-auto flex flex-row justify-between lg:items-center py-4">
                     <div className="shrink-0 grow flex flex-col md:flex-row justify-start items-center gap-4 px-2">
                         <Link to={"/"} className="flex items-center gap-1">
@@ -46,17 +46,17 @@ const Index = () => {
                             </form>}
                     </div>
 
-                    <div className={`${showNavbar ? "" : "hidden "} lg:block w-screen h-screen lg:w-auto lg:h-auto fixed lg:relative right-0 top-0 z-20 flex justify-end backdrop-blur-sm bg-black/70 lg:bg-transparent`}>
+                    <div className={`${showNavbar ? "" : "hidden"} lg:block w-screen h-screen lg:w-auto lg:h-auto fixed lg:relative right-0 top-0 z-20 flex justify-end backdrop-blur-sm bg-black/70 lg:bg-transparent`}>
                         <Outclick callback={() => setShowNavbar(false)}>
-                            <div className={`${showNavbar ? "max-w-64 " : "max-w-0 "}w-full navbar lg:max-w-none lg:block duration-300 h-full bg-zinc-900 lg:bg-transparent overflow-auto lg:max-w-auto text-gray-800`}>
+                            <div className={`${showNavbar ? "max-w-64 " : "max-w-0 "}w-full navbar lg:max-w-none lg:block duration-300 h-full bg-white lg:bg-transparent overflow-auto lg:max-w-auto`}>
                                 <div className="p-4 lg:p-0 justify-start flex flex-col lg:flex-row lg:items-center gap-4 font-medium">
                                     {[
                                         { value: "Página Inicial", href: "/", openedPage: location.pathname === "/" },
                                         { value: "Blog", href: "/blog" }
-                                    ].map(link => <Link to={link.href} key={link.value + link.href} className={`order-1 ${(link.openedPage ?? location.pathname.startsWith(link.href)) ? "text-white" : "text-zinc-300 hover:text-zinc-100 lg:text-zinc-800 lg:hover:text-black hover:lg:text-white/90"}`}>{link.value}</Link>)}
+                                    ].map(link => <Link to={link.href} key={link.value + link.href} className={`order-1 ${(link.openedPage ?? location.pathname.startsWith(link.href)) ? "text-black" : "text-zinc-600 hover:text-zinc-900"}`}>{link.value}</Link>)}
                                     <div className="order-0 lg:order-1">
                                         <button className="lg:hidden w-full mb-4 flex justify-end">
-                                            <MdClose onClick={() => setShowNavbar(false)} className="text-zinc-200 hover:text-zinc-300 text-4xl cursor-pointer" />
+                                            <MdClose onClick={() => setShowNavbar(false)} className="text-zinc-500 hover:text-zinc-700 text-4xl cursor-pointer" />
                                         </button>
                                         {user?.username ?
                                             <div>
@@ -74,8 +74,8 @@ const Index = () => {
                                             </div>
                                             :
                                             <div className="flex gap-4 text-sm font-semibold">
-                                                <button onClick={() => { setTab("SignIn"); setSignOpen(true); }} className="shrink-0 bg-gradient-to-b from-indigo-600 to-purple-400 lg:from-white lg:to-white hover:text-black text-white lg:text-gray-900 transition rounded py-1 px-4">Entrar</button>
-                                                <button onClick={() => { setTab("SignUp"); setSignOpen(true); }} className="shrink-0 bg-gradient-to-b from-indigo-600 to-purple-400 lg:from-white lg:to-white hover:text-black text-white lg:text-gray-900 transition rounded py-1 px-4">Registrar-se</button>
+                                                <button onClick={() => { setTab("SignIn"); setSignOpen(true); }} className="shrink-0 text-white bg-violet-700 hover:bg-violet-800 rounded py-1 px-4">Entrar</button>
+                                                <button onClick={() => { setTab("SignUp"); setSignOpen(true); }} className="shrink-0 text-white bg-violet-700 hover:bg-violet-800 rounded py-1 px-4">Registrar-se</button>
                                             </div>
                                         }
                                     </div>

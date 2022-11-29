@@ -66,7 +66,7 @@ const SignInForm = ({ onSuccess }) => {
             </div>
             <hr className="py-1" />
             <div className="w-full">
-                <button type="submit" className="from-purple-700 to-indigo-600 hover:from-purple-800 hover:to-indigo-700 rounded text-lg font-semibold w-full bg-gradient-to-b from-purple-700 to-indigo-600 hover:text-white text-zinc-50 px-3 py-2 hover:bg-purple-800 transition">
+                <button type="submit" className="bg-violet-600 hover:bg-violet-800 hover:text-white text-zinc-200 rounded text-lg font-semibold w-full px-3 py-2 transition">
                     {status === "loading" ? <VscLoading className="animate-spin mx-auto text-2xl" /> : "Entrar"}
                 </button>
             </div>

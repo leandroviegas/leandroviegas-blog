@@ -8,7 +8,6 @@ const Index = () => {
     return (
             <AdminLayout>
                 <Head title={`Página não encontrada.`} />
-
                 <div className="h-full w-full flex items-center justify-center">
                     <div className="flex flex-col gap-1 text-center text-zinc-600">
                         <img className="mx-auto w-64 max-w-screen my-4" src="/static/images/notfound.svg" alt="Not found image" />

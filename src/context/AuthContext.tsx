@@ -62,8 +62,8 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
 
     async function signOut() {
         setUser(undefined);
-        removeCookie("authentication");
-        removeCookie("role");
+        removeCookie("authentication", { path: '/' });
+        removeCookie("role", { path: '/' });
     }
 
     return (

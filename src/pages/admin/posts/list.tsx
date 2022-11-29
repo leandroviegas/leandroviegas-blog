@@ -75,7 +75,7 @@ const Index = () => {
                     <div className="bg-white rounded-lg p-4 mx-4 my-8 shadow-lg">
                         <div className="flex gap-2 my-4">
                             <form className="h-8 flex items-center">
-                                <button className="h-full text-center flex items-center px-2 bg-violet-800 hover:bg-violet-900 text-white rounded-l">
+                                <button className="h-full text-center flex items-center px-2 bg-violet-600 hover:bg-violet-700 text-white rounded-l">
                                     <FaSearch />
                                 </button>
                                 <input type="text" placeholder="Procurar" className="outline-none h-full px-2 py-1 text-gray-600 border" />
@@ -84,7 +84,7 @@ const Index = () => {
                         <hr className="my-4" />
                         <div className="my-6">
                             <Link to="/admin/posts/new-post">
-                                <button className="shadow-lg shadow-violet-500/30 hover:scale-110 bg-violet-700 hover:bg-violet-800 transition font-semibold text-white px-3 py-1 rounded">
+                                <button className="shadow-lg shadow-violet-500/30 hover:scale-110 bg-violet-600 hover:bg-violet-700 transition font-semibold text-white px-3 py-1 rounded">
                                     Nova Postagem
                                 </button>
                             </Link>
@@ -103,7 +103,7 @@ const Index = () => {
                                             </div>
                                         </div>
                                         <hr />
-                                        <div className="p-3 bg-violet-700 shadow-xl shadow-violet-700/40 rounded-b-xl font-semibold flex items-center gap-4 flex-wrap">
+                                        <div className="p-3 bg-violet-600 shadow-xl shadow-violet-500/40 rounded-b-xl font-semibold flex items-center gap-4 flex-wrap">
                                             <Link to={`/admin/posts/edit/${post.link}`}>
                                                 <button className="bg-yellow-400 text-zinc-800 hover:bg-yellow-500 transition rounded px-3 py-1">Editar</button>
                                             </Link>

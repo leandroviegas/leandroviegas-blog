@@ -73,12 +73,16 @@ const PostForm = (post: Omit<Post, "topics" | "author"> & { topics: string[], au
     }
 
     useEffect(() => {
+        setAlerts(a => ({
+            ...a,
+            "post-form-title": [],
+            "post-form-link": []
+        }))
+
         if (!(form.title.length > 0))
             setAlerts(a => ({ ...a, "post-form-title": [`Nome é obrigatório`] }))
         else if (!(form.title.length > 3))
             setAlerts(a => ({ ...a, "post-form-title": [`Nome deve ter no mínimo 3 caracteres`] }))
-        else
-            setAlerts(a => ({ ...a, "post-form-title": [] }))
 
         if (!(form.link.length > 0))
             setAlerts(a => ({ ...a, "post-form-link": [`Link é obrigatório`] }))
@@ -86,8 +90,6 @@ const PostForm = (post: Omit<Post, "topics" | "author"> & { topics: string[], au
             setAlerts(a => ({ ...a, "post-form-link": [`Link deve ter no mínimo 3 caracteres`] }))
         else if (form.link.endsWith("-"))
             setAlerts(a => ({ ...a, "post-form-link": [`Link não pode terminar em "-"`] }))
-        else
-            setAlerts(a => ({ ...a, "post-form-link": [] }))
     }, [form])
 
     useEffect(() => {
@@ -97,12 +99,12 @@ const PostForm = (post: Omit<Post, "topics" | "author"> & { topics: string[], au
     return (
         <div className="bg-white rounded-lg shadow-lg shadow-black-50/10">
             <OpaqueBackground open={popup === "topic-form"} callback={() => setPopup("")}>
-                <div data-aos="fade-down" className="bg-white shadow-lg shadow-violet-800/40 rounded-lg w-96 max-w-screen">
+                <div data-aos="fade-down" className="bg-white shadow-lg shadow-violet-700/40 rounded-lg w-96 max-w-screen">
                     <TopicForm onClose={() => setPopup("")} onSuccess={() => { setPopup(""); HandleLoadTopics(); }} />
                 </div>
             </OpaqueBackground>
-            
-            <div className="flex items-center px-4 py-2 rounded-t-lg bg-gradient-to-r from-violet-700 to-indigo-600 text-white justify-between">
+
+            <div className="flex items-center px-4 py-2 rounded-t-lg bg-gradient-to-r from-purple-600 to-indigo-600 text-white justify-between">
                 <h1 className="text-xl font-bold">Nova postagem</h1>
                 <div className="flex items-center my-2">
                     <label htmlFor="active" className="rounded-t-xl font-semibold mx-2">Ativo</label>
@@ -184,7 +186,7 @@ const PostForm = (post: Omit<Post, "topics" | "author"> & { topics: string[], au
                                     <div className="grow">
                                         <FloatingLabelInput label="Procurar por tópico" name="topic-input" />
                                     </div>
-                                    <button type="button" onClick={() => setPopup("topic-form")} className="shadow-lg shadow-violet-500/30 bg-violet-700 hover:bg-violet-800 my-0.5 transition font-semibold text-white px-3 rounded">Novo tópico</button>
+                                    <button type="button" onClick={() => setPopup("topic-form")} className="shadow-lg shadow-violet-500/30 bg-violet-600 hover:bg-violet-700 my-0.5 transition font-semibold text-white px-3 rounded">Novo tópico</button>
                                 </div>
                                 <div className="flex flex-wrap gap-2 pt-3">
                                     {topics.data.filter(topic => form.topics.includes(topic?._id ?? "")).map(topic => <button type="button" onClick={() => setForm(f => ({ ...f, topics: f.topics.filter(t => t !== topic?._id) }))} className="cursor-pointer text-sm px-2 border border-violet-700 text-violet-700 rounded" key={topic?._id}>{topic.name}</button>)}
@@ -219,12 +221,12 @@ const PostForm = (post: Omit<Post, "topics" | "author"> & { topics: string[], au
                     </div>}
                 <hr className="my-2" />
                 <div className="py-2">
-                    <button onClick={() => HandleSendPost()} className="shadow-lg shadow-violet-500/30 hover:scale-110 bg-violet-700 hover:bg-violet-800 transition font-semibold text-white px-3 py-1 rounded">
+                    <button onClick={() => HandleSendPost()} className="shadow-lg shadow-violet-500/30 hover:scale-110 bg-violet-600 hover:bg-violet-700 transition font-semibold text-white px-3 py-1 rounded">
                         {status === "loading" ? <VscLoading className="animate-spin text-lg mx-6 my-0.5" /> : form?._id ? "Salvar alterações" : "Publicar"}
                     </button>
                 </div>
             </div>
-            
+
         </div>
     )
 }

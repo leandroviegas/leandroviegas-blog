@@ -47,3 +47,11 @@
 .sun-editor, .sun-editor-editable {
     font-family: Verdana, Geneva, Tahoma, sans-serif !important;
 }
+
+.multiple-shadow-white {
+    box-shadow: 0px 0px 20px #00000035, -5px -7px 1px #F4F4F599, -10px -14px 1px #F4F4F599;
+}
+
+.service-card {
+    box-shadow: 0px 0px 20px #00000035, -5px -7px 1px #6366f1;
+}

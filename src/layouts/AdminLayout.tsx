@@ -15,20 +15,24 @@ type AdminLayoutProps = {
 }
 
 const Index = ({ children }: AdminLayoutProps) => {
-    const { user } = useAuth()
+    const { user, signOut } = useAuth()
 
     return (
         <Redirects>
             <div className="w-screen h-screen bg-zinc-200 flex flex-col">
-                <div className="bg-gradient-to-r from-purple-800 to-indigo-600 flex justify-between shadow-lg z-10 shadow-black/20 p-4">
+                <div className="bg-gradient-to-r from-purple-600 to-indigo-600 flex justify-between shadow-lg z-10 shadow-black/20 p-4">
                     <div className="flex items-center font-bold text-xl gap-2 text-white"><span><ImBlog /></span><span>My Personal Blog</span></div>
-                    <div className="flex items-center gap-3 text-white">
+                    <div className="flex items-center gap-3 text-white relative">
                         <span className="text-purple-100 font-semibold">{user?.username}</span>
                         <span className="border-l pl-3"><FaUser /></span>
+                        <div className="text-gray-600 flex flex-col absolute top-full mt-1 shadow-lg right-0">
+                            <button className="bg-white hover:text-gray-800 hover:bg-zinc-100 transition px-4 py-0.5 text-left rounded-t whitespace-nowrap">Alterar conta</button>
+                            <button className="bg-white hover:text-gray-800 hover:bg-zinc-100 transition px-4 py-0.5 rounded-b whitespace-nowrap text-left" onClick={() => signOut()}>Sair</button>
+                        </div>
                     </div>
                 </div>
                 <div className="flex grow overflow-auto">
-                    <div className="w-64 h-full bg-gradient-to-b from-purple-800 to-indigo-800 p-4">
+                    <div className="w-64 h-full bg-gradient-to-b from-purple-600 to-indigo-600 p-4">
                         <Link to={"/admin/dashboard"} className="flex items-center gap-2 font-semibold my-4 text-lg text-purple-100"><AiFillDashboard /> <span>Dashboard</span></Link>
 
                         <div className="my-4">

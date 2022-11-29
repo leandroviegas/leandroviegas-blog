@@ -5,13 +5,13 @@ import api from "../../../services/api"
 const hljs = require('highlight.js/lib/common');
 
 import moment from "moment"
-import Layout from "../../../layouts/Layout"
+import Layout from "../../../layouts/UserLayout"
 import Head from "../../../components/Head"
 import truncate from "../../../utils/truncate"
 
 import { FaUser } from "react-icons/fa"
 
-import { Topic, Post } from "../../../types/blog.type"
+import { Topic, Post, User } from "../../../types/blog.type"
 
 import '../../../css/suneditor-contents.min.css';
 import 'highlight.js/styles/github.css';
@@ -33,7 +33,9 @@ export async function getServerData({ params }) {
 }
 
 const Index = ({ serverData }) => {
-    const post: Post = serverData?.post;
+    const post: Omit<Post, "author"> & { author: User } = serverData?.post;
+
+    const author: User = post.author;
 
     const [topics, setTopics] = useState<{ status: "success" | "error" | "loading" | "", data: Topic[] }>({ status: "", data: [] })
 
@@ -55,11 +57,11 @@ const Index = ({ serverData }) => {
 
     return (
         <Layout>
-            <div className="h-full w-full bg-white">
+            <div className="h-full w-full">
                 <div className="container mx-auto">
                     {serverData?.status === 200 &&
                         <>
-                            <Head title={post.title} author={post.author.username} description={post.description} />
+                            <Head title={post.title} author={author.username} description={post.description} />
                             <div className="h-96 md:h-72 w-full">
                                 <img className="w-full h-full object-cover" src={post?.image || postplaceholderImage} alt="" />
                                 <div className="h-full md:h-36 flex flex-col bg-gradient-to-t from-black via-black/70 -translate-y-full p-4">
@@ -71,20 +73,20 @@ const Index = ({ serverData }) => {
                                         <Link to={``} className="flex items-center gap-2">
                                             <span className="h-6 w-6 flex items-center justify-center">
                                                 {post?.author?.profilePicture ?
-                                                    <img className="w-full h-full object-cotain rounded-full bg-gray-300" src={post.author.profilePicture} alt={post.author.username} />
+                                                    <img className="w-full h-full object-cotain rounded-full bg-gray-300" src={author.profilePicture} alt={author.username} />
                                                     : <FaUser className="text-gray-100" />}
                                             </span>
-                                            <span className="text-sm text-gray-100">{post.author.username}</span>
+                                            <span className="text-sm text-gray-100">{author.username}</span>
                                         </Link>
                                     </div>
                                 </div>
                             </div>
                         </>}
-                    <div className="my-4 grid lg:grid-cols-4 gap-4">
-                        <div className="overflow-x-auto max-w-screen col-span-4 lg:col-span-3">
+                    <div className="py-4 grid lg:grid-cols-4 gap-4">
+                        <div className="overflow-x-auto max-w-screen col-span-4 lg:col-span-3 border-r">
                             {serverData?.status === 200 ?
                                 <>
-                                    <div className="mb-4 rounded-lg sun-editor-editable" dangerouslySetInnerHTML={{ __html: post.content }}></div>
+                                    <div className="mb-4 mr-4 rounded-lg sun-editor-editable bg-white" dangerouslySetInnerHTML={{ __html: post.content }}></div>
                                     <hr className="my-4" />
                                     <div className="mx-4 my-4 flex flex-wrap gap-4">
                                         <span className="text-gray-800 text-semibold text-sm"><span>Postado em: </span>{moment(post?.postedAt).format("DD/MM/YYYY hh:mm")}</span>
@@ -109,21 +111,36 @@ const Index = ({ serverData }) => {
                                 </div>}
                         </div>
                         <div className="col-span-4 lg:col-span-1">
-                            <div className="shadow-lg border-zinc-200 rounded-lg w-full p-4 sticky top-2">
-                                <h2 className="text-lg text-zinc-700 font-semibold">Tópicos</h2>
-                                <hr />
-                                <div className="flex flex-wrap gap-2 my-3">
-                                    {
-                                        topics.data.map(topic => {
+                            <div className="sticky top-4">
+                                <div className="">
+                                    <img src={author.profilePicture || "https://via.placeholder.com/150"} alt={`${author.username} Profile Picture`}
+                                        className="object-cover z-10 relative w-24 h-24 mx-auto rounded-full shadow-xl p-[3px] bg-gradient-to-br from-indigo-600 to-purple-600" />
+                                    <blockquote className="bg-white border -mt-12 flex flex-col justify-between p-12 text-center rounded-lg shadow-xl">
+                                        <p className="text-lg font-bold text-gray-700">{author.username}</p>
+                                        <p className="mt-1 text-xs font-medium text-gray-500">
+                                            {author.role}
+                                        </p>
+                                        <p className="mt-4 text-sm text-gray-500">
+                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt
+                                            voluptatem alias ut provident sapiente repellendus.
+                                        </p>
+                                    </blockquote>
+                                </div>
+
+                                <div className="shadow-lg rounded-lg w-full bg-white p-4 relative top-6">
+                                    <h2 className="text-lg text-zinc-800 font-semibold">Tópicos</h2>
+                                    <hr className="my-2" />
+                                    <div className="flex flex-wrap gap-2 my-3">
+                                        {topics.data.map(topic => {
                                             return (
                                                 <Link key={topic.link} to={`/blog/topic/${topic.link}`}>
-                                                    <button className="border-b-2 border-indigo-700 text-zinc-600 px-1" key={topic._id}>
+                                                    <button className="bg-violet-600 hover:bg-violet-00 rounded text-white py-0.5 px-3" key={topic._id}>
                                                         {topic.name}
                                                     </button>
                                                 </Link>
                                             )
-                                        })
-                                    }
+                                        })}
+                                    </div>
                                 </div>
                             </div>
                         </div>
