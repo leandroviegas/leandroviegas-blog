@@ -31,7 +31,7 @@ const BlogPage = ({ serverData }) => {
             <Head title={`Veja as postagens dos mais diversos assuntos de tecnologia e programação - Leandro Viegas`} />
 
             <div className="container grid grid-cols-1 lg:grid-cols-4 mx-auto">
-                <div className="col-span-3 px-4 md:px-8">
+                <div className="col-span-3 px-4 md:px-8 bg-white my-8 rounded">
                     {data.map(topicAndPosts => {
                         return (
                             <div className="my-12" key={topicAndPosts.topic._id}>

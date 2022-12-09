@@ -17,7 +17,7 @@ interface Props {
 }
 
 const Input = ({ status, messages, onChange, defaultValue, value, name, label, type, autoComplete, children }: Props) => {
-    const color = { error: "red", info: "violet" }
+    const color = { error: "red", info: "indigo" }
 
     const inputClassName = `block py-2.5 w-full transition duration-300 text-sm text-${status === "error" ? color[status] : "zinc"}-600 bg-transparent border-0 border-b-2 border-${status === "error" ? `${color[status]}-600` : "zinc-200"} focus:border-${color[status]}-700 focus:outline-none focus:ring-0 peer`
 

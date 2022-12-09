@@ -8,7 +8,7 @@ import { FaUser } from "react-icons/fa"
 
 import postplaceholderImage from "../images/post_placeholder.jpg"
 
-const PostCardComponent = ({ link, title, description, postedAt, author, image }) => {
+const PostCardComponent = ({ link = "", title = "", description = "", postedAt, author, image }) => {
     return (
         <div className="my-6 md:flex">
             <div className="w-full shrink-0 md:w-48 rounded order-2 md:flex items-center">
@@ -27,11 +27,11 @@ const PostCardComponent = ({ link, title, description, postedAt, author, image }
                     </Link>
                     <Link to={``} className="flex items-center gap-2">
                         <span className="h-6 w-6 flex items-center justify-center">
-                            {author.profilePicture ?
-                                <img className="w-full h-full object-cotain rounded-full bg-gray-600" src={author.profilePicture} alt={author.username} />
+                            {author?.profilePicture ?
+                                <img className="w-full h-full object-cotain rounded-full bg-gray-600" src={author.profilePicture} alt={author?.username || ""} />
                                 : <FaUser className="text-gray-500" />}
                         </span>
-                        <span className="text-sm font-thin text-gray-500">{author.username}</span>
+                        <span className="text-sm font-thin text-gray-500">{author?.username || "??"}</span>
                     </Link>
                 </div>
                 <hr className="my-6 md:mt-2 md:mb-0 border-gray-400 w-full" />
@@ -39,6 +39,5 @@ const PostCardComponent = ({ link, title, description, postedAt, author, image }
         </div>
     )
 }
-
 
 export default memo(PostCardComponent)

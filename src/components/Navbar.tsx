@@ -15,13 +15,13 @@ import SignPopup from "./Popups/SignPopup"
 const Index = () => {
     const location = useLocation();
 
-    const [showNavbar, setShowNavbar] = useState<boolean>(false)
+    const { signOut, user } = useAuth();
 
-    const [userDropdown, setUserDropdown] = useState<boolean>(false)
+    const [showNavbar, setShowNavbar] = useState<boolean>(false);
 
-    const { signOut, user } = useAuth()
+    const [userDropdown, setUserDropdown] = useState<boolean>(false);
 
-    const [signOpen, setSignOpen] = useState<boolean>(false)
+    const [signOpen, setSignOpen] = useState<boolean>(false);
 
     const [tab, setTab] = React.useState<"SignUp" | "SignIn">("SignUp");
 
@@ -61,7 +61,7 @@ const Index = () => {
                                         {user?.username ?
                                             <div>
                                                 <Outclick callback={() => setUserDropdown(false)}>
-                                                    <button onClick={() => setUserDropdown(!userDropdown)} className={`flex items-center gap-1 text-zinc-100 ${userDropdown ? "" : "lg:text-zinc-800"} hover:text-zinc-100`}>
+                                                    <button onClick={() => setUserDropdown(!userDropdown)} className={`flex items-center gap-1 text-zinc-700 hover:text-zinc-900`}>
                                                         <span>{user.username}</span>
                                                         {!userDropdown && <span><FaAngleDown /></span>}
                                                         {userDropdown && <span><FaAngleUp /></span>}

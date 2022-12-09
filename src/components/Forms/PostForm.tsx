@@ -104,7 +104,7 @@ const PostForm = (post: Omit<Post, "topics" | "author"> & { topics: string[], au
                 </div>
             </OpaqueBackground>
 
-            <div className="flex items-center px-4 py-2 rounded-t-lg bg-gradient-to-r from-purple-600 to-indigo-600 text-white justify-between">
+            <div className="flex items-center px-4 py-2 rounded-t-lg bg-gradient-to-r to-violet-600 from-indigo-600 text-white justify-between">
                 <h1 className="text-xl font-bold">Nova postagem</h1>
                 <div className="flex items-center my-2">
                     <label htmlFor="active" className="rounded-t-xl font-semibold mx-2">Ativo</label>
@@ -186,10 +186,10 @@ const PostForm = (post: Omit<Post, "topics" | "author"> & { topics: string[], au
                                     <div className="grow">
                                         <FloatingLabelInput label="Procurar por tópico" name="topic-input" />
                                     </div>
-                                    <button type="button" onClick={() => setPopup("topic-form")} className="shadow-lg shadow-violet-500/30 bg-violet-600 hover:bg-violet-700 my-0.5 transition font-semibold text-white px-3 rounded">Novo tópico</button>
+                                    <button type="button" onClick={() => setPopup("topic-form")} className="shadow-lg shadow-indigo-500/30 bg-indigo-600 hover:bg-indigo-700 my-0.5 transition font-semibold text-white px-3 rounded">Novo tópico</button>
                                 </div>
                                 <div className="flex flex-wrap gap-2 pt-3">
-                                    {topics.data.filter(topic => form.topics.includes(topic?._id ?? "")).map(topic => <button type="button" onClick={() => setForm(f => ({ ...f, topics: f.topics.filter(t => t !== topic?._id) }))} className="cursor-pointer text-sm px-2 border border-violet-700 text-violet-700 rounded" key={topic?._id}>{topic.name}</button>)}
+                                    {topics.data.filter(topic => form.topics.includes(topic?._id ?? "")).map(topic => <button type="button" onClick={() => setForm(f => ({ ...f, topics: f.topics.filter(t => t !== topic?._id) }))} className="cursor-pointer text-sm px-2 border border-indigo-700 text-indigo-700 rounded" key={topic?._id}>{topic.name}</button>)}
                                     {topics.data.filter(topic => !form.topics.includes(topic?._id ?? "")).map(topic => <button type="button" onClick={() => setForm(f => ({ ...f, topics: [...f.topics, topic?._id ?? ""] }))} className="cursor-pointer text-sm px-2 border border-zinc-400 text-zinc-600 rounded" key={topic?._id}>{topic.name}</button>)}
                                 </div>
                             </div>
@@ -221,7 +221,7 @@ const PostForm = (post: Omit<Post, "topics" | "author"> & { topics: string[], au
                     </div>}
                 <hr className="my-2" />
                 <div className="py-2">
-                    <button onClick={() => HandleSendPost()} className="shadow-lg shadow-violet-500/30 hover:scale-110 bg-violet-600 hover:bg-violet-700 transition font-semibold text-white px-3 py-1 rounded">
+                    <button onClick={() => HandleSendPost()} className="shadow-lg shadow-indigo-500/30 hover:scale-110 bg-indigo-600 hover:bg-indigo-700 transition font-semibold text-white px-3 py-1 rounded">
                         {status === "loading" ? <VscLoading className="animate-spin text-lg mx-6 my-0.5" /> : form?._id ? "Salvar alterações" : "Publicar"}
                     </button>
                 </div>

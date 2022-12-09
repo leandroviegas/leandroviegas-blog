@@ -1,10 +1,10 @@
 import React from "react"
-import layeredWaves from "../images/layered-waves-haikei.svg"
+import waves from "../images/waves.svg"
 
 const Index = () => {
     return (
         <>
-            <img className="w-full select-none" unselectable="on" src={layeredWaves} alt="" />
+            <img className="w-full select-none" unselectable="on" src={waves} alt="" />
             <footer style={{ backgroundColor: "#693cdf" }} className="w-full">
                 <div className="container mx-auto flex justify-between py-5">
                 </div>

@@ -7,7 +7,7 @@ import { FaGithub, FaLinkedinIn } from "react-icons/fa";
 
 import leandroViegasVintage from "../images/leandro_viegas_vintage.png"
 import perfilBackground from "../images/perfil_background.svg"
-import layeredWaves from "../images/layered-waves-haikei.svg"
+import waves from "../images/waves-1.svg"
 
 const Index = () => {
     return (
@@ -47,7 +47,7 @@ const Index = () => {
                         </div>
                     </div>
                 </div>
-                <img className="w-full select-none rotate-180 -mt-2" unselectable="on" src={layeredWaves} alt="" />
+                <img className="w-full select-none rotate-180 -mt-2" unselectable="on" src={waves} alt="" />
             </header>
             <section className="container mx-auto flex justify-center flex-wrap gap-6 my-32 items-center">
                 <div className="mx-4 max-w-[580px] order-2 lg:order-1">
