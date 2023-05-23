@@ -39,7 +39,7 @@ class UserController {
   }
 
   async post(request: Request, response: Response) {
-    const { username, password, email, link, profilePicture } = request.body;
+    const { username, password, email, link, profilePicture, about } = request.body;
 
     // Connect to the database
     await DbConnect();
@@ -49,6 +49,7 @@ class UserController {
       password,
       email,
       link,
+      about: about || "",
       role: "user",
       profilePicture,
       active: true,
@@ -74,21 +75,24 @@ class UserController {
   }
 
   async update(request: Request, response: Response) {
-    const { _id, username, password, active, email, link, profilePicture } = request.body;
+    const { _id, username, password, email, link, about, profilePicture } = request.body;
 
     // Connect to the database
     await DbConnect();
 
+    // Creating the schema
+    const user = await User.findOne({ _id: _id }).exec()
 
+    if (!user) throw new Error("user/not-found")
 
     const userEntity = new UserEntity({
-      _id,
-      username,
-      password,
-      active,
-      email,
-      link,
-      profilePicture
+      username: username ?? user.username,
+      password: password ?? user.password,
+      active: user.active,
+      about: about ?? user.about,
+      email: email ?? user.email,
+      link: link ?? user.link,
+      profilePicture: profilePicture ?? user.profilePicture
     });
 
     // Validating the informations
@@ -96,13 +100,10 @@ class UserController {
 
     userEntity.password = await hash(password, 8);
 
-    // Creating the schema
-    const user = await User.findOne({ _id: userEntity._id }).exec()
-
-    await user.set(userEntity)
+    user.set(userEntity)
 
     // Saving the informations
-    user.save()
+    await user.save()
 
     let userJSON = user.toJSON()
 
@@ -112,7 +113,7 @@ class UserController {
     return response.send({ user: userJSON });
   }
 
-  async delete(request: Request, response: Response) {
+  async deactive(request: Request, response: Response) {
     const { _id } = request.query;
 
     // Connect to the database
@@ -122,7 +123,6 @@ class UserController {
     if (typeof _id !== 'string')
       throw new Error("user/id/invalid-id")
 
-    // tje function "ConvertId" also verify if the id is valid
     const user = await User.findById(_id).exec()
 
     // Verifiy if found the user
@@ -130,7 +130,33 @@ class UserController {
       throw new Error("user/not-found")
 
     // Removing the user
-    await user.remove()
+    user.set({ active: false })
+
+    await user.save()
+
+    return response.send({ user: user.toJSON() });
+  }
+
+  async active(request: Request, response: Response) {
+    const { _id } = request.query;
+
+    // Connect to the database
+    await DbConnect();
+
+    // If is _id string
+    if (typeof _id !== 'string')
+      throw new Error("user/id/invalid-id")
+
+    const user = await User.findById(_id).exec()
+
+    // Verifiy if found the user
+    if (!user)
+      throw new Error("user/not-found")
+
+    // Removing the user
+    user.set({ active: true })
+
+    await user.save()
 
     return response.send({ user: user.toJSON() });
   }

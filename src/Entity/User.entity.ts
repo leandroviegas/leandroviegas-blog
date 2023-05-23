@@ -12,6 +12,8 @@ export default class UserEntity {
 
     readonly email: string;
 
+    readonly about?: string;
+
     readonly profilePicture?: string;
 
     readonly link: string;
@@ -32,21 +34,22 @@ export default class UserEntity {
         if (!this._id) {
             // Verify if the username is already in use
             if ((await User.find({ _id: { $ne: this._id }, username: this.username }).exec()).length > 0)
-                throw new Error("users/username-already-exist")
+                throw new Error("user/username-already-exist")
 
             // Verify if the email is already in use
             if ((await User.find({ _id: { $ne: this._id }, email: this.email }).exec()).length > 0)
-                throw new Error("users/email-already-exist")
+                throw new Error("user/email-already-exist")
         }
     }
 
-    constructor({ _id, username, email, profilePicture, password, link, active, role }: UserEntity) {
+    constructor({ _id, username, email, profilePicture, password, link, active, role, about }: UserEntity) {
         this._id = _id;
         this.link = link;
         this.role = role;
         this.email = email;
         this.active = active ?? false;
         this.username = username;
+        this.about = about;
         this.password = password;
         this.profilePicture = profilePicture;
     }

@@ -31,11 +31,14 @@ router.route("/topics")
 
 // User routes
 router.get("/users/list", userController.list);
+
+router.get("/users/active", ensureAuthenticated, userController.active);
+router.get("/users/deactive", ensureAuthenticated, userController.deactive);
+
 router.route("/users")
     .get(userController.get)
     .post(userController.post)
-    .put(ensureAuthenticated, userController.update)
-    .delete(ensureAuthenticated, userController.delete);
+    .put(ensureAuthenticated, userController.update);
 
 // Post routes
 router.get("/posts/list", postController.list);
