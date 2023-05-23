@@ -31,10 +31,12 @@ const SignInForm = ({ onSuccess }) => {
                 }).catch(err => {
                     console.error(err)
                     setStatus("error")
-                    setAlerts({ ...alerts, "signin-error": err.response.data.message || "Erro ao fazer login" })
+                    setAlerts({ ...alerts, "signup-error": [err.response.data?.message || "Erro ao se registrar"] })
                 })
         }
     }
+
+    console.log(alerts)
 
     useEffect(() => {
         if (!(form.username.length > 0))

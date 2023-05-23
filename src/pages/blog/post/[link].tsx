@@ -87,11 +87,11 @@ const Index = ({ serverData }) => {
                             {serverData?.status === 200 ?
                                 <>
                                     <div className="mb-4 mr-4 rounded-lg sun-editor-editable bg-white" dangerouslySetInnerHTML={{ __html: post.content }}></div>
-                                    <hr className="my-4" />
                                     <div className="mx-4 my-4 flex flex-wrap gap-4">
                                         <span className="text-gray-800 text-semibold text-sm"><span>Postado em: </span>{moment(post?.postedAt).format("DD/MM/YYYY hh:mm")}</span>
                                         <span className="text-gray-800 text-semibold text-sm"><span>Editado em: </span>{moment(post?.modifiedAt).format("DD/MM/YYYY hh:mm")}</span>
                                     </div>
+                                    <hr className="my-4" />
                                 </>
                                 :
                                 <div className="w-full flex flex-col my-16 items-center justify-center">
@@ -120,10 +120,10 @@ const Index = ({ serverData }) => {
                                         <p className="mt-1 text-xs font-medium text-gray-500">
                                             {author.role}
                                         </p>
-                                        <p className="mt-4 text-sm text-gray-500">
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt
-                                            voluptatem alias ut provident sapiente repellendus.
-                                        </p>
+                                        {author?.about &&
+                                            <p className="mt-4 text-sm text-gray-500">
+                                                {author.about}
+                                            </p>}
                                     </blockquote>
                                 </div>
 

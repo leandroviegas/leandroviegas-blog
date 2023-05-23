@@ -9,8 +9,12 @@ export type Topic = {
 export type Roles = "admin" | "author" | "user";
 
 export type User = {
+    _id?: string;
     link: string;
+    active: boolean;
     username: string;
+    email: string;
+    about: string;
     profilePicture: string;
     role: Roles | string;
 }
