@@ -34,7 +34,7 @@ const UserForm = ({ user, onClose, onSuccess }) => {
         evt.preventDefault()
         if (status === "loading") return;
 
-        if (["user-form-name", "user-form-link"].some(input => alerts[input]?.length > 0)) {
+        if (["user-form-username", "user-form-link"].some(input => alerts[input]?.length > 0)) {
             setStatus("input-warnings");
         } else {
             setStatus("loading");
@@ -51,7 +51,7 @@ const UserForm = ({ user, onClose, onSuccess }) => {
             } catch (err) {
                 console.error(err)
                 setStatus("error");
-                setAlerts({ ...alerts, "user-form": [err?.response?.data?.message || `Ocorreu um erro ao ${form?._id ? "editar" : "adicionar"} tópico!`] })
+                setAlerts({ ...alerts, "user-form": [err?.response?.data?.message || `Ocorreu um erro ao ${form?._id ? "editar" : "adicionar"} usuário!`] })
             }
         }
     }
@@ -106,7 +106,7 @@ const UserForm = ({ user, onClose, onSuccess }) => {
                 <hr className="my-4" />
                 <div className="flex items-center justify-between gap-6 flex-wrap">
                     <button type="submit" className="bg-indigo-500 hover:bg-indigo-700 shadow-lg shadow-indigo-700/30 rounded-xl text-white py-2 px-4 hover:scale-105 transition font-semibold">
-                        {status === "loading" ? <VscLoading className="animate-spin text-lg mx-6 my-0.5" /> : form?._id ? `Salvar informações` : "Adicionar tópico"}
+                        {status === "loading" ? <VscLoading className="animate-spin text-lg mx-6 my-0.5" /> : form?._id ? `Salvar informações` : "Adicionar usuário"}
                     </button>
                     <button type="button" onClick={onClose} className="py-2 transition px-4 text-zinc-800 bg-zinc-200 hover:bg-zinc-300 font-semibold rounded-lg">Cancelar</button>
                 </div>
