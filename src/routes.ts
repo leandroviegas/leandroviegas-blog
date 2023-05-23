@@ -43,6 +43,8 @@ router.route("/users")
 // Post routes
 router.get("/posts/list", postController.list);
 router.get("/posts/by-topic", postController.byTopic);
+router.get("/posts/by-topics", postController.byTopics);
+router.get("/posts/search", postController.search);
 router.route("/posts")
     .get(postController.get)
     .post(ensureAuthenticated, postController.post)

@@ -35,7 +35,26 @@ class PostController {
   }
 
   async byTopic(request: Request, response: Response) {
-    let { post_quantity, topic_list, select_post, select_topic } = request.query;
+    let { perPage, topic_link, page } = request.query;
+
+    let n_perPage = Math.max(0, Number(Number(perPage)))
+
+    let n_page = Math.max(25, Number(page))
+
+    // Connect to the database
+    await DbConnect();
+
+    const topic = await Topic.findOne({ 'link': { $in: topic_link } }).exec()
+
+    const total = await Post.find({ topics: { "$in": [topic._id] } }).count();
+
+    const posts = await Post.find({ topics: { "$in": [topic._id] } }).select("active description image link postedAt title readTime").skip(n_perPage * n_page).limit(n_perPage).populate("author", "username profilePicture link").exec()
+
+    return response.send({ topic, posts, total, n_page, n_perPage });
+  }
+
+  async byTopics(request: Request, response: Response) {
+    let { post_quantity, topic_list } = request.query;
 
     let p_quantity = Number(post_quantity || 5)
 
@@ -47,18 +66,45 @@ class PostController {
     if (topic_list)
       topic_query = { ...topic_query, 'link': { $in: [].concat(topic_list) } }
 
-    const topics = await Topic.find(topic_query).select((select_topic || "").toString()).exec()
+    const topics = await Topic.find(topic_query).exec()
 
     const posts = await Promise.all(topics.map(async topic => ({
       topic,
-      posts: await (async () => (await Post.find({ topics: { "$in": [].concat(topic._id) } }).select((select_post || "").toString()).limit(p_quantity).populate("author", "username profilePicture link").exec()))()
+      posts: await (async () => (await Post.find({ topics: { "$in": [].concat(topic._id) } }).select("active description image link postedAt title readTime").limit(p_quantity).populate("author", "username profilePicture link").exec()))()
     })))
 
     return response.send(posts);
   }
 
+  async search(request: Request, response: Response) {
+    let { page, perPage, search } = request.query;
+
+    let n_perPage = Math.max(0, Number(Number(perPage)))
+
+    let n_page = Math.max(25, Number(page))
+
+    // Connect to the database
+    await DbConnect();
+
+    const total = await Post.find({
+      $or: [
+        { 'title': { "$regex": search, "$options": "i" } },
+        { 'description': { "$regex": search, "$options": "i" } }
+      ]
+    }).count();
+
+    const posts = await Post.find({
+      $or: [
+        { 'title': { "$regex": search, "$options": "i" } },
+        { 'description': { "$regex": search, "$options": "i" } }
+      ]
+    }).select("active description image link postedAt title readTime").skip(n_page * n_perPage).limit(n_perPage).populate("author", "username profilePicture link").exec()
+
+    return response.send({ posts, total, page, perPage });
+  }
+
   async post(request: Request, response: Response) {
-    const { title, content, image, link, readTime, active, topics, author, keywords, description, modifiedAt, postedAt } = request.body;
+    const { title, content, image, link, readTime, active, topics, keywords, description, modifiedAt, postedAt } = request.body;
 
     // Connect to the database
     await DbConnect();

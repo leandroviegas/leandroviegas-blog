@@ -41,6 +41,8 @@ class UserController {
   async post(request: Request, response: Response) {
     const { username, password, email, link, profilePicture, about } = request.body;
 
+    console.log(username)
+
     // Connect to the database
     await DbConnect();
 
