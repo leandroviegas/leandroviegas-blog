@@ -86,19 +86,22 @@ class UserController {
     if (!user) throw new Error("user/not-found")
 
     const userEntity = new UserEntity({
+      _id: user._id,
       username: username ?? user.username,
       password: password ?? user.password,
       active: user.active,
       about: about ?? user.about,
       email: email ?? user.email,
       link: link ?? user.link,
+      role: user.role,
       profilePicture: profilePicture ?? user.profilePicture
     });
 
     // Validating the informations
     await userEntity.validate()
 
-    userEntity.password = await hash(password, 8);
+    if (password)
+      userEntity.password = await hash(password, 8);
 
     user.set(userEntity)
 
