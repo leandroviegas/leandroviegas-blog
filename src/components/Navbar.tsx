@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react"
-import { Link } from "gatsby"
+import { Link, navigate } from "gatsby"
 import { useLocation } from '@reach/router';
 
 import { FaAngleDown, FaAngleUp, FaSearch } from "react-icons/fa"
 import { TiCode } from "react-icons/ti"
 import { MdClose } from "react-icons/md"
 import { BiMenu } from "react-icons/bi"
+import { BsPerson } from "react-icons/bs";
 import { AiOutlineHome, AiOutlineRead } from "react-icons/ai"
 
 import Outclick from 'react-outclick-handler'
 
 import { useAuth } from "../hooks/Auth"
 import SignPopup from "./Popups/SignPopup"
-import { BsPerson } from "react-icons/bs";
 
-const Index = () => {
+const Index = ({ search_ = "" }) => {
     const location = useLocation();
 
     const { signOut, user } = useAuth();
@@ -25,6 +25,8 @@ const Index = () => {
 
     const [signOpen, setSignOpen] = useState<boolean>(false);
 
+    const [search, setSearch] = useState<string>(search_ ?? "");
+
     const [tab, setTab] = React.useState<"SignUp" | "SignIn">("SignUp");
 
     useEffect(() => {
@@ -34,7 +36,7 @@ const Index = () => {
     return (
         <>
             <SignPopup open={signOpen} setOpen={setSignOpen} setTab={setTab} tab={tab} />
-            <nav className=" w-full max-w-screen">
+            <nav className="w-full max-w-screen">
                 <div className="container mx-auto flex flex-row justify-between lg:items-center py-6">
                     <div className="shrink-0 grow flex flex-col md:flex-row justify-start items-center gap-4 px-2">
                         <Link to={"/"} className="flex items-center gap-1">
@@ -42,9 +44,9 @@ const Index = () => {
                             <span className="text-2xl font-bold text-zinc-600 shrink-0">Leandro Viegas</span>
                         </Link>
                         {location.pathname.startsWith("/blog") &&
-                            <form className="border-b border-black mx-3 pb-1 md:w-auto flex items-center text-sm">
-                                <button className="px-1 text-zinc-800 h-full text-center"><FaSearch /></button>
-                                <input className="grow w-full ml-2 text-zinc-800 placeholder:text-black/60 h-full rounded-r bg-transparent outline-none" placeholder="Procurar" type="text" />
+                            <form onSubmit={(evt) => { evt.preventDefault(); navigate(`/blog/posts/search/${search}`); }} className="border-b border-black mx-3 pb-1 md:w-auto flex items-center text-sm">
+                                <button type="submit" className="px-1 text-zinc-800 h-full text-center"><FaSearch /></button>
+                                <input defaultValue={search} onChange={evt => setSearch(evt.currentTarget.value)} className="grow w-full ml-2 text-zinc-800 placeholder:text-black/60 h-full rounded-r bg-transparent outline-none" placeholder="Procurar" type="text" />
                             </form>}
                     </div>
 
@@ -67,9 +69,10 @@ const Index = () => {
                                                         {!userDropdown && <span><FaAngleDown /></span>}
                                                         {userDropdown && <span><FaAngleUp /></span>}
                                                     </button>
-                                                    <div className={`${userDropdown ? "max-h-auto dropdown-animate" : "max-h-0"} border-l lg:border-none overflow-y-auto lg:absolute mt-4 right-0 flex flex-col text-zinc-300 lg:text-zinc-700 text-left`}>
+                                                    <div className={`${userDropdown ? "max-h-auto dropdown-animate" : "max-h-0"} border-l lg:border-none overflow-y-auto lg:absolute mt-3 right-0 flex flex-col text-zinc-300 lg:text-zinc-700 text-left`}>
                                                         <button onClick={signOut} className="lg:bg-white hover:text-zinc-100 text-left w-full px-3 py-1 lg:py-0.5 rounded-t lg:hover:text-zinc-900 cursor-pointer">Sair</button>
-                                                        <Link to={"/admin/dashboard"} className="lg:bg-white hover:text-zinc-100 w-full px-3 py-1 lg:py-0.5 rounded-b lg:hover:text-zinc-900 cursor-pointer">Área administrativa</Link>
+                                                        {user.role === "admin" &&
+                                                            <Link to={"/admin/dashboard"} className="lg:bg-white hover:text-zinc-100 w-full px-3 py-1 lg:py-0.5 rounded-b lg:hover:text-zinc-900 cursor-pointer">Área administrativa</Link>}
                                                     </div>
                                                 </Outclick>
                                             </div>

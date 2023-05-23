@@ -36,8 +36,6 @@ const SignInForm = ({ onSuccess }) => {
         }
     }
 
-    console.log(alerts)
-
     useEffect(() => {
         if (!(form.username.length > 0))
             setAlerts(a => ({ ...a, "username-error": ["Nome é obrigatório"] }))

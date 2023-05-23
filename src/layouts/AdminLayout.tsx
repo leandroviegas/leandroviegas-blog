@@ -11,11 +11,8 @@ import { BsFileEarmarkPost } from "react-icons/bs";
 import { FaList, FaPlus, FaUser } from "react-icons/fa";
 import { ImBlog } from "react-icons/im";
 
-type AdminLayoutProps = {
-    children: any;
-}
 
-const Index = ({ children }: AdminLayoutProps) => {
+const Index = ({ children }) => {
     const { user, signOut } = useAuth()
 
     const [userDropdown, setUserDropdown] = useState<boolean>(false)

@@ -9,7 +9,7 @@ import Head from "../components/Head"
 
 export async function getServerData() {
     try {
-        const data = await api.get("/posts/by-topic").then(resp => resp.data)
+        const data = await api.get("/posts/by-topics").then(resp => resp.data)
 
         return {
             props: data,
