@@ -76,7 +76,7 @@ const Index = () => {
         <AdminLayout>
             <Head title={`Listar tópicos - Leandro Viegas`} />
 
-            <OpaqueBackground open={popup === "topic-form"} callback={() => setPopup("")}>
+            <OpaqueBackground open={popup === "topic-form"} closeCallback={() => setPopup("")}>
                 <div data-aos="fade-down" className="bg-white shadow-lg shadow-indigo-800/40 rounded-lg w-96 max-w-screen">
                     <TopicForm onClose={() => setPopup("")} onSuccess={() => { setPopup(""); HandleLoadTopics(); }} topic={selectedTopic} />
                 </div>

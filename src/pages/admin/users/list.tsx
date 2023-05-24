@@ -45,7 +45,7 @@ const Index = () => {
 
     const [selectedUser, setSelectedUser] = useState<User>()
 
-    const HandleDeleteUser = (_id = false) => {
+    const HandleDeleteUser = (_id = "") => {
         if (deleteStatus === "loading") return;
         setDeleteStatus("loading");
         api.get(selectedUser?.active ? `/users/deactive` : `/users/active`, { params: { _id: selectedUser?._id ?? _id }, headers: { authorization: `Bearer ${cookies.authentication}` } }).then(resp => {
@@ -70,7 +70,7 @@ const Index = () => {
         <AdminLayout>
             <Head title="Listar usuários - Leandro Viegas" />
 
-            <OpaqueBackground open={popup === "user-form"} callback={() => setPopup("")}>
+            <OpaqueBackground open={popup === "user-form"} closeCallback={() => setPopup("")}>
                 <div data-aos="fade-down" className="bg-white shadow-lg shadow-indigo-800/40 rounded-lg w-96 max-w-screen">
                     <UserForm onClose={() => setPopup("")} onSuccess={() => { setPopup(""); HandleLoadUsers(); }} user={selectedUser} />
                 </div>
@@ -110,7 +110,7 @@ const Index = () => {
                                             {user.active == true ?
                                                 <button onClick={() => { setSelectedUser(user); setPopup("delete"); }} className="bg-red-500 text-white hover:bg-red-700 px-3 transition rounded py-1">Desativar</button>
                                                 :
-                                                <button onClick={() => HandleDeleteUser(user?._id)} className="bg-green-500 text-white hover:bg-green-700 px-3 transition rounded py-1">Ativar</button>
+                                                <button onClick={() => HandleDeleteUser(user?._id || "")} className="bg-green-500 text-white hover:bg-green-700 px-3 transition rounded py-1">Ativar</button>
                                             }
 
                                         </div>

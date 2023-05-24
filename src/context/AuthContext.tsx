@@ -33,7 +33,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
                 api.get("/login", { headers: { authorization: `Bearer ${cookies.authentication}` } }).then(response => {
                     setUser(response.data.user);
                     setCookie("role", response.data.user.role, { path: '/' });
-                }).catch(err => { console.error(err) })
+                }).catch(err => { console   .error(err) })
             } else {
                 signOut();
             }

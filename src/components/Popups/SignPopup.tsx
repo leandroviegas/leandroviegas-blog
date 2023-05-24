@@ -9,7 +9,7 @@ import OpaqueBackground from "../OpaqueBackground";
 const SignPopup = ({ open, setOpen, tab, setTab }) => {
 
     return (
-        <OpaqueBackground open={open} callback={() => setOpen(false)}>
+        <OpaqueBackground open={open} closeCallback={() => setOpen(false)}>
             <div data-aos="fade-down" className="md:top-4 absolute max-h-full h-full md:h-auto overflow-y-auto mx-auto bg-white rounded-lg max-w-screen max-w-[550px] w-full shadow">
                 <div className="p-8 text-zinc-700 rounded-t-lg h-auto">
                     <div className="grid grid-cols-2 border rounded">

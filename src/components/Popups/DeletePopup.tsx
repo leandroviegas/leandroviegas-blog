@@ -26,7 +26,7 @@ const DeletePopup = ({ open, text, btnText, status, errors, onDelete, onCancel }
     }, [open, text, btnText])
 
     return (
-        <OpaqueBackground open={open} callback={onCancel}>
+        <OpaqueBackground open={open} closeCallback={onCancel}>
             <div data-aos="fade-down" className="bg-white max-w-[720px] flex flex-col w-screen h-screen sm:max-h-[16rem] rounded-lg">
                 <div className="grow flex flex-col">
                     <div className="flex gap-2 justify-between items-center rounded-t-lg bg-violet-700 text-white py-3">

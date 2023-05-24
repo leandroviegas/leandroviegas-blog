@@ -48,7 +48,7 @@ const SearchPage = ({ serverData }) => {
             <div className="container grid grid-cols-1 lg:grid-cols-4 mx-auto">
                 <div className="col-span-3 px-4 md:px-8 bg-white my-8 rounded">
                     <div className="my-12">
-                        <p className="text-zinc-900 text-sm font-thin">resultados:</p>
+                        <p className="text-zinc-900 text-sm font-thin">resultados para:</p>
                         <h1 className="text-2xl mx-4 font-semibold text-zinc-900">"{serverData.params?.search}"</h1>
                         <hr className="my-2 border-gray-800" />
                         <div className="md:my-6">

@@ -4,10 +4,10 @@ import Outclick from 'react-outclick-handler'
 interface Props {
     children?: React.ReactNode;
     open: boolean;
-    callback: () => void;
+    closeCallback: () => void;
 }
 
-const OpaqueBackground = ({ open, callback, children }: Props) => {
+const OpaqueBackground = ({ open, closeCallback, children }: Props) => {
     const [opened, setOpened] = useState<boolean>(open);
 
     useEffect(() => {
@@ -18,8 +18,8 @@ const OpaqueBackground = ({ open, callback, children }: Props) => {
     }, [open])
 
     return opened ?
-        <div className={`fixed h-screen ${open !== true ? "backdrop-filter-none blur opacity-0" : "backdrop-blur-sm bg-black/60 blur-none opacity-100"} transition duration-300 w-screen top-0 left-0 flex items-center justify-center z-30`}>
-            <Outclick callback={callback}>
+        <div className={`fixed h-screen overflow-auto ${open !== true ? "backdrop-filter-none blur opacity-0" : "backdrop-blur-sm bg-black/60 blur-none opacity-100"} transition duration-300 w-screen top-0 left-0 flex items-center justify-center z-30`}>
+            <Outclick callback={closeCallback}>
                 {children}
             </Outclick>
         </div>

@@ -98,7 +98,7 @@ const PostForm = (post: Omit<Post, "topics" | "author"> & { topics: string[], au
 
     return (
         <div className="bg-white rounded-lg shadow-lg shadow-black-50/10">
-            <OpaqueBackground open={popup === "topic-form"} callback={() => setPopup("")}>
+            <OpaqueBackground open={popup === "topic-form"} closeCallback={() => setPopup("")}>
                 <div data-aos="fade-down" className="bg-white shadow-lg shadow-violet-700/40 rounded-lg w-96 max-w-screen">
                     <TopicForm onClose={() => setPopup("")} onSuccess={() => { setPopup(""); HandleLoadTopics(); }} />
                 </div>

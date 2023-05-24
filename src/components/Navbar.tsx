@@ -6,8 +6,8 @@ import { FaAngleDown, FaAngleUp, FaSearch } from "react-icons/fa"
 import { TiCode } from "react-icons/ti"
 import { MdClose } from "react-icons/md"
 import { BiMenu } from "react-icons/bi"
-import { BsPerson } from "react-icons/bs";
-import { AiOutlineHome, AiOutlineRead } from "react-icons/ai"
+import { BsFillPersonFill, BsPerson } from "react-icons/bs";
+import { AiFillHome, AiFillProject, AiFillRead, AiOutlineHome, AiOutlineProject, AiOutlineRead } from "react-icons/ai"
 
 import Outclick from 'react-outclick-handler'
 
@@ -54,9 +54,18 @@ const Index = ({ search_ = "" }) => {
                         <Outclick callback={() => setShowNavbar(false)}>
                             <div className={`${showNavbar ? "max-w-64 " : "max-w-0 "}w-full navbar lg:max-w-none lg:block duration-300 h-full bg-white lg:bg-transparent overflow-auto lg:max-w-auto`}>
                                 <div className="p-4 lg:p-0 justify-start flex flex-col lg:flex-row lg:items-center gap-4 font-medium">
-                                    <Link to="/" className={`order-1 bg-white px-4 py-1 rounded ${location.pathname === "/" ? "text-zinc-800" : "text-zinc-500 hover:text-zinc-600"} flex items-center gap-1`}><AiOutlineHome /> Página Inicial</Link>
-                                    <Link to="/about" className={`order-1 bg-white px-4 py-1 rounded ${location.pathname.startsWith("/about") ? "text-zinc-800" : "text-zinc-500 hover:text-zinc-600"} flex items-center gap-1`}> <BsPerson /> Sobre</Link>
-                                    <Link to="/blog" className={`order-1 bg-white px-4 py-1 rounded ${location.pathname.startsWith("/blog") ? "text-zinc-800" : "text-zinc-500 hover:text-zinc-600"} flex items-center gap-1`}> <AiOutlineRead /> Blog</Link>
+                                    <Link to="/" className={`order-1 bg-white px-4 py-1 rounded ${location.pathname === "/" ? "text-zinc-800" : "text-zinc-500 hover:text-zinc-600"} flex items-center gap-1`}>
+                                        {location.pathname === "/" ? <AiFillHome /> : <AiOutlineHome />} Página Inicial
+                                    </Link>
+                                    <Link to="/about" className={`order-1 bg-white px-4 py-1 rounded ${location.pathname.startsWith("/about") ? "text-zinc-800" : "text-zinc-500 hover:text-zinc-600"} flex items-center gap-1`}>
+                                        {location.pathname.startsWith("/about") ? <BsFillPersonFill /> : <BsPerson />} Sobre mim
+                                    </Link>
+                                    <Link to="/projects" className={`order-1 bg-white px-4 py-1 rounded ${location.pathname.startsWith("/projects") ? "text-zinc-800" : "text-zinc-500 hover:text-zinc-600"} flex items-center gap-1`}>
+                                        {location.pathname.startsWith("/projects") ? <AiFillProject /> : <AiOutlineProject />} Projetos
+                                    </Link>
+                                    <Link to="/blog" className={`order-1 bg-white px-4 py-1 rounded ${location.pathname.startsWith("/blog") ? "text-zinc-800" : "text-zinc-500 hover:text-zinc-600"} flex items-center gap-1`}>
+                                        {location.pathname.startsWith("/blog") ? <AiFillRead /> : <AiOutlineRead />} Blog
+                                    </Link>
                                     <div className="order-0 lg:order-1">
                                         <button className="lg:hidden w-full flex justify-end">
                                             <MdClose onClick={() => setShowNavbar(false)} className="text-zinc-500 hover:text-zinc-700 text-4xl cursor-pointer" />
