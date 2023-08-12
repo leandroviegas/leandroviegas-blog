@@ -1,7 +1,7 @@
 import { Schema } from "mongoose";
 
 export let UserSchema = new Schema({
-    username: { type: String, unique: true },
+    username: { type: String },
     email: { type: String, unique: true },
     about: { type: String },
     link: { type: String, unique: true },

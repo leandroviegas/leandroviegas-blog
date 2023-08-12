@@ -17,12 +17,14 @@ export function ensureAuthenticated(request: Request, response: Response, next: 
     const [, token] = authToken.split(" ");
 
     try {
+        console.log(process.env.JSONWEBTOKEN_DECODE_KEY)
+        console.log(token)
         const { sub } = verify(token, process.env.JSONWEBTOKEN_DECODE_KEY) as IPayload;
         request.user_id = sub;
 
         return next();
     } catch (e) {
-        console.log(e)
+        console.error(e)
         throw new Error("authentication/invalid-token")
     }
 }
