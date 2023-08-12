@@ -4,24 +4,6 @@ import { User } from "../Model/User.model";
 import dbConnect from "../utils/dbConnect";
 
 export default class UserEntity {
-    readonly _id?: Types.ObjectId;
-
-    readonly username: string;
-
-    readonly role?: string;
-
-    readonly email: string;
-
-    readonly about?: string;
-
-    readonly profilePicture?: string;
-
-    readonly link: string;
-
-    password: string;
-
-    readonly active: boolean;
-
     // Validation function
     async validate?() {
         // Connect to the database
@@ -42,15 +24,15 @@ export default class UserEntity {
         }
     }
 
-    constructor({ _id, username, email, profilePicture, password, link, active, role, about }: UserEntity) {
-        this._id = _id;
-        this.link = link;
-        this.role = role;
-        this.email = email;
-        this.active = active ?? false;
-        this.username = username;
-        this.about = about;
-        this.password = password;
-        this.profilePicture = profilePicture;
-    }
+    constructor(
+        readonly _id: Types.ObjectId,
+        readonly username: string,
+        readonly email: string,
+        public password: string,
+        readonly profilePicture: string,
+        readonly about: string,
+        readonly link: string,
+        readonly active: boolean,
+        readonly role: string,
+    ) { };
 }

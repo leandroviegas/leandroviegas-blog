@@ -39,23 +39,22 @@ class UserController {
   }
 
   async post(request: Request, response: Response) {
-    const { username, password, email, link, profilePicture, about } = request.body;
-
-    console.log(username)
+    const { _id, username, email, password, profilePicture, about, link, active, role } = Object.assign(
+      { // default values
+        about: ""
+      },
+      request.body, // form values
+      { // mandatory values
+        _id: undefined,
+        active: true,
+        role: "user"
+      }
+    );
 
     // Connect to the database
     await DbConnect();
 
-    const userEntity = new UserEntity({
-      username,
-      password,
-      email,
-      link,
-      about: about || "",
-      role: "user",
-      profilePicture,
-      active: true,
-    });
+    const userEntity = new UserEntity(_id, username, email, password, profilePicture, about, link, active, role);
 
     // Validating the informations
     await userEntity.validate()
@@ -77,7 +76,17 @@ class UserController {
   }
 
   async update(request: Request, response: Response) {
-    const { _id, username, password, email, link, about, profilePicture } = request.body;
+    const { _id, username, email, password, profilePicture, about, link, active, role } = Object.assign(
+      { // default values
+        _id: undefined,
+        about: ""
+      },
+      request.body, // form values
+      { // mandatory values
+        active: true,
+        role: "user"
+      }
+    );
 
     // Connect to the database
     await DbConnect();
@@ -87,17 +96,7 @@ class UserController {
 
     if (!user) throw new Error("user/not-found")
 
-    const userEntity = new UserEntity({
-      _id: user._id,
-      username: username ?? user.username,
-      password: password ?? user.password,
-      active: user.active,
-      about: about ?? user.about,
-      email: email ?? user.email,
-      link: link ?? user.link,
-      role: user.role,
-      profilePicture: profilePicture ?? user.profilePicture
-    });
+    const userEntity = new UserEntity(_id, username, email, password, profilePicture, about, link, active, role);
 
     // Validating the informations
     await userEntity.validate()

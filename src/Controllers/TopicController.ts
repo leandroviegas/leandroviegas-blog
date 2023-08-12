@@ -33,12 +33,12 @@ class TopicController {
   }
 
   async post(request: Request, response: Response) {
-    const { name, link, description, image } = request.body;
+    const { _id, name, link, description, image } = Object.assign({ _id: undefined }, request.body);
 
     // Connect to the database
     await DbConnect();
 
-    const topicEntity = new TopicEntity({ name, link, description, image });
+    const topicEntity = new TopicEntity(_id, name, link, description, image);
 
     // Validating the informations
     await topicEntity.validate()
@@ -61,7 +61,7 @@ class TopicController {
     // Connect to the database
     await DbConnect();
 
-    const topicEntity = new TopicEntity({ _id, name, link, description, image });
+    const topicEntity = new TopicEntity( _id, name, link, description, image);
 
     // Validating the informations
     await topicEntity.validate()

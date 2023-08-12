@@ -2,6 +2,7 @@ import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import { User } from "../Model/User.model";
 import dbConnect from "../utils/dbConnect";
+import UserEntity from "../Entity/User.entity";
 
 interface IAuthenticateRequest {
     usernameOrEmail: string;
@@ -22,6 +23,49 @@ class AuthenticateUserService {
         const passwordMatch = await compare(password, user.password);
 
         if (!passwordMatch) throw new Error("authentication/email-password-incorrect");
+
+        const token = sign(
+            { email: user.email, role: user.role },
+            process.env.JSONWEBTOKEN_DECODE_KEY,
+            { subject: user.id, expiresIn: "30d" }
+        );
+
+        return {
+            token,
+            user: {
+                id: user.id,
+                username: user.username,
+                email: user.email,
+                profilePicture: user.profilePicture,
+                role: user.role
+            }
+        };
+    }
+
+    async GoogleAuth({ email, displayName, picture }: { email: string, displayName: string, picture: string }) {
+        if (!email) throw new Error("authentication/email-password-incorrect");
+
+        // Connecting to the database
+        await dbConnect()
+
+        let user = await User.findOne({ email }).select("_id username email profilePicture password role").exec();
+
+        if (!user) {
+            const { username, password, profilePicture, about, link, active, role } =
+            {
+                about: "",
+                username: displayName,
+                password: "",
+                profilePicture: picture,
+                link: encodeURIComponent(displayName),
+                active: true,
+                role: "user"
+            };
+
+            const userEntity = new UserEntity(undefined, username, email, password, profilePicture, about, link, active, role);
+
+            user = await User.create(userEntity);
+        };
 
         const token = sign(
             { email: user.email, role: user.role },

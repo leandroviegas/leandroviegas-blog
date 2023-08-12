@@ -3,16 +3,6 @@ import { Topic } from "../Model/Topic.model";
 import dbConnect from "../utils/dbConnect";
 
 export default class TopicEntity {
-    readonly _id?: Types.ObjectId;
-
-    readonly name: string;
-
-    readonly link: string;
-
-    readonly description: string;
-
-    readonly image?: string;
-
     // Validation function
     async validate?() {
         // Connect to the database
@@ -24,11 +14,11 @@ export default class TopicEntity {
             throw new Error("topic/link/alredy-in-use")
     }
 
-    constructor({ _id, name, link, description, image }: TopicEntity) {
-        this._id = _id;
-        this.name = name;
-        this.link = link;
-        this.description = description;
-        this.image = image;
-    }
+    constructor(
+        readonly _id: Types.ObjectId,
+        readonly name: string,
+        readonly link: string,
+        readonly description: string,
+        readonly image: string
+    ) { };
 }

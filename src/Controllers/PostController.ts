@@ -104,25 +104,32 @@ class PostController {
   }
 
   async post(request: Request, response: Response) {
-    const { title, content, image, link, readTime, active, topics, keywords, description, modifiedAt, postedAt } = request.body;
+    const { _id, title, content, image, link, readTime, active, topics, keywords, description, modifiedAt, postedAt, author } = Object.assign(
+      request.body,
+      {
+        author: new Types.ObjectId(request.user_id),
+        _id: undefined
+      }
+    );
 
     // Connect to the database
     await DbConnect();
 
-    const post = new PostEntity({
+    const post = new PostEntity(
+      _id,
       title,
-      content,
       image,
-      link,
-      readTime,
-      active,
-      keywords,
+      content,
       description,
+      keywords,
+      link,
       modifiedAt,
       postedAt,
-      topics: topics.map(topic => new Types.ObjectId(topic)),
-      author: new Types.ObjectId(request.user_id)
-    });
+      readTime,
+      active,
+      author,
+      topics.map(topic => new Types.ObjectId(topic)) // Topics
+    );
 
     // Validating the informations
     await post.validate()
@@ -140,26 +147,29 @@ class PostController {
   }
 
   async update(request: Request, response: Response) {
-    const { _id, title, content, image, link, readTime, active, topics, author, keywords, description, modifiedAt, postedAt } = request.body;
-
+    const { _id, title, content, image, link, readTime, active, topics, keywords, description, modifiedAt, postedAt, author } = Object.assign(
+      request.body,
+      {
+        author: new Types.ObjectId(request.user_id)
+      });
     // Connect to the database
     await DbConnect();
 
-    const postEntity = new PostEntity({
-      _id: new Types.ObjectId(_id),
+    const postEntity = new PostEntity(
+      _id,
       title,
-      content,
       image,
-      link,
-      readTime,
-      active,
-      keywords,
+      content,
       description,
+      keywords,
+      link,
       modifiedAt,
       postedAt,
-      topics: topics.map(topic => new Types.ObjectId(topic)),
-      author: new Types.ObjectId(request.user_id)
-    });
+      readTime,
+      active,
+      author,
+      topics.map(topic => new Types.ObjectId(topic)) // Topics
+    );
 
     await postEntity.validate()
 

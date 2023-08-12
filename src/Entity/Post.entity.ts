@@ -3,32 +3,6 @@ import { Post } from "../Model/Post.model";
 import dbConnect from "../utils/dbConnect";
 
 export default class PostEntity {
-    readonly _id?: Types.ObjectId;
-
-    readonly title: string;
-
-    readonly content: string;
-
-    readonly image?: string;
-
-    readonly link: string;
-
-    readonly readTime: number;
-
-    readonly active: boolean;
-
-    readonly topics: Types.ObjectId[];
-
-    readonly author: Types.ObjectId;
-
-    readonly keywords: string;
-
-    readonly description: string;
-
-    readonly modifiedAt: Date;
-
-    readonly postedAt: Date;
-
     // Validation function
     async validate?() {
         // Connect to the database
@@ -40,19 +14,20 @@ export default class PostEntity {
             throw new Error("post/link/alredy-in-use")
     }
 
-    constructor({ _id, title, image, content, description, keywords, link, modifiedAt, postedAt, readTime, active, author, topics }: PostEntity) {
-        this._id = _id;
-        this.author = author;
-        this.topics = topics;
-        this.title = title;
-        this.content = content;
-        this.image = image;
-        this.link = link;
-        this.readTime = readTime;
-        this.active = active;
-        this.keywords = keywords;
-        this.description = description;
-        this.modifiedAt = modifiedAt;
-        this.postedAt = postedAt;
+    constructor(
+        readonly _id: Types.ObjectId,
+        readonly title: string,
+        readonly image: string,
+        readonly content: string,
+        readonly description: string,
+        readonly keywords: string,
+        readonly link: string,
+        readonly modifiedAt: Date,
+        readonly postedAt: Date,
+        readonly readTime: number,
+        readonly active: boolean,
+        readonly author: Types.ObjectId,
+        readonly topics: Types.ObjectId[]
+    ) { 
     }
 }
