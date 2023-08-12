@@ -27,7 +27,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     const [cookies, setCookie, removeCookie] = useCookies(['authentication', "role"]);
 
     useEffect(() => {
-        const google_token_string = new URLSearchParams(window.location.search).get('token') || "{}";
+        const google_token_string = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : "").get('token') || "{}";
         const google_token: {
             token: string,
             user: {
@@ -54,7 +54,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
                 signOut();
             }
         } else {
-            signOut();
+           signOut();
         }
     }, [])
 
