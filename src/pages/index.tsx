@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import Layout from "../layouts/UserLayout"
 import Head from "../components/Head";
@@ -9,6 +9,7 @@ import leandroViegasVintage from "../images/leandro_viegas_vintage.png"
 import perfilBackground from "../images/perfil_background.svg"
 
 const Index = () => {
+
     return (
         <Layout>
             <Head title="Bem vindo - Leandro Viegas" description="Sou desenvolvedor e trabalho com diversas tecnologias" />

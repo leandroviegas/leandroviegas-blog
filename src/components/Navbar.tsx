@@ -53,7 +53,7 @@ const Index = ({ search_ = "" }) => {
                     <div className={`${showNavbar ? "" : "hidden"} lg:block w-screen h-screen lg:w-auto lg:h-auto fixed lg:relative right-0 top-0 z-20 flex justify-end backdrop-blur-sm bg-black/70 lg:bg-transparent`}>
                         <Outclick callback={() => setShowNavbar(false)}>
                             <div className={`${showNavbar ? "max-w-64 " : "max-w-0 "}w-full navbar lg:max-w-none lg:block duration-300 h-full bg-white lg:bg-transparent overflow-auto lg:max-w-auto`}>
-                                <div className="p-4 lg:p-0 justify-start flex flex-col lg:flex-row lg:items-center gap-4 font-medium">
+                                <div className="p-4 lg:p-0 justify-start flex flex-col lg:flex-row lg:items-center gap-5 font-medium">
                                     <Link to="/" className={`order-1 bg-white px-4 py-1 rounded ${location.pathname === "/" ? "text-zinc-800" : "text-zinc-500 hover:text-zinc-600"} flex items-center gap-1`}>
                                         {location.pathname === "/" ? <AiFillHome /> : <AiOutlineHome />} Página Inicial
                                     </Link>
@@ -74,12 +74,17 @@ const Index = ({ search_ = "" }) => {
                                             <div>
                                                 <Outclick callback={() => setUserDropdown(false)}>
                                                     <button onClick={() => setUserDropdown(!userDropdown)} className={`flex items-center gap-1 text-zinc-700 hover:text-zinc-900`}>
+                                                        {
+                                                            user.profilePicture &&
+                                                            <img className="rounded-full h-7 mr-1" src={user.profilePicture} alt={user.username + " profile picture"} referrerPolicy="no-referrer" />
+                                                        }
                                                         <span>{user.username}</span>
+
                                                         {!userDropdown && <span><FaAngleDown /></span>}
                                                         {userDropdown && <span><FaAngleUp /></span>}
                                                     </button>
-                                                    <div className={`${userDropdown ? "max-h-auto dropdown-animate" : "max-h-0"} border-l lg:border-none overflow-y-auto lg:absolute mt-3 right-0 flex flex-col text-zinc-300 lg:text-zinc-700 text-left`}>
-                                                        <button onClick={signOut} className="lg:bg-white hover:text-zinc-100 text-left w-full px-3 py-1 lg:py-0.5 rounded-t lg:hover:text-zinc-900 cursor-pointer">Sair</button>
+                                                    <div className={`${userDropdown ? "max-h-auto dropdown-animate" : "max-h-0"} border-l lg:border-none overflow-y-auto lg:absolute mt-2 right-0 flex flex-col text-zinc-300 lg:text-zinc-700 text-left`}>
+                                                        <button onClick={signOut} className="lg:bg-white hover:text-zinc-100 text-left w-full px-4 py-2 lg:py-0.5 rounded-t lg:hover:text-zinc-900 cursor-pointer">Sair</button>
                                                         {user.role === "admin" &&
                                                             <Link to={"/admin/dashboard"} className="lg:bg-white hover:text-zinc-100 w-full px-3 py-1 lg:py-0.5 rounded-b lg:hover:text-zinc-900 cursor-pointer">Área administrativa</Link>}
                                                     </div>

@@ -11,7 +11,6 @@ type AuthContextType = {
         role?: any;
     };
     signOut: () => Promise<void>;
-    signInWithGoogle: () => Promise<void>;
     signIn: (usernameOrEmail: string, password: string) => Promise<void>;
     signUp: (username: string, email: string, password: string) => Promise<void>;
 }
@@ -28,12 +27,29 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     const [cookies, setCookie, removeCookie] = useCookies(['authentication', "role"]);
 
     useEffect(() => {
-        if (cookies.authentication) {
-            if (validateCookies(cookies.authentication)) {
-                api.get("/login", { headers: { authorization: `Bearer ${cookies.authentication}` } }).then(response => {
+        const google_token_string = new URLSearchParams(window.location.search).get('token') || "{}";
+        const google_token: {
+            token: string,
+            user: {
+                id: string,
+                username: string,
+                email: string,
+                profilePicture: string,
+                role: string
+            }
+        } = JSON.parse(google_token_string)
+
+        if (google_token?.token) {
+            setCookie("authentication", google_token.token, { path: '/' });
+            window.history.pushState({}, document.title, window.location.pathname);
+        }
+
+        if (cookies.authentication || google_token?.token) {
+            if (validateCookies(cookies.authentication || google_token?.token)) {
+                api.get("/login", { headers: { authorization: `Bearer ${cookies.authentication || google_token.token}` } }).then(response => {
                     setUser(response.data.user);
                     setCookie("role", response.data.user.role, { path: '/' });
-                }).catch(err => { console   .error(err) })
+                }).catch(err => { console.error(err) })
             } else {
                 signOut();
             }
@@ -41,10 +57,6 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
             signOut();
         }
     }, [])
-
-    async function signInWithGoogle() {
-
-    }
 
     async function signIn(usernameOrEmail: string, password: string) {
         return api.post("/login", { usernameOrEmail, password }).then(response => {
@@ -67,7 +79,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     }
 
     return (
-        <AuthContext.Provider value={{ user, cookies, signInWithGoogle, signUp, signIn, signOut }}>
+        <AuthContext.Provider value={{ user, cookies, signUp, signIn, signOut }}>
             {props.children}
         </AuthContext.Provider>
     );

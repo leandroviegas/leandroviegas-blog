@@ -22,7 +22,7 @@ const SignPopup = ({ open, setOpen, tab, setTab }) => {
                     </div>
 
                     <div className="w-full flex justify-center py-3">
-                        <button className="bg-red-500 rounded-lg font-semibold text-white transition px-4 py-2 hover:bg-red-600 flex items-center gap-2"><span><BsGoogle /></span><span className="text-sm opacity-90 font-normal">Entrar com Google</span></button>
+                        <button className="bg-red-500 rounded-lg text-white transition hover:bg-red-600"><a className="flex items-center px-4 py-2 gap-2 font-semibold" href={`http://localhost:3333/auth?originRequestLink=${window.location.href}`}><span><BsGoogle /></span><span className="text-sm opacity-90 font-normal">Entrar com Google</span></a></button>
                     </div>
 
                     <div className="flex justify-center items-center py-3">
