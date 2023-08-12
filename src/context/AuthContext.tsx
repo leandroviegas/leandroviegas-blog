@@ -39,7 +39,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
             }
         } = JSON.parse(google_token_string)
 
-        if (google_token?.token) {
+        if (google_token?.token && typeof window !== 'undefined') {
             setCookie("authentication", google_token.token, { path: '/' });
             window.history.pushState({}, document.title, window.location.pathname);
         }
