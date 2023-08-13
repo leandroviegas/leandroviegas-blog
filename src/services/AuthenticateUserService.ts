@@ -67,8 +67,6 @@ class AuthenticateUserService {
             user = await User.create(userEntity);
         };
 
-        console.log(user);
-
         const token = sign(
             { email: user.email, role: user.role },
             `${process.env.JSONWEBTOKEN_DECODE_KEY}`,
