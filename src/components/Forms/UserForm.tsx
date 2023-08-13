@@ -40,7 +40,7 @@ const UserForm = ({ user, onClose, onSuccess }) => {
             setStatus("loading");
             try {
                 let headers = { authorization: `Bearer ${cookies.authentication}` }
-                console.log(form)
+                
                 if (form?._id) {
                     await api.put("/users", form, { headers })
                 } else {

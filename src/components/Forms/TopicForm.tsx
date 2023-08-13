@@ -38,7 +38,7 @@ const TopicForm = ({ topic, onClose, onSuccess }) => {
             setStatus("loading");
             try {
                 let headers = { authorization: `Bearer ${cookies.authentication}` }
-                console.log(form)
+                
                 if (form?._id) {
                     await api.put("/topics", form, { headers })
                 } else {
