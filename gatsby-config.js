@@ -1,7 +1,3 @@
-require("dotenv").config({
-  path: `.env.${process.env.NODE_ENV}`,
-})
-
 module.exports = {
   siteMetadata: {
     title: `Gatsby Default Starter`,
@@ -11,11 +7,11 @@ module.exports = {
   },
   plugins: [
     {
-      resolve: `gatsby-source-custom`,
+      resolve: `gatsby-plugin-env-variables`,
       options: {
-        apiKey: process.env.API_KEY,
+        allowList: ["API_URL"]
       },
-    },
+     },
     'gatsby-plugin-postcss',
     `gatsby-plugin-react-helmet`,
     {
