@@ -9,7 +9,7 @@ interface IPayload {
 
 export function ensureAuthenticated(request: Request, response: Response, next: NextFunction) {
     const authToken = request.headers.authorization;
-    
+
     if (!authToken) {
         throw new Error("authentication/not-logged-in")
     }
@@ -17,9 +17,7 @@ export function ensureAuthenticated(request: Request, response: Response, next: 
     const [, token] = authToken.split(" ");
 
     try {
-        console.log(process.env.JSONWEBTOKEN_DECODE_KEY)
-        console.log(token)
-        const { sub } = verify(token, process.env.JSONWEBTOKEN_DECODE_KEY) as IPayload;
+        const { sub } = verify(token, `${process.env.JSONWEBTOKEN_DECODE_KEY}`) as IPayload;
         request.user_id = sub;
 
         return next();
@@ -38,7 +36,7 @@ export function ensureAdminAuthenticated(request: Request, response: Response, n
 
     const [, token] = authToken.split(" ");
     try {
-        const { sub, admin } = verify(token, process.env.JSONWEBTOKEN_DECODE_KEY) as IPayload;
+        const { sub, admin } = verify(token, `${process.env.JSONWEBTOKEN_DECODE_KEY}`) as IPayload;
 
         if (!admin) {
             throw new Error("authentication/not-logged-in-as-administrator")
