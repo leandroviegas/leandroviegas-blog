@@ -26,7 +26,7 @@ class AuthenticateUserService {
 
         const token = sign(
             { email: user.email, role: user.role },
-            process.env.JSONWEBTOKEN_DECODE_KEY,
+            `${process.env.JSONWEBTOKEN_DECODE_KEY}`,
             { subject: user.id, expiresIn: "30d" }
         );
 
@@ -69,7 +69,7 @@ class AuthenticateUserService {
 
         const token = sign(
             { email: user.email, role: user.role },
-            process.env.JSONWEBTOKEN_DECODE_KEY,
+            `${process.env.JSONWEBTOKEN_DECODE_KEY}`,
             { subject: user.id, expiresIn: "30d" }
         );
 
