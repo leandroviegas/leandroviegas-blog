@@ -177,7 +177,9 @@ class PostController {
     const post = await Post.findOne({ _id: postEntity._id, author: postEntity.author }).exec()
 
     // Saving the informations
-    await post.updateOne(postEntity);
+    post.set(postEntity);
+    
+    await post.save();
 
     let postJSON = post.toJSON();
 
