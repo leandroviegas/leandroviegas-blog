@@ -1,12 +1,12 @@
 import { Router } from "express";
 
-import { AuthenticationController } from "./Controllers/AuthenticationController";
-import { TopicController } from "./Controllers/TopicController";
-import { PostController } from "./Controllers/PostController";
-import { UserController } from "./Controllers/UserController";
+import { AuthenticationController } from "@Controllers/AuthenticationController";
+import { TopicController } from "@Controllers/TopicController";
+import { PostController } from "@Controllers/PostController";
+import { UserController } from "@Controllers/UserController";
 
-import { ensureAuthenticated } from "./middlewares/ensureAutenticated";
-import { accessManagement } from "./middlewares/accessManagement";
+import { ensureAuthenticated } from "@middlewares/ensureAutenticated";
+import { accessManagement } from "@middlewares/accessManagement";
 
 const router = Router();
 

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import TopicEntity from "../Entity/Topic.entity";
-import { TopicSchema } from "../Schemas/Topic.schema";
+import TopicEntity from "@Entity/Topic.entity";
+import { TopicSchema } from "@Schemas/Topic.schema";
 
 export let TopicModel = () => {
   try {

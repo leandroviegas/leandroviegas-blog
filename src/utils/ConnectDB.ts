@@ -15,15 +15,16 @@ let cached = global.mongoose
 if (!cached) {
     cached = global.mongoose = { conn: null, promise: null }
 }
-async function dbConnect() {
+async function ConnectDB() {
     if (cached.conn) {
         return cached.conn
     }
     if (!cached.promise) {
+        mongoose.set('strictQuery', true);
         cached.promise = mongoose.connect(MONGODB_URI, {
             maxPoolSize: 10,
             minPoolSize: 2,
-           
+
         }).then((mongoose) => {
             return mongoose
         })
@@ -32,4 +33,4 @@ async function dbConnect() {
     return cached.conn
 }
 
-export default dbConnect
+export default ConnectDB

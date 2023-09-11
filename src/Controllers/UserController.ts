@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
 import { hash } from "bcryptjs";
-import UserEntity from "../Entity/User.entity";
-import { User } from "../Model/User.model";
-import DbConnect from "./../utils/dbConnect";
+import UserEntity from "@Entity/User.entity";
+import { User } from "@Models/User.model";
+import ConnectDB from "@utils/ConnectDB";
 
 class UserController {
   async list(request: Request, response: Response) {
     const { } = request.query;
 
-    await DbConnect();
+    await ConnectDB();
 
     const users = await User.find({}).select("-password").exec()
 
@@ -18,7 +18,7 @@ class UserController {
   async get(request: Request, response: Response) {
     const { _id } = request.query;
 
-    await DbConnect();
+    await ConnectDB();
 
     if (typeof _id === "string") {
       const user = await User.findById(_id).select("-password").exec()
@@ -46,7 +46,7 @@ class UserController {
       }
     );
 
-    await DbConnect();
+    await ConnectDB();
 
     const userEntity = new UserEntity(_id, username, email, password, profilePicture, about, link, active, role);
 
@@ -80,7 +80,7 @@ class UserController {
 
     if (["admin"].includes(request.user_role) && _id !== request.user_id) throw Error("access-denied")
 
-    await DbConnect();
+    await ConnectDB();
 
     const user = await User.findOne({ _id: _id }).exec()
 
@@ -109,7 +109,7 @@ class UserController {
 
     if (["admin"].includes(request.user_role) && _id !== request.user_id) throw Error("access-denied")
 
-    await DbConnect();
+    await ConnectDB();
 
     if (typeof _id !== 'string')
       throw new Error("user/id/invalid-id")
@@ -131,7 +131,7 @@ class UserController {
 
     if (["admin"].includes(request.user_role) && _id !== request.user_id) throw Error("access-denied")
 
-    await DbConnect();
+    await ConnectDB();
 
     if (typeof _id !== 'string')
       throw new Error("user/id/invalid-id")

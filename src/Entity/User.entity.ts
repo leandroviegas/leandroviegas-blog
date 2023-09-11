@@ -1,13 +1,13 @@
 import { Types } from "mongoose";
 import validator from "validator";
-import { User } from "../Model/User.model";
-import dbConnect from "../utils/dbConnect";
+import { User } from "@Models/User.model";
+import ConnectDB from "@utils/ConnectDB";
 
 export default class UserEntity {
     // Validation function
     async validate?() {
         // Connect to the database
-        await dbConnect()
+        await ConnectDB()
 
         if (!validator.isEmail(this.email)) throw new Error("user/email/invalid-email")
 

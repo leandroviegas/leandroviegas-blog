@@ -1,12 +1,12 @@
 import { Types } from "mongoose";
-import { Post } from "../Model/Post.model";
-import dbConnect from "../utils/dbConnect";
+import { Post } from "@Models/Post.model";
+import ConnectDB from "@utils/ConnectDB";
 
 export default class PostEntity {
     // Validation function
     async validate?() {
         // Connect to the database
-        await dbConnect()
+        await ConnectDB()
 
         if (!(this.title?.length >= 4)) throw new Error("post/title/length-lower-than-4")
 

@@ -7,9 +7,9 @@ import cors from 'cors'
 // Google authentication
 import passport from 'passport';
 import cookieSession from 'cookie-session';
-import './utils/passport';
-import { AuthenticateUserService } from "./services/AuthenticateUserService"
-import dbConnect from "./utils/dbConnect"
+import '@utils/passport';
+import { AuthenticateUserService } from "@services/AuthenticateUserService"
+import ConnectDB from "@utils/ConnectDB"
 
 const authenticateUserService = new AuthenticateUserService();
 
@@ -88,6 +88,9 @@ app.use(
     }
 );
 
-app.listen(process.env.PORT || 3333, () => {
-    console.log(`Listening port: ${process.env.PORT || 3333}`);
+ConnectDB().then(() => {
+    app.listen(process.env.PORT || 3333, () => {
+        console.log(`Listening port: ${process.env.PORT || 3333}`);
+    })
 })
+

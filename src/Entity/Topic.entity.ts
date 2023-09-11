@@ -1,12 +1,12 @@
 import { Types } from "mongoose";
-import { Topic } from "../Model/Topic.model";
-import dbConnect from "../utils/dbConnect";
+import { Topic } from "@Models/Topic.model";
+import ConnectDB from "@utils/ConnectDB";
 
 export default class TopicEntity {
     // Validation function
     async validate?() {
         // Connect to the database
-        await dbConnect()
+        await ConnectDB()
 
         if (!(this.name?.length >= 4)) throw new Error("topic/name/length-lower-than-4")
 

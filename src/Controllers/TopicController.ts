@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import TopicEntity from "../Entity/Topic.entity";
-import { Topic } from "../Model/Topic.model";
-import DbConnect from "../utils/dbConnect";
+import TopicEntity from "@Entity/Topic.entity";
+import { Topic } from "@Models/Topic.model";
+import ConnectDB from "@utils/ConnectDB";
 
 class TopicController {
   async list(request: Request, response: Response) {
     const { } = request.query;
 
-    await DbConnect();
+    await ConnectDB();
 
     const topics = await Topic.find({}).select("-password").exec()
 
@@ -17,7 +17,7 @@ class TopicController {
   async get(request: Request, response: Response) {
     const { _id, link } = request.query;
 
-    await DbConnect();
+    await ConnectDB();
 
     const post = await Topic.findOne({ $or: [{ _id }, { link }] }).select("").exec()
 
@@ -31,7 +31,7 @@ class TopicController {
   async post(request: Request, response: Response) {
     const { _id, name, link, description, image } = Object.assign({ _id: undefined }, request.body);
 
-    await DbConnect();
+    await ConnectDB();
 
     const topicEntity = new TopicEntity(_id, name, link, description, image);
 
@@ -49,7 +49,7 @@ class TopicController {
   async update(request: Request, response: Response) {
     const { _id, name, link, description, image } = request.body;
 
-    await DbConnect();
+    await ConnectDB();
 
     const topicEntity = new TopicEntity( _id, name, link, description, image);
 
@@ -69,7 +69,7 @@ class TopicController {
   async delete(request: Request, response: Response) {
     const { _id } = request.query;
 
-    await DbConnect();
+    await ConnectDB();
 
     if (typeof _id !== 'string')
       throw new Error("topic/id/invalid-id")

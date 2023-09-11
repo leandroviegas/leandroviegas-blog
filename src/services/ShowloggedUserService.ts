@@ -1,10 +1,10 @@
-import { User } from "../Model/User.model";
-import dbConnect from "../utils/dbConnect";
+import { User } from "@Models/User.model";
+import ConnectDB from "@utils/ConnectDB";
 
 class ShowloggedUserService {
     async execute(user_id){
         // Connecting to the database
-        await dbConnect()
+        await ConnectDB()
 
         const users = await User.findById(user_id).select("_id username email profilePicture role").exec();
 

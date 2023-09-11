@@ -1,8 +1,8 @@
 import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
-import { User } from "../Model/User.model";
-import dbConnect from "../utils/dbConnect";
-import UserEntity from "../Entity/User.entity";
+import { User } from "@Models/User.model";
+import ConnectDB from "@utils/ConnectDB";
+import UserEntity from "@Entity/User.entity";
 
 interface IAuthenticateRequest {
     usernameOrEmail: string;
@@ -14,7 +14,7 @@ class AuthenticateUserService {
         if (!usernameOrEmail || !password) throw new Error("authentication/email-password-incorrect");
 
         // Connecting to the database
-        await dbConnect()
+        await ConnectDB()
 
         let user = await User.findOne({ $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }] }).select("_id username email profilePicture password role").exec();
 
@@ -46,7 +46,7 @@ class AuthenticateUserService {
         if (!email) throw new Error("authentication/email-password-incorrect");
 
         // Connecting to the database
-        await dbConnect()
+        await ConnectDB()
 
         let user = await User.findOne({ email }).select("_id username email profilePicture password role").exec();
 

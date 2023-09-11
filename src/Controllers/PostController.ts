@@ -1,16 +1,15 @@
 import { Request, Response } from "express";
 import { Types } from "mongoose";
-import PostEntity from "../Entity/Post.entity";
-import { User } from "../Model/User.model";
-import { Topic } from "../Model/Topic.model";
-import { Post } from "../Model/Post.model";
-import DbConnect from "./../utils/dbConnect";
+import PostEntity from "@Entity/Post.entity";
+import { Topic } from "@Models/Topic.model";
+import { Post } from "@Models/Post.model";
+import ConnectDB from "@utils/ConnectDB";
 
 class PostController {
   async list(request: Request, response: Response) {
     const { } = request.query;
 
-    await DbConnect();
+    await ConnectDB();
 
     const posts = await Post.find({}).select("").exec()
 
@@ -20,7 +19,7 @@ class PostController {
   async get(request: Request, response: Response) {
     const { _id, link } = request.query;
 
-    await DbConnect();
+    await ConnectDB();
 
     const post = await Post.findOne({ $or: [{ _id }, { link }] }).populate('author', 'username link role about profilePicture').exec()
 
@@ -38,7 +37,7 @@ class PostController {
 
     let n_page = Math.max(25, Number(page))
 
-    await DbConnect();
+    await ConnectDB();
 
     const topic = await Topic.findOne({ 'link': { $in: topic_link } }).exec()
 
@@ -54,7 +53,7 @@ class PostController {
 
     let p_quantity = Number(post_quantity || 5)
 
-    await DbConnect();
+    await ConnectDB();
 
     let topic_query = {}
 
@@ -79,7 +78,7 @@ class PostController {
     let n_page = Math.max(25, Number(page))
 
     // Connect to the database
-    await DbConnect();
+    await ConnectDB();
 
     const total = await Post.find({
       $or: [
@@ -107,7 +106,7 @@ class PostController {
       }
     );
 
-    await DbConnect();
+    await ConnectDB();
 
     const post = new PostEntity(
       _id,
@@ -143,7 +142,7 @@ class PostController {
         author: new Types.ObjectId(!["admin"].includes(request.user_role) ? request.user_id : request.body.author)
       });
 
-    await DbConnect();
+    await ConnectDB();
 
     const postEntity = new PostEntity(
       _id,
@@ -185,7 +184,7 @@ class PostController {
   async delete(request: Request, response: Response) {
     const { _id } = request.query;
 
-    await DbConnect();
+    await ConnectDB();
 
     let post
 

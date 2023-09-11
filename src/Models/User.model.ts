@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import UserEntity from "../Entity/User.entity";
-import { UserSchema } from "../Schemas/User.schema";
+import UserEntity from "@Entity/User.entity";
+import { UserSchema } from "@Schemas/User.schema";
 
 export let UserModel = () => {
   try {
