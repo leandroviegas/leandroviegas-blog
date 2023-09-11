@@ -89,7 +89,7 @@ app.use(
 );
 
 dbConnect(() =>
-    app.listen("3333", () => {
+    app.listen(process.env.PORT, () => {
         console.log("Server is running on 3333 port.");
     })
 );
