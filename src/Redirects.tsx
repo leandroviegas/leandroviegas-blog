@@ -34,8 +34,8 @@ export function Admin({ children }) {
         !hasPermission && navigate("/")
 
     return hasPermission ? children : (
-        <div className="fixed h-screen w-screen top-0 left-0 flex items-center jusfify-center bg-gradient-to-b from-purple-600 to-indigo-500">
-            <BiLoaderAlt className="w-[50vw] h-[50vh] max-w-[8em] animate-spin fill-zinc-800 mx-auto" />
+        <div className="fixed h-screen w-screen top-0 left-0 flex items-center jusfify-center bg-white">
+            <BiLoaderAlt className="w-[10vw] h-[10vh] max-w-[8em] animate-spin fill-zinc-800 mx-auto" />
         </div>
     )
 };

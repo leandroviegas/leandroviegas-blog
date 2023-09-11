@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Link, navigate } from "gatsby"
 import { useLocation } from '@reach/router';
 
@@ -17,25 +17,23 @@ import SignPopup from "./Popups/SignPopup"
 const Index = ({ search_ = "" }) => {
     const location = useLocation();
 
+    const SignRef = useRef<{ setPopup: (string) => void, popped: boolean }>();
+
     const { signOut, user } = useAuth();
 
     const [showNavbar, setShowNavbar] = useState<boolean>(false);
 
     const [userDropdown, setUserDropdown] = useState<boolean>(false);
 
-    const [signOpen, setSignOpen] = useState<boolean>(false);
-
     const [search, setSearch] = useState<string>(search_ ?? "");
 
-    const [tab, setTab] = React.useState<"SignUp" | "SignIn">("SignUp");
-
     useEffect(() => {
-        document.body.style.overflowY = (signOpen || showNavbar) ? "hidden" : "auto";
-    }, [signOpen, showNavbar])
+        document.body.style.overflowY = (SignRef.current?.popped || showNavbar) ? "hidden" : "auto";
+    }, [SignRef.current?.popped, showNavbar])
 
     return (
         <>
-            <SignPopup open={signOpen} setOpen={setSignOpen} setTab={setTab} tab={tab} />
+            <SignPopup ref={SignRef} />
             <nav className="w-full max-w-screen">
                 <div className="container mx-auto flex flex-row justify-between lg:items-center py-6">
                     <div className="shrink-0 grow flex flex-col md:flex-row justify-start items-center gap-4 px-2">
@@ -92,8 +90,8 @@ const Index = ({ search_ = "" }) => {
                                             </div>
                                             :
                                             <div className="flex gap-4 text-sm font-semibold">
-                                                <button onClick={() => { setTab("SignIn"); setSignOpen(true); }} className="shrink-0 text-white bg-violet-700 hover:bg-violet-800 rounded py-1 px-4">Entrar</button>
-                                                <button onClick={() => { setTab("SignUp"); setSignOpen(true); }} className="shrink-0 text-white bg-violet-700 hover:bg-violet-800 rounded py-1 px-4">Registrar-se</button>
+                                                <button onClick={() => SignRef.current?.setPopup("SignIn")} className="shrink-0 text-white bg-violet-700 hover:bg-violet-800 rounded py-1 px-4">Entrar</button>
+                                                <button onClick={() => SignRef.current?.setPopup("SignUp")} className="shrink-0 text-white bg-violet-700 hover:bg-violet-800 rounded py-1 px-4">Registrar-se</button>
                                             </div>
                                         }
                                     </div>

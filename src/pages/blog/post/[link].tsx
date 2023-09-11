@@ -113,16 +113,16 @@ const Index = ({ serverData }) => {
                         <div className="col-span-4 lg:col-span-1">
                             <div className="sticky top-4">
                                 <div className="">
-                                    <img src={author.profilePicture || "https://via.placeholder.com/150"} alt={`${author.username} Profile Picture`}
+                                    <img src={author?.profilePicture || "https://via.placeholder.com/150"} alt={`${author?.username} Profile Picture`}
                                         className="object-cover z-10 relative w-24 h-24 mx-auto rounded-full shadow-xl p-[3px] bg-gradient-to-br from-indigo-600 to-purple-600" />
                                     <blockquote className="bg-white border -mt-12 flex flex-col justify-between p-12 text-center rounded-lg shadow-xl">
-                                        <p className="text-lg font-bold text-gray-700">{author.username}</p>
+                                        <p className="text-lg font-bold text-gray-700">{author?.username}</p>
                                         <p className="mt-1 text-xs font-medium text-gray-500">
-                                            {author.role}
+                                            {author?.role}
                                         </p>
                                         {author?.about &&
                                             <p className="mt-4 text-sm text-gray-500">
-                                                {author.about}
+                                                {author?.about}
                                             </p>}
                                     </blockquote>
                                 </div>

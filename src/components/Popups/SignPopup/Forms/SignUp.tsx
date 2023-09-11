@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../hooks/Auth";
+import { useAuth } from "../../../../hooks/Auth";
 
-import Alert from "../Alert";
-import FloatingLabelInput from "./Inputs/FloatingLabelInput";
+import Alert from "../../../Alert";
+import FloatingLabelInput from "../../../Inputs/FloatingLabelInput";
 import validator from "validator";
 
 import { VscLoading } from "react-icons/vsc";
@@ -14,7 +14,7 @@ const SignInForm = ({ onSuccess }) => {
 
     const [alerts, setAlerts] = useState<{ [key: string]: string[] }>({})
 
-    const [form, setForm] = useState<{ email: string, username: string, password: string }>({ email: "", username: "", password: "" })
+    const [form, setForm] = useState<{ email: string, username: string, password: string, passwordValidation: string }>({ email: "", username: "", password: "", passwordValidation: "" })
 
     const HandleSignUp = (evt: React.FormEvent<HTMLFormElement>) => {
         evt.preventDefault()
@@ -52,11 +52,20 @@ const SignInForm = ({ onSuccess }) => {
             setAlerts(a => ({ ...a, "email-error": [] }))
 
         if (!(form.password.length > 0))
-            setAlerts(a => ({ ...a, "password-error": ["Senha é obrigatório"] }))
-        else if (!validator.isStrongPassword(form.password))
-            setAlerts(a => ({ ...a, "password-error": ["Senha muito fraca"] }))
+            setAlerts(a => ({ ...a, "password-error": ["Senha é obrigatória"] }))
+        else if (form.password.length < 8)
+            setAlerts(a => ({ ...a, "password-error": ["Senha precisar ter 8 caracteres ou mais"] }))
+        else if (!form.password.match(/[A-Z]/))
+            setAlerts(a => ({ ...a, "password-error": ["Senha precisar ter letras em maisculo"] }))
+        else if (!form.password.match(/[^a-zA-Z\d]/))
+            setAlerts(a => ({ ...a, "password-error": ["Senha precisar ter caracteres especiais"] }))
         else
             setAlerts(a => ({ ...a, "password-error": [] }))
+
+        if (form.password !== form.passwordValidation)
+            setAlerts(a => ({ ...a, "passwordValidation-error": ["Senhas não são iguais"] }))
+        else
+            setAlerts(a => ({ ...a, "passwordValidation-error": [] }))
     }, [form])
 
     return (
@@ -72,6 +81,9 @@ const SignInForm = ({ onSuccess }) => {
             </div>
             <div className="my-2">
                 <FloatingLabelInput label="Senha" status={(status === "input-warnings" && alerts["password-error"]?.length > 0) ? "error" : "info"} messages={alerts["password-error"]} defaultValue="" onChange={evt => setForm({ ...form, password: evt.target.value })} type="password" />
+            </div>
+            <div className="my-2">
+                <FloatingLabelInput label="Validar senha" status={(status === "input-warnings" && alerts["passwordValidation-error"]?.length > 0) ? "error" : "info"} messages={alerts["passwordValidation-error"]} defaultValue="" onChange={evt => setForm({ ...form, passwordValidation: evt.target.value })} type="password" />
             </div>
             <hr className="py-1" />
             <div className="w-full">

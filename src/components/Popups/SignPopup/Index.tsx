@@ -1,15 +1,21 @@
-import React from "react";
+import React, { forwardRef, useImperativeHandle } from "react";
 
 import { BsGoogle } from "react-icons/bs";
 
-import SignInForm from "../Forms/SignInForm";
-import SignUpForm from "../Forms/SignUpForm";
-import OpaqueBackground from "../OpaqueBackground";
+import SignIn from "./Forms/SignIn";
+import SignUp from "./Forms/SignUp";
+import OpaqueBackground from "../../OpaqueBackground";
 
-const SignPopup = ({ open, setOpen, tab, setTab }) => {
+type Tabs = "SignUp" | "SignIn"
+
+const SignPopup = forwardRef<unknown, any>((_, ref) => {
+    const [tab, setTab] = React.useState<Tabs>();
+    const [popped, setPopped] = React.useState<boolean>(false);
+
+    useImperativeHandle(ref, () => ({ setPopup: (tab: Tabs) => { setTab(tab), setPopped(true) }, popped }));
 
     return (
-        <OpaqueBackground open={open} closeCallback={() => setOpen(false)}>
+        <OpaqueBackground open={popped} closeCallback={() => setPopped(false)}>
             <div data-aos="fade-down" className="md:top-4 absolute max-h-full h-full md:h-auto overflow-y-auto mx-auto bg-white rounded-lg max-w-screen max-w-[550px] w-full shadow">
                 <div className="p-8 text-zinc-700 rounded-t-lg h-auto">
                     <div className="grid grid-cols-2 border rounded">
@@ -30,14 +36,12 @@ const SignPopup = ({ open, setOpen, tab, setTab }) => {
                         <hr className="w-full" />
                     </div>
 
-                    {tab === "SignIn" &&
-                        <SignInForm onSuccess={() => setOpen(false)} />}
-                    {tab === "SignUp" &&
-                        <SignUpForm onSuccess={() => setOpen(false)} />}
+                    {tab === "SignIn" && <SignIn onSuccess={() => setPopped(false)} />}
+                    {tab === "SignUp" && <SignUp onSuccess={() => setPopped(false)} />}
                 </div>
             </div>
         </OpaqueBackground>
     )
-}
+})
 
 export default SignPopup;

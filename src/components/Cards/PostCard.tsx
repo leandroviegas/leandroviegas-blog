@@ -1,12 +1,12 @@
 import React, { memo } from "react"
 import { Link } from "gatsby"
 
-import truncate from "../utils/truncate"
+import truncate from "../../utils/truncate"
 import moment from "moment"
 
 import { FaUser } from "react-icons/fa"
 
-import postplaceholderImage from "../images/post_placeholder.jpg"
+import postplaceholderImage from "../../images/post_placeholder.jpg"
 
 const PostCardComponent = ({ link = "", title = "", description = "", postedAt, author, image = "" }) => {
     return (

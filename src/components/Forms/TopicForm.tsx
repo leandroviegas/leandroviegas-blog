@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import { useAuth } from "../../hooks/Auth";
 import linkfy from "../../utils/linkfy";
 import api from "../../services/api";
-import FloatingLabelInput from "./Inputs/FloatingLabelInput";
+import FloatingLabelInput from "../Inputs/FloatingLabelInput";
 import Alert from "../Alert";
 
 import { Topic } from "../../types/blog.type";

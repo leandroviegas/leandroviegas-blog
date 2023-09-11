@@ -32,7 +32,9 @@ const Index = () => {
         if (users.status === "loading") return;
         setUsers({ status: "loading", data: [] });
 
-        api.get("/users/list").then(resp => {
+        const headers = { authorization: `Bearer ${cookies.authentication}` }
+
+        api.get("/users/list", { headers }).then(resp => {
             setUsers({ status: "success", data: resp.data?.users });
         }).catch(err => {
             console.error(err)
@@ -59,7 +61,7 @@ const Index = () => {
             setDeleteStatus("error")
             setAlerts({ ...alerts, "user-delete": [err?.response?.data?.message || "Ocorreu um erro ao deletar usuário!"] })
         })
-        
+
     }
 
     useEffect(() => {

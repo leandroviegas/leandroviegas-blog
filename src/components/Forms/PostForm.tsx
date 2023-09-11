@@ -4,7 +4,7 @@ import { navigate } from "gatsby";
 import moment from "moment";
 
 import SunEditor from 'suneditor-react';
-import Toggle from "./Inputs/Toggle";
+import Toggle from "../Inputs/Toggle";
 import Alert from "../Alert";
 
 import api from "../../services/api";
@@ -17,7 +17,7 @@ import '../../css/suneditor.min.css';
 import { Topic, Post } from "../../types/blog.type";
 
 import { VscLoading } from "react-icons/vsc";
-import FloatingLabelInput from "./Inputs/FloatingLabelInput";
+import FloatingLabelInput from "../Inputs/FloatingLabelInput";
 import OpaqueBackground from "../OpaqueBackground";
 import TopicForm from "./TopicForm";
 
