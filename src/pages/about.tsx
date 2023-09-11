@@ -1,7 +1,7 @@
 import React from "react";
 
-import Layout from "../layouts/UserLayout"
-import Head from "../components/Head"
+import Layout from "@layouts/UserLayout"
+import Head from "@components/Head"
 
 const Index = () => {
     return (

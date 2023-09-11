@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from "react"
 import { Link } from "gatsby"
 
-import api from "../../../services/api"
+import api from "@services/api"
 const hljs = require('highlight.js/lib/common');
 
 import moment from "moment"
-import Layout from "../../../layouts/UserLayout"
-import Head from "../../../components/Head"
-import truncate from "../../../utils/truncate"
+import Layout from "@layouts/UserLayout"
+import Head from "@components/Head";
+import truncate from "@utils/truncate"
 
 import { FaUser } from "react-icons/fa"
 
-import { Topic, Post, User } from "../../../types/blog.type"
+import { Topic, Post, User } from "types/blog.type"
 
-import '../../../css/suneditor-contents.min.css';
+import "@styles/suneditor-contents.min.css";
 import 'highlight.js/styles/github.css';
 
-import postplaceholderImage from "../../../images/post_placeholder.jpg"
-import notFoundImage from "../../../images/notfound.svg"
+import postplaceholderImage from "@images/post_placeholder.jpg"
+import notFoundImage from "@images/notfound.svg"
 
 export async function getServerData({ params }) {
     try {
@@ -61,19 +61,19 @@ const Index = ({ serverData }) => {
                 <div className="container mx-auto">
                     {serverData?.status === 200 &&
                         <>
-                            <Head title={post.title} author={author.username} description={post.description} />
+                            <Head title={post?.title} author={author?.username} description={post?.description} />
                             <div className="h-96 md:h-72 w-full">
                                 <img className="w-full h-full object-cover" src={post?.image || postplaceholderImage} alt="" />
                                 <div className="h-full md:h-36 flex flex-col bg-gradient-to-t from-black via-black/70 -translate-y-full p-4">
                                     <div className="grow"></div>
-                                    <h1 className="text-2xl text-white font-bold">{post.title}</h1>
-                                    <p className="text-gray-100  md:mr-16 my-2">{truncate(post.description, 180)}</p>
+                                    <h1 className="text-2xl text-white font-bold">{post?.title}</h1>
+                                    <p className="text-gray-100  md:mr-16 my-2">{truncate(post?.description, 180)}</p>
                                     <div className="flex items-center gap-2 sm:gap-6 flex-wrap">
                                         <span className="text-gray-300 text-semibold text-sm"><span>Postado em: </span>{moment(post?.postedAt).format("DD/MM/YYYY hh:mm")}</span>
                                         <Link to={``} className="flex items-center gap-2">
                                             <span className="h-6 w-6 flex items-center justify-center">
                                                 {post?.author?.profilePicture ?
-                                                    <img className="w-full h-full object-cotain rounded-full bg-gray-300" src={author.profilePicture} alt={author.username} />
+                                                    <img className="w-full h-full object-cotain rounded-full bg-gray-300" src={author.profilePicture} alt={author?.username} />
                                                     : <FaUser className="text-gray-100" />}
                                             </span>
                                             <span className="text-sm text-gray-100">{author.username}</span>
@@ -86,7 +86,7 @@ const Index = ({ serverData }) => {
                         <div className="overflow-x-auto max-w-screen col-span-4 lg:col-span-3 border-r">
                             {serverData?.status === 200 ?
                                 <>
-                                    <div className="mb-4 mr-4 rounded-lg sun-editor-editable bg-white" dangerouslySetInnerHTML={{ __html: post.content }}></div>
+                                    <div className="mb-4 mr-4 rounded-lg sun-editor-editable bg-white" dangerouslySetInnerHTML={{ __html: post?.content }}></div>
                                     <div className="mx-4 my-4 flex flex-wrap gap-4">
                                         <span className="text-gray-800 text-semibold text-sm"><span>Postado em: </span>{moment(post?.postedAt).format("DD/MM/YYYY hh:mm")}</span>
                                         <span className="text-gray-800 text-semibold text-sm"><span>Editado em: </span>{moment(post?.modifiedAt).format("DD/MM/YYYY hh:mm")}</span>

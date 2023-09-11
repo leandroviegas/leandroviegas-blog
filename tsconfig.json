@@ -1,0 +1,52 @@
+{
+    "include": [
+        "./src/**/*"
+    ],
+    "compilerOptions": {
+        "target": "es6",
+        "moduleResolution": "node",
+        "jsx": "react",
+        "lib": [
+            "dom",
+            "es2015",
+            "es2017"
+        ],
+        "types": [
+            "./index.d.ts"
+        ],
+        "strict": false,
+        "noEmit": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "removeComments": true,
+        "baseUrl": "./src",
+        "paths": {
+            "@components/*": [
+                "components/*"
+            ],
+            "@images/*": [
+                "images/*"
+            ],
+            "@layouts/*": [
+                "layouts/*"
+            ],
+            "@utils/*": [
+                "utils/*"
+            ],
+            "@services/*": [
+                "services/*"
+            ],
+            "@hooks/*": [
+                "hooks/*"
+            ],
+            "@context/*": [
+                "context/*"
+            ],
+            "@styles/*": [
+                "styles/*"
+            ]
+        }
+    }
+}

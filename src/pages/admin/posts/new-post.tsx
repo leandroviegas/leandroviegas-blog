@@ -1,7 +1,7 @@
 import React from "react";
-import Form from "../../../components/Forms/PostForm";
-import AdminLayout from "../../../layouts/AdminLayout";
-import Head from "../../../components/Head";
+import Form from "@components/Forms/PostForm";
+import AdminLayout from "@layouts/AdminLayout";
+import Head from "@components/Head";
 
 const NewPostPage = () => {
     return (

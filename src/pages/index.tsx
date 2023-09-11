@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 
-import Layout from "../layouts/UserLayout"
-import Head from "../components/Head";
+import Layout from "@layouts/UserLayout"
+import Head from "@components/Head";
 
 import { FaGithub, FaLinkedinIn } from "react-icons/fa";
 
-import leandroViegasVintage from "../images/leandro_viegas_vintage.png"
-import perfilBackground from "../images/perfil_background.svg"
+import leandroViegasVintage from "@images/leandro_viegas_vintage.png"
+import perfilBackground from "@images/perfil_background.svg"
 
 const Index = () => {
 

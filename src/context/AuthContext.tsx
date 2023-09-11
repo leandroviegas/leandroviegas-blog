@@ -1,8 +1,8 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import api from "../services/api";
-import { User } from "../types/blog.type";
-import validateCookies from "../utils/validateCookies";
+import api from "@services/api";
+import { User } from "types/blog.type";
+import validateCookies from "@utils/validateCookies";
 
 type AuthContextType = {
     user?: User;

@@ -4,8 +4,8 @@ import { AuthContextProvider } from "./src/context/AuthContext";
 
 // style imports
 import 'suneditor/dist/css/suneditor.min.css';
-import "./src/css/index.css";
-import "./src/css/tailwind.css";
+import "./src/styles/index.css";
+import "./src/styles/tailwind.css";
 import "aos/dist/aos.css";
 
 import AOS from "aos"

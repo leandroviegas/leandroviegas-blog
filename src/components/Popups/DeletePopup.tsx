@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import { ImWarning } from "react-icons/im";
 import { IoIosClose } from "react-icons/io";
 import { VscLoading } from "react-icons/vsc";
-import Alert from "../Alert";
 
-import OpaqueBackground from "../OpaqueBackground";
+import Alert from "@components/Alert";
+import OpaqueBackground from "@components/OpaqueBackground";
 
 interface DeletePopupInterface {
     open: boolean;

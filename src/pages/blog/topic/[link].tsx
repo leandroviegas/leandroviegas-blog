@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react"
 
-import Layout from "../../../layouts/UserLayout"
-import api from "../../../services/api"
+import Layout from "@layouts/UserLayout"
+import api from "@services/api"
 
-import { Topic, Post } from "../../../types/blog.type"
+import { Topic, Post } from "types/blog.type"
 
-import PostCard from "../../../components//Cards/PostCard"
-import Head from "../../../components/Head"
+import PostCard from "@components//Cards/PostCard"
+import Head from "@components/Head"
 
 export async function getServerData({ params }) {
     try {

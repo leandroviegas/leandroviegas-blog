@@ -4,7 +4,7 @@ import { BsGoogle } from "react-icons/bs";
 
 import SignIn from "./Forms/SignIn";
 import SignUp from "./Forms/SignUp";
-import OpaqueBackground from "../../OpaqueBackground";
+import OpaqueBackground from "@components/OpaqueBackground";
 
 type Tabs = "SignUp" | "SignIn"
 

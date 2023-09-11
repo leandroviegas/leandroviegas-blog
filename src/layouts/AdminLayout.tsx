@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "gatsby";
-import { useAuth } from "../hooks/Auth";
+import { useAuth } from "@hooks/Auth";
 import Outclick from 'react-outclick-handler';
 
 import { Admin as Redirects } from "../Redirects";

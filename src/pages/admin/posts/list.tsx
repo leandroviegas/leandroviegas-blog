@@ -2,21 +2,21 @@ import React, { useEffect, useState } from "react"
 import { Link } from "gatsby"
 
 import moment from "moment"
-import api from "../../../services/api"
-import { useAuth } from "../../../hooks/Auth"
-import truncate from "../../../utils/truncate"
+import api from "@services/api"
+import { useAuth } from "@hooks/Auth"
+import truncate from "@utils/truncate"
 
-import { Post } from "../../../types/blog.type"
+import { Post } from "types/blog.type"
 
-import Head from "../../../components/Head"
-import AdminLayout from "../../../layouts/AdminLayout"
-import DeletePopup from "../../../components/Popups/DeletePopup"
+import Head from "@components/Head"
+import AdminLayout from "@layouts/AdminLayout"
+import DeletePopup from "@components/Popups/DeletePopup"
 
 import { VscLoading } from "react-icons/vsc"
 import { FaSearch } from "react-icons/fa"
 import { BsFileEarmarkPost } from "react-icons/bs"
 
-import postplaceholderImage from "../../../images/post_placeholder.jpg"
+import postplaceholderImage from "@images/post_placeholder.jpg"
 
 type Status = "loading" | "success" | "error" | ""
 

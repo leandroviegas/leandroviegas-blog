@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react"
 
-import { useAuth } from "../../hooks/Auth";
-import linkfy from "../../utils/linkfy";
-import api from "../../services/api";
-import FloatingLabelInput from "../Inputs/FloatingLabelInput";
-import Alert from "../Alert";
+import { useAuth } from "@hooks/Auth";
+import linkfy from "@utils/linkfy";
+import api from "@services/api";
+import FloatingLabelInput from "@components/Inputs/FloatingLabelInput";
+import Alert from "@components/Alert";
 
-import { Topic } from "../../types/blog.type";
+import { Topic } from "types/blog.type";
 
 import { IoIosClose } from "react-icons/io";
 import { VscLoading } from "react-icons/vsc";

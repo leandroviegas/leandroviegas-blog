@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-import Layout from "../layouts/UserLayout"
+import Layout from "@layouts/UserLayout"
 
-import Head from "../components/Head"
-import OpaqueBackground from "../components/OpaqueBackground";
+import Head from "@components/Head"
+import OpaqueBackground from "@components/OpaqueBackground";
 
-import RegisterFormThumbnail from "../images/projects_thumbnail/register-form.png"
+import RegisterFormThumbnail from "@images/projects_thumbnail/register-form.png"
 import { GrClose } from "react-icons/gr";
 import { BiSquare } from "react-icons/bi";
 

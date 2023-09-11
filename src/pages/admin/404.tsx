@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from "gatsby";
 
-import AdminLayout from "../../layouts/AdminLayout";
-import Head from '../../components/Head';
+import AdminLayout from "@layouts/AdminLayout";
+import Head from "@components/Head";
 
 const Index = () => {
     return (

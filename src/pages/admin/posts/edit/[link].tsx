@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-import api from "../../../../services/api";
+import api from "@services/api";
 
-import Form from "../../../../components/Forms/PostForm";
-import Head from "../../../../components/Head";
-import Alert from "../../../../components/Alert";
-import AdminLayout from "../../../../layouts/AdminLayout";
+import Form from "@components/Forms/PostForm";
+import Head from "@components/Head";
+import Alert from "@components/Alert";
+import AdminLayout from "@layouts/AdminLayout";
 
-import { Post } from "../../../../types/blog.type";
+import { Post } from "types/blog.type";
 import { VscLoading } from "react-icons/vsc";
 
 const Index = ({ params }) => {

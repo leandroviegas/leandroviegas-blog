@@ -1,11 +1,11 @@
 import React from "react";
 import { navigate } from "gatsby"
 import { useLocation } from "@reach/router"
-import { useAuth } from "./hooks/Auth";
+import { useAuth } from "@hooks/Auth";
 
 import { BiLoaderAlt } from "react-icons/bi"
 
-import validateCookies from "./utils/validateCookies"
+import validateCookies from "@utils/validateCookies"
 
 const permissions = [
     {

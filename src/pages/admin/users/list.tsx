@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from "react"
-import { Link } from "gatsby"
 
-import api from "../../../services/api"
-import { useAuth } from "../../../hooks/Auth"
+import api from "@services/api"
+import { useAuth } from "@hooks/Auth"
 
-import { User } from "../../../types/blog.type"
+import { User } from "types/blog.type"
 
-import Head from "../../../components/Head"
-import AdminLayout from "../../../layouts/AdminLayout"
-import DeletePopup from "../../../components/Popups/DeletePopup"
-import UserForm from "../../../components/Forms/UserForm"
+import Head from "@components/Head"
+import AdminLayout from "@layouts/AdminLayout"
+import DeletePopup from "@components/Popups/DeletePopup"
+import UserForm from "@components/Forms/UserForm"
 
 import { VscLoading } from "react-icons/vsc"
 import { FaSearch } from "react-icons/fa"
 
-import OpaqueBackground from "../../../components/OpaqueBackground"
-import truncate from "../../../utils/truncate"
+import OpaqueBackground from "@components/OpaqueBackground"
+import truncate from "@utils/truncate"
 
 type Status = "loading" | "success" | "error" | ""
 

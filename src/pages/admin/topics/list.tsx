@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react"
 
-import api from "../../../services/api"
-import { useAuth } from "../../../hooks/Auth"
-import truncate from "../../../utils/truncate"
+import api from "@services/api"
+import { useAuth } from "@hooks/Auth"
+import truncate from "@utils/truncate"
 
-import OpaqueBackground from "../../../components/OpaqueBackground"
-import AdminLayout from "../../../layouts/AdminLayout"
-import DeletePopup from "../../../components/Popups/DeletePopup"
-import TopicForm from "../../../components/Forms/TopicForm"
-import Alert from "../../../components/Alert"
-import Head from "../../../components/Head"
+import OpaqueBackground from "@components/OpaqueBackground"
+import AdminLayout from "@layouts/AdminLayout"
+import DeletePopup from "@components/Popups/DeletePopup"
+import TopicForm from "@components/Forms/TopicForm"
+import Alert from "@components/Alert"
+import Head from "@components/Head"
 
-import { Topic } from "../../../types/blog.type"
+import { Topic } from "types/blog.type"
 
 import { VscLoading } from "react-icons/vsc"
 import { BiCategoryAlt } from "react-icons/bi"

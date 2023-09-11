@@ -4,22 +4,22 @@ import { navigate } from "gatsby";
 import moment from "moment";
 
 import SunEditor from 'suneditor-react';
-import Toggle from "../Inputs/Toggle";
-import Alert from "../Alert";
+import Alert from "@components/Alert";
+import OpaqueBackground from "@components/OpaqueBackground";
+import Toggle from "@components/Inputs/Toggle";
+import FloatingLabelInput from "@components/Inputs/FloatingLabelInput";
+import TopicForm from "@components/Forms/TopicForm";
 
-import api from "../../services/api";
-import linkfy from "../../utils/linkfy";
-import { useAuth } from "../../hooks/Auth";
+import api from "@services/api";
+import linkfy from "@utils/linkfy";
+import { useAuth } from "@hooks/Auth";
 
-import '../../css/suneditor-contents.min.css';
-import '../../css/suneditor.min.css';
+import "@styles/suneditor-contents.min.css";
+import "@styles/suneditor.min.css";
 
-import { Topic, Post } from "../../types/blog.type";
+import { Topic, Post } from "types/blog.type";
 
 import { VscLoading } from "react-icons/vsc";
-import FloatingLabelInput from "../Inputs/FloatingLabelInput";
-import OpaqueBackground from "../OpaqueBackground";
-import TopicForm from "./TopicForm";
 
 const PostForm = (post: Omit<Post, "topics" | "author"> & { topics: string[], author: string }) => {
     const { cookies } = useAuth()

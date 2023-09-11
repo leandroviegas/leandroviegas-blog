@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react"
 
-import { useAuth } from "../../hooks/Auth";
-import linkfy from "../../utils/linkfy";
-import api from "../../services/api";
-import FloatingLabelInput from "../Inputs/FloatingLabelInput";
-import Alert from "../Alert";
+import { useAuth } from "@hooks/Auth";
+import linkfy from "@utils/linkfy";
+import api from "@services/api";
+import FloatingLabelInput from "@components/Inputs/FloatingLabelInput";
+import Alert from "@components/Alert";
 
-import { User } from "../../types/blog.type";
+import { User } from "types/blog.type";
 
 import validator from "validator";
 

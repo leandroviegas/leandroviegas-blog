@@ -1,11 +1,11 @@
 import React from "react"
 import { Link } from "gatsby"
-import Layout from "../layouts/UserLayout"
-import api from "../services/api"
+import Layout from "@layouts/UserLayout"
+import api from "@services/api"
 
-import { Topic, Post } from "../types/blog.type"
-import PostCard from "../components/Cards/PostCard"
-import Head from "../components/Head"
+import { Topic, Post } from "types/blog.type"
+import PostCard from "@components/Cards/PostCard"
+import Head from "@components/Head"
 
 export async function getServerData() {
     try {

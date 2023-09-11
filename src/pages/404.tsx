@@ -1,10 +1,10 @@
 import React from 'react'
 import { Link } from "gatsby"
 
-import Layout from "../layouts/UserLayout"
-import Head from '../components/Head'
+import Layout from "@layouts/UserLayout"
+import Head from "@components/Head"
 
-import notFoundImage from "../images/notfound.svg"
+import notFoundImage from "@images/notfound.svg"
 
 const Index = () => {
     return (
