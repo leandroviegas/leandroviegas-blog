@@ -15,7 +15,7 @@ let cached = global.mongoose
 if (!cached) {
     cached = global.mongoose = { conn: null, promise: null }
 }
-async function dbConnect() {
+async function dbConnect(listen?: () => void) {
     if (cached.conn) {
         return cached.conn
     }
@@ -23,8 +23,9 @@ async function dbConnect() {
         cached.promise = mongoose.connect(MONGODB_URI, {
             maxPoolSize: 10,
             minPoolSize: 2,
-           
+
         }).then((mongoose) => {
+            listen();
             return mongoose
         })
     }
