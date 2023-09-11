@@ -12,7 +12,7 @@ import { AiFillHome, AiFillProject, AiFillRead, AiOutlineHome, AiOutlineProject,
 import Outclick from 'react-outclick-handler'
 
 import { useAuth } from "../hooks/Auth"
-import SignPopup from "./Popups/SignPopup"
+import SignPopup from "./Popups/SignPopup/Index"
 
 const Index = ({ search_ = "" }) => {
     const location = useLocation();
