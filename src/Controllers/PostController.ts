@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Types } from "mongoose";
 import PostEntity from "../Entity/Post.entity";
+import { User } from "../Model/User.model";
 import { Topic } from "../Model/Topic.model";
 import { Post } from "../Model/Post.model";
 import DbConnect from "./../utils/dbConnect";
@@ -9,10 +10,8 @@ class PostController {
   async list(request: Request, response: Response) {
     const { } = request.query;
 
-    // Connect to the database
     await DbConnect();
 
-    // Get the posts
     const posts = await Post.find({}).select("").exec()
 
     return response.send({ posts })
@@ -21,12 +20,10 @@ class PostController {
   async get(request: Request, response: Response) {
     const { _id, link } = request.query;
 
-    // Connect to the database
     await DbConnect();
 
-    const post = await Post.findOne({ $or: [{ _id }, { link }] }).select("").populate('author', "-password").exec()
+    const post = await Post.findOne({ $or: [{ _id }, { link }] }).populate('author', 'username link role about profilePicture').exec()
 
-    // Verifiy if found the post
     if (post) {
       return response.send({ post: post.toJSON() });
     }
@@ -41,7 +38,6 @@ class PostController {
 
     let n_page = Math.max(25, Number(page))
 
-    // Connect to the database
     await DbConnect();
 
     const topic = await Topic.findOne({ 'link': { $in: topic_link } }).exec()
@@ -58,7 +54,6 @@ class PostController {
 
     let p_quantity = Number(post_quantity || 5)
 
-    // Connect to the database
     await DbConnect();
 
     let topic_query = {}
@@ -107,12 +102,11 @@ class PostController {
     const { _id, title, content, image, link, readTime, active, topics, keywords, description, modifiedAt, postedAt, author } = Object.assign(
       request.body,
       {
-        author: new Types.ObjectId(request.user_id),
-        _id: undefined
+        _id: undefined,
+        author: new Types.ObjectId(request.user_id)
       }
     );
 
-    // Connect to the database
     await DbConnect();
 
     const post = new PostEntity(
@@ -131,18 +125,14 @@ class PostController {
       topics.map(topic => new Types.ObjectId(topic)) // Topics
     );
 
-    // Validating the informations
     await post.validate()
 
-    // Creating the schema
     const PostS = new Post(post);
 
-    // Saving the informations
     await PostS.save();
 
     let postJSON = PostS.toJSON();
 
-    // Return the data
     return response.send({ post: postJSON });
   }
 
@@ -150,9 +140,9 @@ class PostController {
     const { _id, title, content, image, link, readTime, active, topics, keywords, description, modifiedAt, postedAt, author } = Object.assign(
       request.body,
       {
-        author: new Types.ObjectId(request.user_id)
+        author: new Types.ObjectId(!["admin"].includes(request.user_role) ? request.user_id : request.body.author)
       });
-    // Connect to the database
+
     await DbConnect();
 
     const postEntity = new PostEntity(
@@ -173,39 +163,41 @@ class PostController {
 
     await postEntity.validate()
 
-    // Creating the schema
-    const post = await Post.findOne({ _id: postEntity._id, author: postEntity.author }).exec()
+    let post
 
-    // Saving the informations
+    if (["admin"].includes(request.user_role)) {
+      post = await Post.findById(_id).exec()
+    } else {
+      post = await Post.findOne({ _id, author: request.user_id }).exec()
+    }
+
+    if (!post) throw Error("post/not-found")
+
     post.set(postEntity);
-    
+
     await post.save();
 
     let postJSON = post.toJSON();
 
-    // Return the data
     return response.send({ post: postJSON });
   }
 
   async delete(request: Request, response: Response) {
     const { _id } = request.query;
 
-    // Connect to the database
     await DbConnect();
 
+    let post
 
-    // If is _id string
-    if (typeof _id !== 'string')
-      throw new Error("post/id/invalid")
+    if (["admin"].includes(request.user_role)) {
+      post = await Post.findById(_id).exec()
+    } else {
+      post = await Post.findOne({ _id, author: request.user_id }).exec()
+    }
 
-    // tje function "ConvertId" also verify if the id is valid
-    const post = await Post.findById(_id).exec()
-
-    // Verifiy if found the post
     if (!post)
       throw new Error("post/not-found")
 
-    // Removing the post
     await post.remove()
 
     return response.send({ post: post.toJSON() });

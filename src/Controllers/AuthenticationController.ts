@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { AuthenticateUserService } from "../services/AuthenticateUserService";
 import { ShowloggedUserService } from "../services/ShowloggedUserService";
 
-class AuthenticateUserController {
+class AuthenticationController {
   async post(request: Request, response: Response) {
     const { usernameOrEmail, password } = request.body;
 
@@ -24,4 +24,4 @@ class AuthenticateUserController {
   }
 }
 
-export { AuthenticateUserController };
+export { AuthenticationController };

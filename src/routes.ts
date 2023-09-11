@@ -1,11 +1,12 @@
 import { Router } from "express";
 
-import { AuthenticateUserController } from "./Controllers/AuthenticateUserController";
+import { AuthenticationController } from "./Controllers/AuthenticationController";
 import { TopicController } from "./Controllers/TopicController";
 import { PostController } from "./Controllers/PostController";
 import { UserController } from "./Controllers/UserController";
 
 import { ensureAuthenticated } from "./middlewares/ensureAutenticated";
+import { accessManagement } from "./middlewares/accessManagement";
 
 const router = Router();
 
@@ -14,31 +15,44 @@ const userController = new UserController();
 const topicController = new TopicController();
 const postController = new PostController();
 
-const authenticateUserController = new AuthenticateUserController();
+const authenticationController = new AuthenticationController();
+
+export const routesAccess = {
+    "/topics": {
+        post: ["admin", "writer"],
+        put: ["admin", "writer"],
+        delete: ["admin", "writer"]
+    },
+    "/posts": {
+        post: ["admin", "writer"],
+        put: ["admin", "writer"],
+        delete: ["admin", "writer"]
+    },
+}
 
 // Auth routes
 router.route("/login")
-    .get(ensureAuthenticated, authenticateUserController.get)
-    .post(authenticateUserController.post);
+    .get([ensureAuthenticated, accessManagement], authenticationController.get)
+    .post(authenticationController.post);
 
 // topic routes
 router.get("/topics/list", topicController.list);
 router.route("/topics")
     .get(topicController.get)
-    .post(ensureAuthenticated, topicController.post)
-    .put(ensureAuthenticated, topicController.update)
-    .delete(ensureAuthenticated, topicController.delete)
+    .post([ensureAuthenticated, accessManagement], topicController.post)
+    .put([ensureAuthenticated, accessManagement], topicController.update)
+    .delete([ensureAuthenticated, accessManagement], topicController.delete)
 
 // User routes
-router.get("/users/list", userController.list);
+router.get("/users/list", [ensureAuthenticated, accessManagement], userController.list);
 
-router.get("/users/active", ensureAuthenticated, userController.active);
-router.get("/users/deactive", ensureAuthenticated, userController.deactive);
+router.get("/users/active", [ensureAuthenticated, accessManagement], userController.active);
+router.get("/users/deactive", [ensureAuthenticated, accessManagement], userController.deactive);
 
 router.route("/users")
     .get(userController.get)
     .post(userController.post)
-    .put(ensureAuthenticated, userController.update);
+    .put([ensureAuthenticated, accessManagement], userController.update);
 
 // Post routes
 router.get("/posts/list", postController.list);
@@ -47,8 +61,8 @@ router.get("/posts/by-topics", postController.byTopics);
 router.get("/posts/search", postController.search);
 router.route("/posts")
     .get(postController.get)
-    .post(ensureAuthenticated, postController.post)
-    .put(ensureAuthenticated, postController.update)
-    .delete(ensureAuthenticated, postController.delete)
+    .post([ensureAuthenticated, accessManagement], postController.post)
+    .put([ensureAuthenticated, accessManagement], postController.update)
+    .delete([ensureAuthenticated, accessManagement], postController.delete)
 
 export { router };
