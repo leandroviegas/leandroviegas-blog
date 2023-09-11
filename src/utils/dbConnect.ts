@@ -15,22 +15,14 @@ let cached = global.mongoose
 if (!cached) {
     cached = global.mongoose = { conn: null, promise: null }
 }
-async function dbConnect(listen?: () => void) {
-    if (cached.conn) {
-        return cached.conn
+async function dbConnect() {
+    try {
+        const conn = await mongoose.connect(process.env.MONGO_URI);
+        console.log(`MongoDB Connected: ${conn.connection.host}`);
+    } catch (error) {
+        console.log(error);
+        process.exit(1);
     }
-    if (!cached.promise) {
-        cached.promise = mongoose.connect(MONGODB_URI, {
-            maxPoolSize: 10,
-            minPoolSize: 2,
-
-        }).then((mongoose) => {
-            listen();
-            return mongoose
-        })
-    }
-    cached.conn = await cached.promise
-    return cached.conn
 }
 
 export default dbConnect
