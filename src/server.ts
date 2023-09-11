@@ -88,8 +88,6 @@ app.use(
     }
 );
 
-dbConnect().then(() => {
-    app.listen(process.env.PORT || 3333, () => {
-        console.log("listening for requests");
-    })
+app.listen(process.env.PORT || 3333, () => {
+    console.log(`Listening port: ${process.env.PORT || 3333}`);
 })
