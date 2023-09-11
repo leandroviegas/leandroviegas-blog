@@ -6,10 +6,9 @@ import { FaAngleDown, FaAngleUp, FaSearch } from "react-icons/fa"
 import { TiCode } from "react-icons/ti"
 import { MdClose } from "react-icons/md"
 import { BiMenu } from "react-icons/bi"
-import { BsFillPersonFill, BsPerson } from "react-icons/bs";
 import { AiFillHome, AiFillProject, AiFillRead, AiOutlineHome, AiOutlineProject, AiOutlineRead } from "react-icons/ai"
 
-import Outclick from 'react-outclick-handler'
+import Outclick from '@components/Outclick'
 
 import { useAuth } from "@hooks/Auth"
 import SignPopup from "@components/Popups/SignPopup/Index"

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Outclick from 'react-outclick-handler'
+import Outclick from '@components/Outclick'
 
 interface Props {
     children?: React.ReactNode;
