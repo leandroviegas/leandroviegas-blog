@@ -13,7 +13,7 @@ const WorkPopup = ({ open, closeCallback, children }: { open: boolean, closeCall
     return (
         <OpaqueBackground open={open} closeCallback={closeCallback}>
             <div data-aos="fade-down" className="top-0 md:top-4 absolute md:h-auto mx-auto min-h-screen sm:min-h-0 bg-white sm:rounded-lg max-w-screen max-w-[800px] w-full shadow">
-                <button onClick={closeCallback} className="absolute top-4 right-4 px-2 py-2 bg-white rounded shadow-lg border"><GrClose /></button>
+                <button onClick={closeCallback} className="absolute top-3 right-3 px-2 py-2 bg-white rounded-full shadow-lg border"><GrClose /></button>
                 {children}
             </div>
         </OpaqueBackground>
@@ -34,7 +34,7 @@ const Index = () => {
             <div className="container grid grid-cols-1 m-auto mx-auto">
                 <div className="px-4 md:px-8 bg-white m-6 rounded">
                     <section className="my-12">
-                        <h1 className="text-2xl mx-2 font-semibold text-zinc-900">Meus Projetos</h1>
+                        <h1 className="text-2xl mx-2 font-semibold text-zinc-900">Projetos</h1>
                         <hr className="my-2 border-gray-800" />
                         <div className="md:my-6 mx-2">
                             <p className="text-md font-thin">A aplicação de aprendizados no mundo real é a etapa mais importante na jornada de um desenvolvedor.</p>
@@ -62,10 +62,10 @@ const Index = () => {
                                 </div>
                             </div>
                             <WorkPopup open={popup === "register-react-form"} closeCallback={() => setPopup("")}>
-                                <section className="m-5">
+                                <section className="m-5 mb-6">
                                     <img src={RegisterFormThumbnail} alt="Thumbnail projeto formulário de registro react" />
-                                    <div className="mt-4">
-                                        <a className="inline-flex items-center gap-1 text-xs text-white bg-black px-2 py-1 rounded" href="https://codesandbox.io/s/formulario-cadastro-de-usuario-pd50z8" target="_blank">
+                                    <div className="mt-4 px-4 pt-4">
+                                        <a className="inline-flex items-center gap-1 text-xs text-white bg-black px-2 py-1 rounded  " href="https://codesandbox.io/s/formulario-cadastro-de-usuario-pd50z8" target="_blank">
                                             <BiSquare /><span>CodeSandbox</span>
                                         </a>
                                         <div className="my-4">

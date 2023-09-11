@@ -39,7 +39,7 @@ const Index = ({ search_ = "" }) => {
                     <div className="shrink-0 grow flex flex-col md:flex-row justify-start items-center gap-4 px-2">
                         <Link to={"/"} className="flex items-center gap-1">
                             <span className="text-4xl text-zinc-800 shrink-0"><TiCode /></span>
-                            <span className="text-2xl font-bold text-zinc-600 shrink-0">Leandro Viegas</span>
+                            <span className="text-2xl font-bold text-zinc-700 shrink-0">Leandro Viegas</span>
                         </Link>
                         {location.pathname.startsWith("/blog") &&
                             <form onSubmit={(evt) => { evt.preventDefault(); navigate(`/blog/posts/search/${search}`); }} className="border-b border-black mx-3 pb-1 md:w-auto flex items-center text-sm">
@@ -52,21 +52,18 @@ const Index = ({ search_ = "" }) => {
                         <Outclick callback={() => setShowNavbar(false)}>
                             <div className={`${showNavbar ? "max-w-64 " : "max-w-0 "}w-full navbar lg:max-w-none lg:block duration-300 h-full bg-white lg:bg-transparent overflow-auto lg:max-w-auto`}>
                                 <div className="p-4 lg:p-0 justify-start flex flex-col lg:flex-row lg:items-center gap-5 font-medium">
-                                    <Link to="/" className={`order-1 bg-white px-4 py-1 rounded ${location.pathname === "/" ? "text-zinc-800" : "text-zinc-500 hover:text-zinc-600"} flex items-center gap-1`}>
+                                    <Link to="/" className={`order-1 py-1 rounded ${location.pathname === "/" ? "text-zinc-900" : "text-zinc-600 hover:text-zinc-700"} flex items-center gap-1`}>
                                         {location.pathname === "/" ? <AiFillHome /> : <AiOutlineHome />} Página Inicial
                                     </Link>
-                                    <Link to="/about" className={`order-1 bg-white px-4 py-1 rounded ${location.pathname.startsWith("/about") ? "text-zinc-800" : "text-zinc-500 hover:text-zinc-600"} flex items-center gap-1`}>
-                                        {location.pathname.startsWith("/about") ? <BsFillPersonFill /> : <BsPerson />} Sobre mim
-                                    </Link>
-                                    <Link to="/projects" className={`order-1 bg-white px-4 py-1 rounded ${location.pathname.startsWith("/projects") ? "text-zinc-800" : "text-zinc-500 hover:text-zinc-600"} flex items-center gap-1`}>
+                                    <Link to="/projects" className={`order-1 px-4 py-1 rounded ${location.pathname.startsWith("/projects") ? "text-zinc-900" : "text-zinc-600 hover:text-zinc-700"} flex items-center gap-1`}>
                                         {location.pathname.startsWith("/projects") ? <AiFillProject /> : <AiOutlineProject />} Projetos
                                     </Link>
-                                    <Link to="/blog" className={`order-1 bg-white px-4 py-1 rounded ${location.pathname.startsWith("/blog") ? "text-zinc-800" : "text-zinc-500 hover:text-zinc-600"} flex items-center gap-1`}>
+                                    <Link to="/blog" className={`order-1 py-1 rounded ${location.pathname.startsWith("/blog") ? "text-zinc-900" : "text-zinc-600 hover:text-zinc-700"} flex items-center gap-1`}>
                                         {location.pathname.startsWith("/blog") ? <AiFillRead /> : <AiOutlineRead />} Blog
                                     </Link>
-                                    <div className="order-0 lg:order-1">
+                                    <div className="order-0 lg:order-1 ml-2">
                                         <button className="lg:hidden w-full flex justify-end">
-                                            <MdClose onClick={() => setShowNavbar(false)} className="text-zinc-500 hover:text-zinc-700 text-4xl cursor-pointer" />
+                                            <MdClose onClick={() => setShowNavbar(false)} className="text-zinc-600 hover:text-zinc-700 text-4xl cursor-pointer" />
                                         </button>
                                         {user?.username ?
                                             <div>
