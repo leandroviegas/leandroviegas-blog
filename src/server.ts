@@ -9,6 +9,7 @@ import passport from 'passport';
 import cookieSession from 'cookie-session';
 import './utils/passport';
 import { AuthenticateUserService } from "./services/AuthenticateUserService"
+import dbConnect from "./utils/dbConnect"
 
 const authenticateUserService = new AuthenticateUserService();
 
@@ -87,6 +88,9 @@ app.use(
     }
 );
 
-app.listen("3333", () => {
-    console.log("Server is running on 3333 port.");
-});
+dbConnect().then(() => {
+    app.listen("3333", () => {
+        console.log("Server is running on 3333 port.");
+    });
+})
+
