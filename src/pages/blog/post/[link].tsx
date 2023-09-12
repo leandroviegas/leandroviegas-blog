@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react"
 import { Link } from "gatsby"
 
 import api from "@services/api"
-const hljs = require('highlight.js/lib/common');
 
 import moment from "moment"
 import Layout from "@layouts/UserLayout"
@@ -14,7 +13,6 @@ import { FaUser } from "react-icons/fa"
 import { Topic, Post, User } from "types/blog.type"
 
 import "@styles/suneditor-contents.min.css";
-import 'highlight.js/styles/github.css';
 
 import postplaceholderImage from "@images/post_placeholder.jpg"
 import notFoundImage from "@images/notfound.svg"
@@ -49,10 +47,6 @@ const Index = ({ serverData }) => {
             console.error(err)
             setTopics({ status: "error", data: [] });
         })
-
-        document.querySelectorAll('pre').forEach((el) => {
-            hljs.highlightElement(el);
-        });
     }, [])
 
     return (
@@ -64,10 +58,10 @@ const Index = ({ serverData }) => {
                             <Head title={post?.title} author={author?.username} description={post?.description} />
                             <div className="h-96 md:h-72 w-full">
                                 <img className="w-full h-full object-cover" src={post?.image || postplaceholderImage} alt="" />
-                                <div className="h-full md:h-36 flex flex-col bg-gradient-to-t from-black via-black/70 -translate-y-full p-4">
+                                <div className="h-full md:h-40 flex flex-col bg-gradient-to-t from-black via-black/80 -translate-y-full p-4">
                                     <div className="grow"></div>
-                                    <h1 className="text-2xl text-white font-bold">{post?.title}</h1>
-                                    <p className="text-gray-100  md:mr-16 my-2">{truncate(post?.description, 180)}</p>
+                                    <h1 className="text-3xl text-white font-bold">{post?.title}</h1>
+                                    <p className="text-gray-100 md:mr-16 mt-4 mb-2">{truncate(post?.description, 180)}</p>
                                     <div className="flex items-center gap-2 sm:gap-6 flex-wrap">
                                         <span className="text-gray-300 text-semibold text-sm"><span>Postado em: </span>{moment(post?.postedAt).format("DD/MM/YYYY hh:mm")}</span>
                                         <Link to={``} className="flex items-center gap-2">

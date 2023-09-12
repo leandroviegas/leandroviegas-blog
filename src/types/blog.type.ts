@@ -32,5 +32,5 @@ export type Post = {
     modifiedAt: Date;
     postedAt: Date;
     topics: Topic[] | string[];
-    author: User | string;
+    author: User;
 }

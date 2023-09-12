@@ -54,7 +54,7 @@ const Index = ({ search_ = "" }) => {
                                     <Link to="/" className={`order-1 py-1 rounded ${location.pathname === "/" ? "text-zinc-900" : "text-zinc-600 hover:text-zinc-700"} flex items-center gap-1`}>
                                         {location.pathname === "/" ? <AiFillHome /> : <AiOutlineHome />} Página Inicial
                                     </Link>
-                                    <Link to="/projects" className={`order-1 px-4 py-1 rounded ${location.pathname.startsWith("/projects") ? "text-zinc-900" : "text-zinc-600 hover:text-zinc-700"} flex items-center gap-1`}>
+                                    <Link to="/projects" className={`order-1 py-1 rounded ${location.pathname.startsWith("/projects") ? "text-zinc-900" : "text-zinc-600 hover:text-zinc-700"} flex items-center gap-1`}>
                                         {location.pathname.startsWith("/projects") ? <AiFillProject /> : <AiOutlineProject />} Projetos
                                     </Link>
                                     <Link to="/blog" className={`order-1 py-1 rounded ${location.pathname.startsWith("/blog") ? "text-zinc-900" : "text-zinc-600 hover:text-zinc-700"} flex items-center gap-1`}>

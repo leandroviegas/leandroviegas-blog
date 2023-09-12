@@ -13,7 +13,7 @@ import { VscLoading } from "react-icons/vsc";
 const Index = ({ params }) => {
     const [status, setStatus] = useState<"loading" | "success" | "error" | "">("")
 
-    const [post, setPost] = useState<Omit<Post, "topics" | "author"> & { topics: string[], author: string }>();
+    const [post, setPost] = useState<Omit<Post, "topics" > & { topics: string[] }>();
     const [alerts, setAlerts] = useState<{ [key: string]: string[] }>({})
 
     useEffect(() => {

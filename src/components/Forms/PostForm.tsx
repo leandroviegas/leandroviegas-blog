@@ -21,7 +21,7 @@ import { Topic, Post } from "types/blog.type";
 
 import { VscLoading } from "react-icons/vsc";
 
-const PostForm = (post: Omit<Post, "topics" | "author"> & { topics: string[], author: string }) => {
+const PostForm = (post: Omit<Post, "topics"> & { topics: string[]}) => {
     const { cookies } = useAuth()
 
     const [alerts, setAlerts] = useState<{ [key: string]: string[] }>({})
@@ -49,7 +49,7 @@ const PostForm = (post: Omit<Post, "topics" | "author"> & { topics: string[], au
             try {
                 const headers = { authorization: `Bearer ${cookies.authentication}` }
                 if (form?._id) {
-                    await api.put("/posts", { ...form, content }, { headers })
+                    await api.put("/posts", { ...form, content, author: form.author?._id }, { headers })
                 } else {
                     await api.post("/posts", { ...form, content }, { headers })
                 }

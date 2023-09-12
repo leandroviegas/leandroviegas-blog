@@ -13,7 +13,6 @@
     "gatsby-plugin-nprogress": "^4.20.0",
     "gatsby-plugin-page-creator": "^4.20.0",
     "gatsby-plugin-react-helmet": "^5.20.0",
-    "highlight.js": "^11.6.0",
     "install": "^0.13.0",
     "npm": "^9.8.1",
     "prop-types": "^15.8.1",
