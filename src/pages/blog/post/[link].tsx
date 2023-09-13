@@ -5,19 +5,24 @@ import api from "@services/api"
 
 import moment from "moment"
 import Layout from "@layouts/UserLayout"
-import Head from "@components/Head";
+import Head from "@components/Head"
 import truncate from "@utils/truncate"
+
+import cookie from 'cookie';
 
 import { FaUser } from "react-icons/fa"
 
 import { Topic, Post, User } from "types/blog.type"
 
-import "@styles/suneditor-contents.min.css";
+import { BsLinkedin, BsGithub } from 'react-icons/bs'
+
+import "@styles/suneditor-contents.min.css"
+import "@styles/blog-post.css"
 
 import postplaceholderImage from "@images/post_placeholder.jpg"
 import notFoundImage from "@images/notfound.svg"
 
-export async function getServerData({ params }) {
+export async function getServerData({ params}) {
     try {
         let data = await api.get("posts", { params }).then(resp => ({ ...resp.data, status: resp.status })).catch(err => ({ status: err?.response?.status || 500, post: {} }))
         return { status: data.status === 404 ? 404 : 200, props: data }
@@ -56,9 +61,9 @@ const Index = ({ serverData }) => {
                     {serverData?.status === 200 &&
                         <>
                             <Head title={post?.title} author={author?.username} description={post?.description} />
-                            <div className="h-96 md:h-72 w-full">
+                            <div className="h-96 lg:h-72 w-full">
                                 <img className="w-full h-full object-cover" src={post?.image || postplaceholderImage} alt="" />
-                                <div className="h-full md:h-40 flex flex-col bg-gradient-to-t from-black via-black/80 -translate-y-full p-4">
+                                <div className="h-full flex flex-col bg-gradient-to-t from-black via-black/70 -translate-y-full p-4">
                                     <div className="grow"></div>
                                     <h1 className="text-3xl text-white font-bold">{post?.title}</h1>
                                     <p className="text-gray-100 md:mr-16 mt-4 mb-2">{truncate(post?.description, 180)}</p>
@@ -106,19 +111,28 @@ const Index = ({ serverData }) => {
                         </div>
                         <div className="col-span-4 lg:col-span-1">
                             <div className="sticky top-4">
-                                <div className="">
+                                <div className="hover:scale-105 ease-in duration-300 writer-card rounded-lg shadow-xl border pb-8 pt-6 bg-white hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
                                     <img src={author?.profilePicture || "https://via.placeholder.com/150"} alt={`${author?.username} Profile Picture`}
-                                        className="object-cover z-10 relative w-24 h-24 mx-auto rounded-full shadow-xl p-[3px] bg-gradient-to-br from-indigo-600 to-purple-600" />
-                                    <blockquote className="bg-white border -mt-12 flex flex-col justify-between p-12 text-center rounded-lg shadow-xl">
-                                        <p className="text-lg font-bold text-gray-700">{author?.username}</p>
-                                        <p className="mt-1 text-xs font-medium text-gray-500">
+                                        className="object-cover z-10 relative w-24 h-24 mx-auto rounded-full shadow-xl p-[3px]" />
+                                    <blockquote className="flex flex-col justify-between text-center">
+                                        <p className="username text-lg font-bold text-gray-700">{author?.username}</p>
+                                        <p className="role mt-1 text-xs font-medium text-gray-500">
                                             {author?.role}
                                         </p>
                                         {author?.about &&
-                                            <p className="mt-4 text-sm text-gray-500">
+                                            <p className="about mt-4 text-sm text-gray-500">
                                                 {author?.about}
                                             </p>}
                                     </blockquote>
+                                    {(author?.linkedin || author?.github) &&
+                                        <div className="flex justify-center gap-3 mt-4 text-xl text-zinc-800">
+                                            {author?.linkedin && <a href={"https://www.linkedin.com/in/" + author.linkedin} target="_blank">
+                                                <BsLinkedin />
+                                            </a>}
+                                            {author?.github && <a href={"https://www.github.com/" + author.github} target="_blank">
+                                                <BsGithub />
+                                            </a>}
+                                    </div>}
                                 </div>
 
                                 <div className="shadow-lg rounded-lg w-full bg-white p-4 relative top-6">
@@ -128,7 +142,7 @@ const Index = ({ serverData }) => {
                                         {topics.data.map(topic => {
                                             return (
                                                 <Link key={topic.link} to={`/blog/topic/${topic.link}`}>
-                                                    <button className="bg-violet-600 hover:bg-violet-00 rounded text-white py-0.5 px-3" key={topic._id}>
+                                                    <button className="bg-purple-500 hover:bg-violet-00 rounded text-white py-0.5 px-3" key={topic._id}>
                                                         {topic.name}
                                                     </button>
                                                 </Link>

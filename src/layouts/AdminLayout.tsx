@@ -21,17 +21,16 @@ const Index = ({ children }) => {
         <Redirects>
             <div className="w-screen h-screen bg-zinc-200 flex flex-col">
                 <div className="flex justify-between shadow-lg z-10 bg-white shadow-black/20 p-4">
-                    <div className="flex items-center font-bold text-xl gap-2 text-zinc-600"><span><ImBlog /></span><span>My Personal Blog</span></div>
+                    <div className="flex items-center font-bold text-xl gap-2 text-zinc-600"><span><ImBlog /></span><span>Leandro Viegas</span></div>
                     <Outclick callback={() => setUserDropdown(false)}>
                         <div onClick={() => setUserDropdown(true)} className="flex items-center gap-3 text-zinc-600 relative">
                             <span className="cursor-pointer text-zinc-700 font-semibold">{user?.username}</span>
                             <span className="cursor-pointer border-l pl-3"><FaUser /></span>
                             {userDropdown &&
-                                <div className="text-gray-600 flex flex-col absolute top-full mt-2 shadow-lg right-0">
-                                    <button className="bg-white hover:text-gray-800 hover:bg-zinc-100 transition px-4 py-0.5 text-left rounded-t whitespace-nowrap">Alterar conta</button>
+                                <div className="text-gray-600 flex flex-col absolute top-full mt-2 shadow-lg right-0"> 
+                                    <Link to={"/admin/customize-profile"} className="bg-white hover:text-gray-800 hover:bg-zinc-100 transition px-4 py-0.5 text-left rounded-t whitespace-nowrap">Customizar perfil</Link>
                                     <button className="bg-white hover:text-gray-800 hover:bg-zinc-100 transition px-4 py-0.5 rounded-b whitespace-nowrap text-left" onClick={() => signOut()}>Sair</button>
-                                </div>
-                            }
+                                </div>}
                         </div>
                     </Outclick>
                 </div>

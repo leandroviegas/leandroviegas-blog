@@ -56,7 +56,7 @@ const Index = () => {
                                         </div>
                                         <div className="pb-2">
                                             <hr className="my-4" />
-                                            <button onClick={() => setPopup("register-react-form")} className="shrink-0 text-white bg-violet-700 hover:bg-violet-800 rounded py-1 px-3 font-semibold">Mais sobre o projeto</button>
+                                            <button onClick={() => setPopup("register-react-form")} className="shrink-0 text-white bg-purple-700 hover:bg-purple-800 rounded py-1 px-3 font-semibold">Mais sobre o projeto</button>
                                         </div>
                                     </div>
                                 </div>

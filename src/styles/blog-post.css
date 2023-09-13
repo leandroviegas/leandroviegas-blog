@@ -1,0 +1,11 @@
+.writer-card:hover .username {
+    color: white;
+}
+
+.writer-card:hover .role {
+    color: rgb(243, 243, 243);
+}
+
+.writer-card:hover .about {
+    color: rgb(239, 239, 239);
+}

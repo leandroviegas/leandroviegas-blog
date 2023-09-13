@@ -15,6 +15,8 @@ export type User = {
     username: string;
     email: string;
     about: string;
+    linkedin: string;
+    github: string;
     profilePicture: string;
     role: Roles | string;
 }
