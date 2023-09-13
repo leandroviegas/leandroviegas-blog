@@ -51,9 +51,11 @@ class AuthenticateUserService {
         let user = await User.findOne({ email }).select("_id username email profilePicture password role").exec();
 
         if (!user) {
-            const { username, password, profilePicture, about, link, active, role } =
+            const { username, password, profilePicture, about, link, github, linkedin, active, role } =
             {
                 about: "",
+                github: "",
+                linkedin: "",
                 username: displayName,
                 password: "",
                 profilePicture: picture,
@@ -62,7 +64,7 @@ class AuthenticateUserService {
                 role: "user"
             };
 
-            const userEntity = new UserEntity(undefined, username, email, password, profilePicture, about, link, active, role);
+            const userEntity = new UserEntity(undefined, username, email, password, profilePicture, about, link, github , linkedin, active, role);
 
             user = await User.create(userEntity);
         };
