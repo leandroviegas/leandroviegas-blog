@@ -5,7 +5,7 @@ import { useAuth } from "@hooks/Auth"
 import truncate from "@utils/truncate"
 
 import OpaqueBackground from "@components/OpaqueBackground"
-import AdminLayout from "@layouts/AdminLayout"
+import DashboardLayout from "@layouts/DashboardLayout"
 import DeletePopup from "@components/Popups/DeletePopup"
 import TopicForm from "@components/Forms/TopicForm"
 import Alert from "@components/Alert"
@@ -73,7 +73,7 @@ const Index = () => {
     }, [])
 
     return (
-        <AdminLayout>
+        <DashboardLayout>
             <Head title={`Listar tópicos - Leandro Viegas`} />
 
             <OpaqueBackground open={popup === "topic-form"} closeCallback={() => setPopup("")}>
@@ -142,7 +142,7 @@ const Index = () => {
                     </div>
                 </div>
             }
-        </AdminLayout>
+        </DashboardLayout>
     )
 }
 

@@ -19,6 +19,7 @@ export type User = {
     github: string;
     profilePicture: string;
     role: Roles | string;
+    ocupation: string;
 }
 
 export type Post = {

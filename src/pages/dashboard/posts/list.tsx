@@ -9,7 +9,7 @@ import truncate from "@utils/truncate"
 import { Post } from "types/blog.type"
 
 import Head from "@components/Head"
-import AdminLayout from "@layouts/AdminLayout"
+import DashboardLayout from "@layouts/DashboardLayout"
 import DeletePopup from "@components/Popups/DeletePopup"
 
 import { VscLoading } from "react-icons/vsc"
@@ -65,7 +65,7 @@ const Index = () => {
     }, [])
 
     return (
-        <AdminLayout>
+        <DashboardLayout>
             <Head title="Listar postagens - Leandro Viegas" />
 
             <DeletePopup status={deleteStatus === "loading" ? deleteStatus : ""} errors={alerts["post-delete"]} btnText="Apagar postagem" open={!!selectedPost} onDelete={HandleDeletePost} onCancel={() => { setSelectedPost(undefined); setAlerts({ ...alerts, "post-delete": [] }); }} text={`Você tem certeza que deseja apagar essa postagem "${selectedPost?.title}". Caso você apague a postagem você não conseguirá recuperar os dados dela.`} />
@@ -83,7 +83,7 @@ const Index = () => {
                         </div>
                         <hr className="my-4" />
                         <div className="my-6">
-                            <Link to="/admin/posts/new-post">
+                            <Link to="/dashboard/posts/new-post">
                                 <button className="shadow-lg shadow-indigo-500/30 hover:scale-110 bg-indigo-500 hover:bg-indigo-700 transition font-semibold text-white px-3 py-1 rounded">
                                     Nova Postagem
                                 </button>
@@ -104,7 +104,7 @@ const Index = () => {
                                         </div>
                                         <hr />
                                         <div className="p-3 bg-indigo-500 shadow-xl shadow-indigo-500/40 rounded-b-xl font-semibold flex items-center gap-4 flex-wrap">
-                                            <Link to={`/admin/posts/edit/${post.link}`}>
+                                            <Link to={`/dashboard/posts/edit/${post.link}`}>
                                                 <button className="bg-yellow-400 text-zinc-800 hover:bg-yellow-500 transition rounded px-3 py-1">Editar</button>
                                             </Link>
                                             <button onClick={() => setSelectedPost(post)} className="bg-red-500 text-white hover:bg-red-700 px-3 transition rounded py-1">Apagar</button>
@@ -132,7 +132,7 @@ const Index = () => {
                                 <h2 className="text-2xl font-bold">Nenhuma postagem criada ainda</h2>
                                 <p className="text-indigo-700 text-xl my-1 font-semibold">Que tal criar uma postagem nova?</p>
                                 <div className="my-4">
-                                    <Link to="/admin/postagens/nova-postagem" className="bg-indigo-500 hover:bg-indigo-700 transition font-semibold text-white px-3 py-1 rounded">Nova Postagem</Link>
+                                    <Link to="/dashboard/postagens/nova-postagem" className="bg-indigo-500 hover:bg-indigo-700 transition font-semibold text-white px-3 py-1 rounded">Nova Postagem</Link>
                                 </div>
                             </div>
                         </div>
@@ -140,7 +140,7 @@ const Index = () => {
                 </div>
             }
 
-        </AdminLayout>
+        </DashboardLayout>
     )
 }
 

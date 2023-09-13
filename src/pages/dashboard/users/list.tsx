@@ -6,7 +6,7 @@ import { useAuth } from "@hooks/Auth"
 import { User } from "types/blog.type"
 
 import Head from "@components/Head"
-import AdminLayout from "@layouts/AdminLayout"
+import DashboardLayout from "@layouts/DashboardLayout"
 import DeletePopup from "@components/Popups/DeletePopup"
 import UserForm from "@components/Forms/UserForm"
 
@@ -68,7 +68,7 @@ const Index = () => {
     }, [])
 
     return (
-        <AdminLayout>
+        <DashboardLayout>
             <Head title="Listar usuários - Leandro Viegas" />
 
             <OpaqueBackground open={popup === "user-form"} closeCallback={() => setPopup("")}>
@@ -127,7 +127,7 @@ const Index = () => {
                 <div className="h-full w-full flex items-center justify-center">
                     <div className="text-indigo-700"><VscLoading className="animate-spin text-5xl" /></div>
                 </div>}
-        </AdminLayout>
+        </DashboardLayout>
     )
 }
 

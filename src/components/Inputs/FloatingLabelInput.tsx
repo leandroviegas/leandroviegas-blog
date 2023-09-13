@@ -11,17 +11,18 @@ interface Props {
     value?: ValueType,
     name?: string,
     label: string,
+    readOnly?: boolean,
     autoComplete?: "on" | "off",
     type?: "text" | "email" | "number" | "password" | "tel" | "datetime" | "textarea" | "datetime-local" | "url" | "select",
     children?: React.ReactNode
 }
 
-const Input = ({ status, messages, onChange, defaultValue, value, name, label, type, autoComplete, children }: Props) => {
+const Input = ({ status, messages, onChange, defaultValue, value, name, label, type, autoComplete, children, readOnly }: Props) => {
     const color = { error: "red", info: "indigo" }
 
     const inputClassName = `block py-2.5 w-full transition duration-300 text-sm text-${status === "error" ? color[status] : "zinc"}-600 bg-transparent border-0 border-b-2 border-${status === "error" ? `${color[status]}-600` : "zinc-200"} focus:border-${color[status]}-700 focus:outline-none focus:ring-0 peer`
 
-    const inputProps = { onChange, autoComplete, className: inputClassName, name, type, ...(value !== undefined ? { value } : { defaultValue }) }
+    const inputProps = { onChange, readOnly, autoComplete, className: inputClassName, name, type, ...(value !== undefined ? { value } : { defaultValue }) }
 
     return (
         <>
@@ -48,7 +49,8 @@ Input.defaultProps = {
     onChange: () => { },
     defaultValue: "",
     name: "",
-    type: "text"
+    type: "text",
+    readonly: false,
 }
 
 export default Input

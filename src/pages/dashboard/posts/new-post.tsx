@@ -1,16 +1,16 @@
 import React from "react";
 import Form from "@components/Forms/PostForm";
-import AdminLayout from "@layouts/AdminLayout";
+import DashboardLayout from "@layouts/DashboardLayout";
 import Head from "@components/Head";
 
 const NewPostPage = () => {
     return (
-        <AdminLayout>
+        <DashboardLayout>
             <Head title="Nova postagem - Leandro Viegas" />
             <div className="container pt-8 p-4 h-full">
                 <Form />
             </div>
-        </AdminLayout>
+        </DashboardLayout>
     );
 }
 

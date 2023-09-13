@@ -117,7 +117,7 @@ const Index = ({ serverData }) => {
                                     <blockquote className="flex flex-col justify-between text-center">
                                         <p className="username text-lg font-bold text-gray-700">{author?.username}</p>
                                         <p className="role mt-1 text-xs font-medium text-gray-500">
-                                            {author?.role}
+                                            {author?.ocupation}
                                         </p>
                                         {author?.about &&
                                             <p className="about mt-4 text-sm text-gray-500">

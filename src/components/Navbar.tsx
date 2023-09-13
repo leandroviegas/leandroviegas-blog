@@ -79,8 +79,9 @@ const Index = ({ search_ = "" }) => {
                                                     </button>
                                                     <div className={`${userDropdown ? "max-h-auto dropdown-animate" : "max-h-0"} border-l lg:border-none overflow-y-auto lg:absolute mt-2 right-0 flex flex-col text-zinc-300 lg:text-zinc-700 text-left`}>
                                                         <button onClick={signOut} className="lg:bg-white hover:text-zinc-100 text-left w-full px-4 py-2 lg:py-0.5 rounded-t lg:hover:text-zinc-900 cursor-pointer">Sair</button>
+                                                        <Link to={"/dashboard/customize-profile"} className="bg-white hover:text-gray-800 hover:bg-zinc-100 transition px-4 py-0.5 text-left rounded-t whitespace-nowrap">Customizar perfil</Link>
                                                         {user.role === "admin" &&
-                                                            <Link to={"/admin/dashboard"} className="lg:bg-white hover:text-zinc-100 w-full px-3 py-1 lg:py-0.5 rounded-b lg:hover:text-zinc-900 cursor-pointer">Área administrativa</Link>}
+                                                            <Link to={"/dashboard"} className="lg:bg-white hover:text-zinc-100 w-full px-3 py-1 lg:py-0.5 rounded-b lg:hover:text-zinc-900 cursor-pointer">Área administrativa</Link>}
                                                     </div>
                                                 </Outclick>
                                             </div>

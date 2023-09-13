@@ -9,9 +9,14 @@ import validateCookies from "@utils/validateCookies"
 
 const permissions = [
     {
+        roles: ["admin", "writer", "user"],
+        route: "/dashboard/customize-profile",
+        valid: (route: string) => route === "/dashboard/customize-profile"
+    },
+    {
         roles: ["admin"],
-        route: "/admin",
-        valid: (route: string) => route.startsWith("/admin")
+        route: "/dashboard",
+        valid: (route: string) => route.startsWith("/dashboard")
     },
 ];
 

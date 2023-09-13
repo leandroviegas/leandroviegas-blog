@@ -5,7 +5,7 @@ import api from "@services/api";
 import Form from "@components/Forms/PostForm";
 import Head from "@components/Head";
 import Alert from "@components/Alert";
-import AdminLayout from "@layouts/AdminLayout";
+import DashboardLayout from "@layouts/DashboardLayout";
 
 import { Post } from "types/blog.type";
 import { VscLoading } from "react-icons/vsc";
@@ -28,7 +28,7 @@ const Index = ({ params }) => {
     }, [params.link])
 
     return (
-        <AdminLayout>
+        <DashboardLayout>
             <Head title={`${post?.title || "Editar postagem"} - Leandro Viegas`} />
 
             <div className="container pt-8 p-4 h-full">
@@ -42,7 +42,7 @@ const Index = ({ params }) => {
 
                 {alerts["post-form"]?.map((message, index) => <Alert key={index} message={message} type="error" />)}
             </div>
-        </AdminLayout>
+        </DashboardLayout>
     );
 }
 

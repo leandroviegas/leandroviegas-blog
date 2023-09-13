@@ -54,7 +54,7 @@ const PostForm = (post: Omit<Post, "topics"> & { topics: string[]}) => {
                     await api.post("/posts", { ...form, content }, { headers })
                 }
 
-                navigate("/admin/posts/list")
+                navigate("/dashboard/posts/list")
             } catch (err) {
                 setFormStatus("error");
                 setAlerts({ ...alerts, "post-form": [err?.response?.data?.message || `Ocorreu um erro ao ${form?._id ? "editar" : "adicionar"} postagem.`] })
