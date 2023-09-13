@@ -21,7 +21,7 @@ class PostController {
 
     await ConnectDB();
 
-    const post = await Post.findOne({ $or: [{ _id }, { link }] }).populate('author', 'username link role about profilePicture github linkedin').exec()
+    const post = await Post.findOne({ $or: [{ _id }, { link }] }).populate('author', 'username link role about profilePicture github linkedin ocupation').exec()
 
     if (post) {
       return response.send({ post: post.toJSON() });
@@ -164,7 +164,7 @@ class PostController {
 
     let post
 
-    if (["admin"].includes(request.user_role)) {
+    if (!["admin"].includes(request.user_role)) {
       post = await Post.findById(_id).exec()
     } else {
       post = await Post.findOne({ _id, author: request.user_id }).exec()
@@ -188,7 +188,7 @@ class PostController {
 
     let post
 
-    if (["admin"].includes(request.user_role)) {
+    if (!["admin"].includes(request.user_role)) {
       post = await Post.findById(_id).exec()
     } else {
       post = await Post.findOne({ _id, author: request.user_id }).exec()

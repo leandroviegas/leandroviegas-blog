@@ -2,6 +2,7 @@ import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import { User } from "@Models/User.model";
 import ConnectDB from "@utils/ConnectDB";
+import linkfy from "@utils/linkfy";
 import UserEntity from "@Entity/User.entity";
 
 interface IAuthenticateRequest {
@@ -16,7 +17,7 @@ class AuthenticateUserService {
         // Connecting to the database
         await ConnectDB()
 
-        let user = await User.findOne({ $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }] }).select("_id username email profilePicture password role").exec();
+        let user = await User.findOne({ $or: [{ link: usernameOrEmail }, { email: usernameOrEmail }] }).select("_id username email profilePicture password role").exec();
 
         if (!user) throw new Error("authentication/email-password-incorrect");
 
@@ -51,20 +52,21 @@ class AuthenticateUserService {
         let user = await User.findOne({ email }).select("_id username email profilePicture password role").exec();
 
         if (!user) {
-            const { username, password, profilePicture, about, link, github, linkedin, active, role } =
+            const { username, password, profilePicture, about, link, github, linkedin, ocupation, active, role } =
             {
                 about: "",
                 github: "",
                 linkedin: "",
                 username: displayName,
                 password: "",
+                ocupation: "",
                 profilePicture: picture,
-                link: encodeURIComponent(displayName),
+                link: linkfy(displayName),
                 active: true,
                 role: "user"
             };
 
-            const userEntity = new UserEntity(undefined, username, email, password, profilePicture, about, link, github , linkedin, active, role);
+            const userEntity = new UserEntity(undefined, username, email, password, profilePicture, about, link, github, linkedin, ocupation, active, role);
 
             user = await User.create(userEntity);
         };

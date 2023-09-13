@@ -11,6 +11,7 @@ import '@utils/passport';
 import { AuthenticateUserService } from "@services/AuthenticateUserService"
 import ConnectDB from "@utils/ConnectDB"
 
+
 const authenticateUserService = new AuthenticateUserService();
 
 const app = express();

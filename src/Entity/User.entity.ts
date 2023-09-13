@@ -34,6 +34,7 @@ export default class UserEntity {
         readonly link: string,
         readonly github: string,
         readonly linkedin: string,
+        readonly ocupation: string,
         readonly active: boolean,
         readonly role: string,
     ) { };

@@ -4,6 +4,9 @@ import UserEntity from "@Entity/User.entity";
 import { User } from "@Models/User.model";
 import ConnectDB from "@utils/ConnectDB";
 
+import formidable from 'formidable';
+import uploadImageToImageBB from "@utils/ImageUploadBB";
+
 class UserController {
   async list(request: Request, response: Response) {
     const { } = request.query;
@@ -34,9 +37,13 @@ class UserController {
   }
 
   async post(request: Request, response: Response) {
-    const { _id, username, email, password, profilePicture, about, link, github, linkedin, active, role } = Object.assign(
+    const { _id, username, email, password, profilePicture, about, link, github, linkedin, ocupation, active, role } = Object.assign(
       { // default values
-        about: ""
+        about: "",
+        github: "",
+        linkedin: "",
+        ocupation: "",
+        profilePicture: ""
       },
       request.body, // form values
       { // mandatory values
@@ -48,7 +55,7 @@ class UserController {
 
     await ConnectDB();
 
-    const userEntity = new UserEntity(_id, username, email, password, profilePicture, about, link, github, linkedin, active, role);
+    const userEntity = new UserEntity(_id, username, email, password, profilePicture, about, link, github, linkedin, ocupation, active, role);
 
     await userEntity.validate()
 
@@ -66,27 +73,45 @@ class UserController {
   }
 
   async update(request: Request, response: Response) {
-    const { _id, username, email, password, profilePicture, about, link, github, linkedin, active, role } = Object.assign(
+    const form = formidable({});
+
+    const [fields, files] = await form.parse(request)
+
+    let newForm: { [key: string]: any } = {};
+
+    Object.keys({ ...fields, ...files }).forEach(key => {
+      newForm[key] = { ...fields, ...files }[key][0];
+    })
+
+    let { _id, username, email, password, profilePicture, profilePictureFile, about, link, github, linkedin, ocupation, active, role } = Object.assign(
       { // default values
         _id: undefined,
-        about: ""
+        about: "",
+        github: "",
+        linkedin: "",
+        ocupation: "",
+        profilePicture: ""
       },
-      request.body, // form values
+      newForm, // form values
       { // mandatory values
         active: true,
         role: "user"
       }
     );
 
-    if (["admin"].includes(request.user_role) && _id !== request.user_id) throw Error("access-denied")
+    if (!["admin"].includes(request.user_role) && _id !== request.user_id) throw Error("access-denied")
 
     await ConnectDB();
+
+    if (profilePictureFile) {
+      profilePicture = await uploadImageToImageBB(profilePictureFile);
+    }
 
     const user = await User.findOne({ _id: _id }).exec()
 
     if (!user) throw new Error("user/not-found")
 
-    const userEntity = new UserEntity(_id, username, email, password ?? user.password, profilePicture, about, link, github, linkedin, active, user.role);
+    const userEntity = new UserEntity(_id, username, email, password ?? user.password, profilePicture, about, link, github, linkedin, ocupation, active, user.role);
 
     await userEntity.validate({ ignorePassword: true })
 
@@ -107,7 +132,7 @@ class UserController {
   async deactive(request: Request, response: Response) {
     const { _id } = request.query;
 
-    if (["admin"].includes(request.user_role) && _id !== request.user_id) throw Error("access-denied")
+    if (!["admin"].includes(request.user_role) && _id !== request.user_id) throw Error("access-denied")
 
     await ConnectDB();
 
@@ -129,7 +154,7 @@ class UserController {
   async active(request: Request, response: Response) {
     const { _id } = request.query;
 
-    if (["admin"].includes(request.user_role) && _id !== request.user_id) throw Error("access-denied")
+    if (!["admin"].includes(request.user_role) && _id !== request.user_id) throw Error("access-denied")
 
     await ConnectDB();
 

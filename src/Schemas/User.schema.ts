@@ -6,6 +6,7 @@ export let UserSchema = new Schema({
     about: { type: String },
     linkedin: { type: String },
     github: { type: String },
+    ocupation: { type: String },
     link: { type: String, unique: true },
     profilePicture: { type: String },
     password: { type: String },
