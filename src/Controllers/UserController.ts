@@ -34,7 +34,7 @@ class UserController {
   }
 
   async post(request: Request, response: Response) {
-    const { _id, username, email, password, profilePicture, about, link, active, role } = Object.assign(
+    const { _id, username, email, password, profilePicture, about, link, github, linkedin, active, role } = Object.assign(
       { // default values
         about: ""
       },
@@ -48,7 +48,7 @@ class UserController {
 
     await ConnectDB();
 
-    const userEntity = new UserEntity(_id, username, email, password, profilePicture, about, link, active, role);
+    const userEntity = new UserEntity(_id, username, email, password, profilePicture, about, link, github, linkedin, active, role);
 
     await userEntity.validate()
 
@@ -66,7 +66,7 @@ class UserController {
   }
 
   async update(request: Request, response: Response) {
-    const { _id, username, email, password, profilePicture, about, link, active, role } = Object.assign(
+    const { _id, username, email, password, profilePicture, about, link, github, linkedin, active, role } = Object.assign(
       { // default values
         _id: undefined,
         about: ""
@@ -86,9 +86,9 @@ class UserController {
 
     if (!user) throw new Error("user/not-found")
 
-    const userEntity = new UserEntity(_id, username, email, password, profilePicture, about, link, active, role);
+    const userEntity = new UserEntity(_id, username, email, password ?? user.password, profilePicture, about, link, github, linkedin, active, user.role);
 
-    await userEntity.validate()
+    await userEntity.validate({ ignorePassword: true })
 
     if (password)
       userEntity.password = await hash(password, 8);

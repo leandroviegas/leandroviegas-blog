@@ -5,13 +5,13 @@ import ConnectDB from "@utils/ConnectDB";
 
 export default class UserEntity {
     // Validation function
-    async validate?() {
+    async validate?({ignorePassword: ignorePassword = false} = {}) {
         // Connect to the database
         await ConnectDB()
 
         if (!validator.isEmail(this.email)) throw new Error("user/email/invalid-email")
 
-        if (!validator.isStrongPassword(this.password)) throw new Error("user/password/weak-password")
+        if (!validator.isStrongPassword(this.password) && !ignorePassword) throw new Error("user/password/weak-password")
 
         if (!this._id) {
             // Verify if the username is already in use
@@ -32,6 +32,8 @@ export default class UserEntity {
         readonly profilePicture: string,
         readonly about: string,
         readonly link: string,
+        readonly github: string,
+        readonly linkedin: string,
         readonly active: boolean,
         readonly role: string,
     ) { };

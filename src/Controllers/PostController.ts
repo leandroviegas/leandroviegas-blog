@@ -21,7 +21,7 @@ class PostController {
 
     await ConnectDB();
 
-    const post = await Post.findOne({ $or: [{ _id }, { link }] }).populate('author', 'username link role about profilePicture').exec()
+    const post = await Post.findOne({ $or: [{ _id }, { link }] }).populate('author', 'username link role about profilePicture github linkedin').exec()
 
     if (post) {
       return response.send({ post: post.toJSON() });
