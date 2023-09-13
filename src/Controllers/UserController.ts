@@ -73,60 +73,57 @@ class UserController {
   }
 
   async update(request: Request, response: Response) {
-    const form = formidable({});
+    const form = new formidable.IncomingForm();
+    return form.parse(request, async function (err, fields, files) {
+      let { _id, username, email, password, profilePicture, profilePictureFile, about, link, github, linkedin, ocupation, active, role } = Object.assign(
+        { // default values
+          _id: undefined,
+          about: "",
+          username: "",
+          email: "",
+          password: "",
+          link: "",
+          github: "",
+          linkedin: "",
+          ocupation: "",
+          profilePicture: ""
+        },
+        {...fields, ...files}, // form values
+        { // mandatory values
+          active: true,
+          role: "user"
+        }
+      );
 
-    const [fields, files] = await form.parse(request)
+      if (!["admin"].includes(request.user_role) && _id !== request.user_id) throw Error("access-denied")
 
-    let newForm: { [key: string]: any } = {};
+      await ConnectDB();
 
-    Object.keys({ ...fields, ...files }).forEach(key => {
-      newForm[key] = { ...fields, ...files }[key][0];
-    })
-
-    let { _id, username, email, password, profilePicture, profilePictureFile, about, link, github, linkedin, ocupation, active, role } = Object.assign(
-      { // default values
-        _id: undefined,
-        about: "",
-        github: "",
-        linkedin: "",
-        ocupation: "",
-        profilePicture: ""
-      },
-      newForm, // form values
-      { // mandatory values
-        active: true,
-        role: "user"
+      if (profilePictureFile) {
+        profilePicture = await uploadImageToImageBB(profilePictureFile);
       }
-    );
 
-    if (!["admin"].includes(request.user_role) && _id !== request.user_id) throw Error("access-denied")
+      const user = await User.findOne({ _id: _id }).exec()
 
-    await ConnectDB();
+      if (!user) throw new Error("user/not-found")
 
-    if (profilePictureFile) {
-      profilePicture = await uploadImageToImageBB(profilePictureFile);
-    }
+      const userEntity = new UserEntity(_id, username, email, password ?? user.password, profilePicture, about, link, github, linkedin, ocupation, active, user.role);
 
-    const user = await User.findOne({ _id: _id }).exec()
+      await userEntity.validate({ ignorePassword: true })
 
-    if (!user) throw new Error("user/not-found")
+      if (password)
+        userEntity.password = await hash(password, 8);
 
-    const userEntity = new UserEntity(_id, username, email, password ?? user.password, profilePicture, about, link, github, linkedin, ocupation, active, user.role);
+      user.set(userEntity)
 
-    await userEntity.validate({ ignorePassword: true })
+      await user.save()
 
-    if (password)
-      userEntity.password = await hash(password, 8);
+      let userJSON = user.toJSON()
 
-    user.set(userEntity)
+      delete userJSON.password;
 
-    await user.save()
-
-    let userJSON = user.toJSON()
-
-    delete userJSON.password;
-
-    return response.send({ user: userJSON });
+      return response.send({ user: userJSON });
+    });
   }
 
   async deactive(request: Request, response: Response) {

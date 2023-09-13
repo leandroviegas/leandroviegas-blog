@@ -7,7 +7,7 @@ function toBase64(image) {
   return Buffer.from(img).toString('base64');
 }
 
-const uploadImageToImageBB = async (image: formidable.Files<string>): Promise<string> => {
+const uploadImageToImageBB = async (image): Promise<string> => {
   return imgbbUploader({apiKey: process.env.IMGBB_APIKEY, base64string: toBase64(image)})
   .then((response) => response.url)
 };
