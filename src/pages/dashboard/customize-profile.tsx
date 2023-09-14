@@ -39,12 +39,14 @@ const Index = () => {
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
+        setAlerts({ ...alerts, "form-error": [] })
+
         if (Object.keys(alerts).some(key => key.startsWith("form-input") && key.endsWith("-warnings") && alerts[key].length > 0)) {
             setFormStatus("input-warnings")
             return;
         }
 
-        const headers = { authorization: `Bearer ${cookies.authentication}` }
+        const headers = { authorization: `Bearer ${cookies.authentication}`}
 
         const sendForm = new FormData()
         sendForm.append("_id", form._id)
@@ -63,8 +65,8 @@ const Index = () => {
             HandleLoadUser();
             setAlerts({ ...alerts, "form-success": [resp.data?.message || `Informações de usuário alteradas com sucesso`] })
         }).catch(err => {
-            console.error(err)
-            setAlerts({ ...alerts, "form": [err?.response?.data?.message || `Ocorreu um erro ao salvar informações do usuário`] })
+            console.error(err.response.data)
+            setAlerts({ ...alerts, "form-error": [err?.response?.data?.message || `Ocorreu um erro ao salvar informações do usuário`] })
         });
     };
 
