@@ -4,7 +4,6 @@ import UserEntity from "@Entity/User.entity";
 import { User } from "@Models/User.model";
 import ConnectDB from "@utils/ConnectDB";
 
-import formidable from 'formidable';
 import uploadImageToImageBB from "@utils/ImageUploadBB";
 
 class UserController {
@@ -73,57 +72,51 @@ class UserController {
   }
 
   async update(request: Request, response: Response) {
-    const form = new formidable.IncomingForm();
-    return form.parse(request, async function (err, fields, files) {
-      let { _id, username, email, password, profilePicture, profilePictureFile, about, link, github, linkedin, ocupation, active, role } = Object.assign(
-        { // default values
-          _id: undefined,
-          about: "",
-          username: "",
-          email: "",
-          password: "",
-          link: "",
-          github: "",
-          linkedin: "",
-          ocupation: "",
-          profilePicture: ""
-        },
-        {...fields, ...files}, // form values
-        { // mandatory values
-          active: true,
-          role: "user"
-        }
-      );
-
-      if (!["admin"].includes(request.user_role) && _id !== request.user_id) throw Error("access-denied")
-
-      await ConnectDB();
-
-      if (profilePictureFile) {
-        profilePicture = await uploadImageToImageBB(profilePictureFile);
+    let { _id, username, email, password, profilePicture, profilePictureFile, about, link, github, linkedin, ocupation, active, role } = Object.assign(
+      { // default values
+        _id: undefined,
+        about: "",
+        username: "",
+        email: "",
+        password: "",
+        link: "",
+        github: "",
+        linkedin: "",
+        ocupation: "",
+        profilePicture: "",
+        profilePictureFile: request.file,
+        ...request.body
       }
+    );
 
-      const user = await User.findOne({ _id: _id }).exec()
+    if (!["admin"].includes(request.user_role) && _id !== request.user_id) throw Error("access-denied")
 
-      if (!user) throw new Error("user/not-found")
+    await ConnectDB();
 
-      const userEntity = new UserEntity(_id, username, email, password ?? user.password, profilePicture, about, link, github, linkedin, ocupation, active, user.role);
+    const user = await User.findOne({ _id: _id }).exec()
 
-      await userEntity.validate({ ignorePassword: true })
+    if (!user) throw new Error("user/not-found")
 
-      if (password)
-        userEntity.password = await hash(password, 8);
+    if (profilePictureFile != null && typeof profilePictureFile != 'string')
+      profilePicture = await uploadImageToImageBB(profilePictureFile);
 
-      user.set(userEntity)
+    const userEntity = new UserEntity(_id, username, email, password ?? user.password, profilePicture, about, link, github, linkedin, ocupation, active, user.role);
 
-      await user.save()
+    await userEntity.validate({ ignorePassword: true })
 
-      let userJSON = user.toJSON()
+    if (password)
+      userEntity.password = await hash(password, 8);
 
-      delete userJSON.password;
+    user.set(userEntity)
 
-      return response.send({ user: userJSON });
-    });
+    await user.save()
+
+    let userJSON = user.toJSON()
+
+    delete userJSON.password;
+
+    return response.send({ user: userJSON });
+
   }
 
   async deactive(request: Request, response: Response) {

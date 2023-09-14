@@ -1,5 +1,8 @@
 import { Router } from "express";
 
+const multer  = require('multer')
+const upload = multer({ dest: 'uploads/' })
+
 import { AuthenticationController } from "@Controllers/AuthenticationController";
 import { TopicController } from "@Controllers/TopicController";
 import { PostController } from "@Controllers/PostController";
@@ -52,7 +55,7 @@ router.get("/users/deactive", [ensureAuthenticated, accessManagement], userContr
 router.route("/users")
     .get(userController.get)
     .post(userController.post)
-    .put([ensureAuthenticated, accessManagement], userController.update);
+    .put([ensureAuthenticated, accessManagement,  upload.single('profilePictureFile')], userController.update);
 
 // Post routes
 router.get("/posts/list", postController.list);
