@@ -1,6 +1,10 @@
 import { Schema } from "mongoose";
 
 let CommentSchema = new Schema({
+    _id: {
+        type: Schema.Types.ObjectId,
+        required: [true, "_id/_id-is-required"]
+    },
     user: {
         ref: 'users',
         type: Schema.Types.ObjectId,
@@ -14,6 +18,7 @@ let CommentSchema = new Schema({
     referenceComment: {
         ref: 'comments',
         type: Schema.Types.ObjectId,
+        required: false
     },
     content: {
         type: String,

@@ -74,19 +74,21 @@ app.use(
     (err: any, request: Request, response: Response, next: NextFunction) => {
         if (err.code === 11000) {
             let messages = [];
-            Object.keys(err.keyValue).forEach((key) => {
+            Object.keys(err.keyValue).forEach(key => {
                 messages.push(`${key}/${key}-already-in-use`);
             })
-            return response.status(400).json({ message: messages[0], messages });
+            if (messages.length > 0)
+                return response.status(400).json({ message: messages[0], messages });
         }
 
         if (err.errors) {
             let messages = [];
             Object.keys(err.errors).forEach((key) => {
-                if (err.errors[key].properties.message)
+                if (err.errors[key]?.properties?.message)
                     messages.push(err.errors[key].properties.message);
             })
-            return response.status(400).json({ message: messages[0], messages });
+            if (messages.length > 0)
+                return response.status(400).json({ message: messages[0], messages });
         }
 
         if (err instanceof Error) {

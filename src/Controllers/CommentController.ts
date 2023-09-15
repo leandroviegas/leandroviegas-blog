@@ -5,16 +5,21 @@ import { Comment } from "@Models/Comment.model";
 export class CommentController {
     async list(request: Request, response: Response) {
         const { post_id } = request.query;
-        
+
         const comments = await Comment.find({ post: new Types.ObjectId(post_id.toString()) }).populate("user", "username profilePicture link").exec()
 
         return response.send({ comments });
     }
 
     async post(request: Request, response: Response) {
-        const { post, referenceComment, content } = request.body;
+        const {user, post, referenceComment, content } = Object.assign(request.body,
+            {
+                user: new Types.ObjectId(request.user_id),
+                post: new Types.ObjectId(request.body.post.toString()),
+                referenceComment: Types.ObjectId.isValid(request.body.referenceComment) ? new Types.ObjectId(request.body.referenceComment) : null,
+            });
 
-        const comment = await new Comment({ _id: request.user_id, post, referenceComment, content, modifiedAt: new Date(), postedAt: new Date() }, { runValidators: true }).save();
+        const comment = await new Comment({ _id: new Types.ObjectId(), user, post, referenceComment, content, modifiedAt: new Date(), postedAt: new Date() }, { runValidators: true }).save();
 
         return response.send({ comment: comment.toJSON() });
     }
