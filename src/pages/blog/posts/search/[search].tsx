@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import Layout from "@layouts/UserLayout"
 import api from "@services/api"
 
-import { Post } from "types/blog.type"
+import { Post } from "@classes/blog"
 
 import PostCard from "@components/Cards/PostCard"
 import Head from "@components/Head"

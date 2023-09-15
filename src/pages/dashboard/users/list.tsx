@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import api from "@services/api"
 import { useAuth } from "@hooks/Auth"
 
-import { User } from "types/blog.type"
+import { User } from "@classes/blog"
 
 import Head from "@components/Head"
 import DashboardLayout from "@layouts/DashboardLayout"

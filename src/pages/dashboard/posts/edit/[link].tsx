@@ -7,7 +7,7 @@ import Head from "@components/Head";
 import Alert from "@components/Alert";
 import DashboardLayout from "@layouts/DashboardLayout";
 
-import { Post } from "types/blog.type";
+import { Post } from "@classes/blog";
 import { VscLoading } from "react-icons/vsc";
 
 const Index = ({ params }) => {

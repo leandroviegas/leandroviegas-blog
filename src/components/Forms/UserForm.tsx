@@ -6,7 +6,7 @@ import api from "@services/api";
 import FloatingLabelInput from "@components/Inputs/FloatingLabelInput";
 import Alert from "@components/Alert";
 
-import { User } from "types/blog.type";
+import { User } from "@classes/blog";
 
 import validator from "validator";
 

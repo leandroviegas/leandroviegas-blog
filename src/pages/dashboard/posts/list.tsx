@@ -6,7 +6,7 @@ import api from "@services/api"
 import { useAuth } from "@hooks/Auth"
 import truncate from "@utils/truncate"
 
-import { Post } from "types/blog.type"
+import { Post } from "@classes/blog"
 
 import Head from "@components/Head"
 import DashboardLayout from "@layouts/DashboardLayout"

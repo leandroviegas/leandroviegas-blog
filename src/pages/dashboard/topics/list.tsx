@@ -11,7 +11,7 @@ import TopicForm from "@components/Forms/TopicForm"
 import Alert from "@components/Alert"
 import Head from "@components/Head"
 
-import { Topic } from "types/blog.type"
+import { Topic } from "@classes/blog"
 
 import { VscLoading } from "react-icons/vsc"
 import { BiCategoryAlt } from "react-icons/bi"

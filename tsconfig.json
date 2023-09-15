@@ -5,6 +5,7 @@
     "compilerOptions": {
         "target": "es6",
         "moduleResolution": "node",
+        "module": "commonjs",
         "jsx": "react",
         "lib": [
             "dom",
@@ -46,6 +47,9 @@
             ],
             "@styles/*": [
                 "styles/*"
+            ],
+            "@classes/*": [
+                "classes/*"
             ]
         }
     }

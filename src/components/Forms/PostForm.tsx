@@ -17,7 +17,7 @@ import { useAuth } from "@hooks/Auth";
 import "@styles/suneditor-contents.min.css";
 import "@styles/suneditor.min.css";
 
-import { Topic, Post } from "types/blog.type";
+import { Topic, Post } from "@classes/blog";
 
 import { VscLoading } from "react-icons/vsc";
 import { BiUpload } from "react-icons/bi";

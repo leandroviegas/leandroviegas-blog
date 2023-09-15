@@ -7,7 +7,7 @@ import FloatingLabelInput from '@components/Inputs/FloatingLabelInput';
 import linkfy from '@utils/linkfy';
 import api from '@services/api';
 import { useAuth } from '@hooks/Auth';
-import { User } from 'types/blog.type';
+import { User } from '@classes/blog';
 import Alert from '@components/Alert';
 import { BiUpload } from 'react-icons/bi';
 

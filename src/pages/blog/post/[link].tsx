@@ -4,12 +4,12 @@ import { Link } from "gatsby"
 import moment from "moment"
 import Layout from "@layouts/UserLayout"
 import Head from "@components/Head"
-import CommentForm from "@components/Forms/CommentForm"
+import Comment from "@components/Comment"
 
 import api from "@services/api"
 import truncate from "@utils/truncate"
 
-import { Topic, Post, User, Comment } from "types/blog.type"
+import { Topic, Post, User, Comment as CommentClass } from "@classes/blog"
 
 import "@styles/suneditor-contents.min.css"
 import "@styles/blog-post.css"
@@ -19,8 +19,8 @@ import notFoundImage from "@images/notfound.svg"
 
 import { BsLinkedin, BsGithub } from 'react-icons/bs'
 import { FaUser } from "react-icons/fa"
+
 import Alert from "@components/Alert"
-import CommentsSection from "@components/Comments"
 
 export async function getServerData({ params }) {
     try {
@@ -47,7 +47,7 @@ const Index = ({ serverData }) => {
 
     const [alerts, setAlerts] = useState<{ [key: string]: string[] }>({})
 
-    const [comments, setComments] = useState<Comment[]>([])
+    const [comments, setComments] = useState<CommentClass[]>([])
 
     const HandleLoadComments = () => {
         if (post?._id)
@@ -115,8 +115,8 @@ const Index = ({ serverData }) => {
                                         <h2 className="text-lg mx-2 text-zinc-800 font-semibold mb-4">Comentários</h2>
                                         <div className="mr-4">
                                             {alerts["comment-errors"]?.map((message, index) => <Alert key={index} message={message} type="error" />)}
-                                            <CommentForm post_id={post._id} referenceComment={""} CommentCallback={HandleLoadComments} />
-                                            <CommentsSection ReloadComments={HandleLoadComments} comments={comments} />
+                                            <Comment.Form post_id={post._id} referenceComment={""} CommentCallback={HandleLoadComments} />
+                                            <Comment.Section ReloadComments={HandleLoadComments} comments={comments} />
                                         </div>
                                     </div>
                                 </>

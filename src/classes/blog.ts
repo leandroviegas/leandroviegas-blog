@@ -1,4 +1,4 @@
-export type Topic = {
+export class Topic {
     _id?: string;
     name: string;
     link: string;
@@ -6,7 +6,7 @@ export type Topic = {
     image: string;
 }
 
-export type Comment = {
+export class Comment {
     _id?: string;
     content: string;
     user: {
@@ -23,7 +23,7 @@ export type Comment = {
 
 export type Roles = "admin" | "author" | "user";
 
-export type User = {
+export class User {
     _id?: string;
     link: string;
     active: boolean;
@@ -37,7 +37,7 @@ export type User = {
     ocupation: string;
 }
 
-export type Post = {
+export class Post {
     _id?: string;
     title: string;
     content: string;

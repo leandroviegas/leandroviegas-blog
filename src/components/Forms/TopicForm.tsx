@@ -6,7 +6,7 @@ import api from "@services/api";
 import FloatingLabelInput from "@components/Inputs/FloatingLabelInput";
 import Alert from "@components/Alert";
 
-import { Topic } from "types/blog.type";
+import { Topic } from "@classes/blog";
 
 import { IoIosClose } from "react-icons/io";
 import { VscLoading } from "react-icons/vsc";

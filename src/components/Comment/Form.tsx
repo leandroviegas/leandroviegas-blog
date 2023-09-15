@@ -41,7 +41,9 @@ const CommentForm = ({ post_id, referenceComment, CommentCallback, children }: C
                 <textarea value={content} onChange={e => setContent(e.target.value)} className="w-full h-12 rounded-lg resize-none py-2 text-zinc-600 outline-none" placeholder={referenceComment ? "Responder" : "Escreva um comentário"} />
                 <hr />
                 <div className="my-2 flex items-center gap-4" >
-                    <button type={content.trim() ? "submit" : "button"} className="text-gray-500  text-sm hover:text-gray-600 py-2 rounded-lg font-medium flex items-center gap-1"><BiPaperPlane />{referenceComment ? "Responder" : "Comentar"}</button>
+                    <button type={content.trim() ? "submit" : "button"} className="text-gray-500 text-sm hover:text-gray-600 py-2 rounded-lg font-medium flex items-center gap-1">
+                        <BiPaperPlane size={18} />{referenceComment ? "Responder" : "Comentar"}
+                    </button>
                     {children}
                 </div>
             </form>
