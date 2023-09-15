@@ -1,12 +1,19 @@
-import mongoose from "mongoose";
-import TopicEntity from "@Entity/Topic.entity";
-import { TopicSchema } from "@Schemas/Topic.schema";
+import mongoose, { Types } from "mongoose";
+import TopicSchema from "@Schemas/Topic.schema";
+
+type PostType = {
+  _id: Types.ObjectId,
+  name: string,
+  link: string,
+  description: string,
+  image: string
+}
 
 export let TopicModel = () => {
   try {
-    return mongoose.model<TopicEntity>("topic");
+    return mongoose.model<PostType>("topic");
   } catch (error) {
-    return mongoose.model<TopicEntity>("topic", TopicSchema);
+    return mongoose.model<PostType>("topic", TopicSchema);
   }
 };
 

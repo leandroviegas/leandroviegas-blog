@@ -71,17 +71,36 @@ app.get('/auth/callback/failure', (req, res) => {
 })
 
 app.use(
-    (err: Error, request: Request, response: Response, next: NextFunction) => {
+    (err: any, request: Request, response: Response, next: NextFunction) => {
+        if (err.code === 11000) {
+            let messages = [];
+            Object.keys(err.keyValue).forEach((key) => {
+                messages.push(`${key}/${key}-already-in-use`);
+            })
+            return response.status(400).json({ message: messages[0], messages });
+        }
+
+        if (err.errors) {
+            let messages = [];
+            Object.keys(err.errors).forEach((key) => {
+                if (err.errors[key].properties.message)
+                    messages.push(err.errors[key].properties.message);
+            })
+            return response.status(400).json({ message: messages[0], messages });
+        }
+
         if (err instanceof Error) {
             // Get the error translated to the language you want
             const error: { message: string, status: number } = GetError(err.message, process.env.LANGUAGE)
-            console.error(err)
+
             // If found the error
             if (error)
                 return response.status(error.status).json({ code: err.message, message: error.message });
-
-            return response.status(400).json({ message: err.message });
         }
+
+        if (err.message)
+            return response.status(400).json({ message: err.message });
+
         return next(response.status(500).json({
             status: "error",
             message: "Internal Server Error",

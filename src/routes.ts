@@ -1,12 +1,13 @@
 import { Router } from "express";
 
-const multer  = require('multer')
+const multer = require('multer')
 const upload = multer({ dest: 'uploads/' })
 
 import { AuthenticationController } from "@Controllers/AuthenticationController";
 import { TopicController } from "@Controllers/TopicController";
 import { PostController } from "@Controllers/PostController";
 import { UserController } from "@Controllers/UserController";
+import { CommentController } from "@Controllers/CommentController";
 
 import { ensureAuthenticated } from "@middlewares/ensureAutenticated";
 import { accessManagement } from "@middlewares/accessManagement";
@@ -17,6 +18,7 @@ const router = Router();
 const userController = new UserController();
 const topicController = new TopicController();
 const postController = new PostController();
+const commentController = new CommentController();
 
 const authenticationController = new AuthenticationController();
 
@@ -55,7 +57,7 @@ router.get("/users/deactive", [ensureAuthenticated, accessManagement], userContr
 router.route("/users")
     .get(userController.get)
     .post(userController.post)
-    .put([ensureAuthenticated, accessManagement,  upload.single('profilePictureFile')], userController.update);
+    .put([ensureAuthenticated, accessManagement, upload.single('profilePictureFile')], userController.update);
 
 // Post routes
 router.get("/posts/list", postController.list);
@@ -64,8 +66,13 @@ router.get("/posts/by-topics", postController.byTopics);
 router.get("/posts/search", postController.search);
 router.route("/posts")
     .get(postController.get)
-    .post([ensureAuthenticated, accessManagement], postController.post)
-    .put([ensureAuthenticated, accessManagement], postController.update)
+    .post([ensureAuthenticated, accessManagement, upload.single('imageFile')], postController.post)
+    .put([ensureAuthenticated, accessManagement, upload.single('imageFile')], postController.update)
     .delete([ensureAuthenticated, accessManagement], postController.delete)
+router.route("/posts/:_id/comments")
+    .get(commentController.list)
+    .post([ensureAuthenticated], commentController.post)
+    .put([ensureAuthenticated], commentController.put)
+    .delete([ensureAuthenticated], commentController.delete)
 
 export { router };

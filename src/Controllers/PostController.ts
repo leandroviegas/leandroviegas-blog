@@ -1,15 +1,12 @@
 import { Request, Response } from "express";
 import { Types } from "mongoose";
-import PostEntity from "@Entity/Post.entity";
 import { Topic } from "@Models/Topic.model";
 import { Post } from "@Models/Post.model";
-import ConnectDB from "@utils/ConnectDB";
+import ImageProcessing from "@utils/ImageProcessing";
 
 class PostController {
   async list(request: Request, response: Response) {
     const { } = request.query;
-
-    await ConnectDB();
 
     const posts = await Post.find({}).select("").exec()
 
@@ -18,8 +15,6 @@ class PostController {
 
   async get(request: Request, response: Response) {
     const { _id, link } = request.query;
-
-    await ConnectDB();
 
     const post = await Post.findOne({ $or: [{ _id }, { link }] }).populate('author', 'username link role about profilePicture github linkedin ocupation').exec()
 
@@ -37,8 +32,6 @@ class PostController {
 
     let n_page = Math.max(25, Number(page))
 
-    await ConnectDB();
-
     const topic = await Topic.findOne({ 'link': { $in: topic_link } }).exec()
 
     const total = await Post.find({ topics: { "$in": [topic._id] } }).count();
@@ -52,8 +45,6 @@ class PostController {
     let { post_quantity, topic_list } = request.query;
 
     let p_quantity = Number(post_quantity || 5)
-
-    await ConnectDB();
 
     let topic_query = {}
 
@@ -77,9 +68,6 @@ class PostController {
 
     let n_page = Math.max(25, Number(page))
 
-    // Connect to the database
-    await ConnectDB();
-
     const total = await Post.find({
       $or: [
         { 'title': { "$regex": search, "$options": "i" } },
@@ -98,69 +86,46 @@ class PostController {
   }
 
   async post(request: Request, response: Response) {
-    const { _id, title, content, image, link, readTime, active, topics, keywords, description, modifiedAt, postedAt, author } = Object.assign(
-      request.body,
+    let image = "";
+    const { title, content, link, readTime, active, topics, keywords, description, modifiedAt, postedAt, author, imageFile } = Object.assign(
+      {
+        ...request.body,
+        topics: JSON.parse(request.body.topics),
+        modifiedAt: new Date(request.body.modifiedAt),
+        postedAt: new Date(request.body.postedAt),
+        readTime: Number(request.body.readTime),
+        active: Boolean(request.body.active),
+        imageFile: request.file
+      },
       {
         _id: undefined,
         author: new Types.ObjectId(request.user_id)
       }
     );
 
-    await ConnectDB();
+    if (imageFile != null && typeof imageFile != 'string')
+      image = await ImageProcessing({ image: imageFile, height: 400, width: 1000 });
 
-    const post = new PostEntity(
-      _id,
-      title,
-      image,
-      content,
-      description,
-      keywords,
-      link,
-      modifiedAt,
-      postedAt,
-      readTime,
-      active,
-      author,
-      topics.map(topic => new Types.ObjectId(topic)) // Topics
-    );
+    const post = await new Post({ title, image, content, description, keywords, link, modifiedAt, postedAt, readTime, active, author, topics }).save();
 
-    await post.validate()
-
-    const PostS = new Post(post);
-
-    await PostS.save();
-
-    let postJSON = PostS.toJSON();
-
-    return response.send({ post: postJSON });
+    return response.send({ post: post.toJSON() });
   }
 
   async update(request: Request, response: Response) {
-    const { _id, title, content, image, link, readTime, active, topics, keywords, description, modifiedAt, postedAt, author } = Object.assign(
-      request.body,
+    let image = request.body.image;
+    const { _id, title, content, link, readTime, active, topics, keywords, description, modifiedAt, postedAt, imageFile, author } = Object.assign(
+      {
+        ...request.body,
+        topics: JSON.parse(request.body.topics),
+        modifiedAt: new Date(request.body.modifiedAt),
+        postedAt: new Date(request.body.postedAt),
+        readTime: Number(request.body.readTime),
+        active: Boolean(request.body.active),
+        imageFile: request.file
+      },
       {
         author: new Types.ObjectId(!["admin"].includes(request.user_role) ? request.user_id : request.body.author)
       });
-
-    await ConnectDB();
-
-    const postEntity = new PostEntity(
-      _id,
-      title,
-      image,
-      content,
-      description,
-      keywords,
-      link,
-      modifiedAt,
-      postedAt,
-      readTime,
-      active,
-      author,
-      topics.map(topic => new Types.ObjectId(topic)) // Topics
-    );
-
-    await postEntity.validate()
 
     let post
 
@@ -172,19 +137,16 @@ class PostController {
 
     if (!post) throw Error("post/not-found")
 
-    post.set(postEntity);
+    if (imageFile != null && typeof imageFile != 'string')
+      image = await ImageProcessing({ image: imageFile, height: 400, width: 1000 });
 
-    await post.save();
+    await post.set({ _id, title, image, content, description, keywords, link, modifiedAt, postedAt, readTime, active, author, topics }).save();
 
-    let postJSON = post.toJSON();
-
-    return response.send({ post: postJSON });
+    return response.send({ post: post.toJSON() });
   }
 
   async delete(request: Request, response: Response) {
     const { _id } = request.query;
-
-    await ConnectDB();
 
     let post
 

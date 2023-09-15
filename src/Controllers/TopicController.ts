@@ -1,13 +1,9 @@
 import { Request, Response } from "express";
-import TopicEntity from "@Entity/Topic.entity";
 import { Topic } from "@Models/Topic.model";
-import ConnectDB from "@utils/ConnectDB";
 
 class TopicController {
   async list(request: Request, response: Response) {
     const { } = request.query;
-
-    await ConnectDB();
 
     const topics = await Topic.find({}).select("-password").exec()
 
@@ -16,8 +12,6 @@ class TopicController {
 
   async get(request: Request, response: Response) {
     const { _id, link } = request.query;
-
-    await ConnectDB();
 
     const post = await Topic.findOne({ $or: [{ _id }, { link }] }).select("").exec()
 
@@ -29,50 +23,23 @@ class TopicController {
   }
 
   async post(request: Request, response: Response) {
-    const { _id, name, link, description, image } = Object.assign({ _id: undefined }, request.body);
+    const { name, link, description, image } = Object.assign({ _id: undefined }, request.body);
 
-    await ConnectDB();
+    const topic = await new Topic({ name, link, description, image }, { runValidators: true }).save();
 
-    const topicEntity = new TopicEntity(_id, name, link, description, image);
-
-    await topicEntity.validate()
-
-    const topic = new Topic(topicEntity);
-
-    await topic.save();
-
-    let topicJSON = topic.toJSON()
-  
-    return response.send({ topic: topicJSON });
+    return response.send({ topic: topic.toJSON() });
   }
 
   async update(request: Request, response: Response) {
     const { _id, name, link, description, image } = request.body;
 
-    await ConnectDB();
+    const topic = await Topic.findByIdAndUpdate(_id, { name, link, description, image }, { runValidators: true }).exec()
 
-    const topicEntity = new TopicEntity( _id, name, link, description, image);
-
-    await topicEntity.validate()
-
-    const topic = await Topic.findById(_id).exec()
-
-    topic.set(topicEntity)
-
-    await topic.save();
-
-    let topicJSON = topic.toJSON()
-
-    return response.send({ topic: topicJSON });
+    return response.send({ topic: topic.toJSON() });
   }
 
   async delete(request: Request, response: Response) {
     const { _id } = request.query;
-
-    await ConnectDB();
-
-    if (typeof _id !== 'string')
-      throw new Error("topic/id/invalid-id")
 
     const topic = await Topic.findById(_id).exec()
 
