@@ -6,6 +6,21 @@ export type Topic = {
     image: string;
 }
 
+export type Comment = {
+    _id?: string;
+    content: string;
+    user: {
+        _id: string;
+        username: string;
+        profilePicture: string;
+        link: string;
+    };
+    referenceComment: string
+    post: string;
+    postedAt: Date;
+    modifiedAt: Date;
+}
+
 export type Roles = "admin" | "author" | "user";
 
 export type User = {

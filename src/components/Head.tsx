@@ -2,7 +2,7 @@ import React from "react"
 import { Helmet } from 'react-helmet'
 import PropTypes from "prop-types"
 
-function Head({ title, description, author, lang, children }) {
+function Head({ title, description, author, lang, image, children }) {
     return (
         <Helmet htmlAttributes={{ lang }}>
             <title>{title}</title>
@@ -14,6 +14,12 @@ function Head({ title, description, author, lang, children }) {
             <meta name="twitter:creator" content={author} />
             <meta name="twitter:title" content={title} />
             <meta name="twitter:description" content={description} />
+            {image &&
+                <>
+                    <meta name="twitter:image" content={image} />
+                    <meta property="og:image" content={image} />
+                </>}
+            <meta name="robots" content="all" />
             {children}
         </Helmet>
     )
@@ -22,6 +28,7 @@ function Head({ title, description, author, lang, children }) {
 Head.defaultProps = {
     description: ``,
     author: ``,
+    image: ``,
     children: ``,
     lang: `pt-br`,
 }

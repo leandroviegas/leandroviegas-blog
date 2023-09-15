@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from "react"
 import { Link } from "gatsby"
 
-import api from "@services/api"
-
 import moment from "moment"
 import Layout from "@layouts/UserLayout"
 import Head from "@components/Head"
+import CommentForm from "@components/Forms/CommentForm"
+
+import api from "@services/api"
 import truncate from "@utils/truncate"
 
-import cookie from 'cookie';
-
-import { FaUser } from "react-icons/fa"
-
-import { Topic, Post, User } from "types/blog.type"
-
-import { BsLinkedin, BsGithub } from 'react-icons/bs'
+import { Topic, Post, User, Comment } from "types/blog.type"
 
 import "@styles/suneditor-contents.min.css"
 import "@styles/blog-post.css"
 
 import postplaceholderImage from "@images/post_placeholder.jpg"
 import notFoundImage from "@images/notfound.svg"
+
+import { BsLinkedin, BsGithub } from 'react-icons/bs'
+import { FaUser } from "react-icons/fa"
+import Alert from "@components/Alert"
+import CommentsSection from "@components/Comments"
 
 export async function getServerData({ params }) {
     try {
@@ -38,12 +38,31 @@ export async function getServerData({ params }) {
 const Index = ({ serverData }) => {
     const post: Omit<Post, "author"> & { author: User } = serverData?.post;
 
+    const [postedAt, setPostedAt] = useState<string>()
+    const [modifiedAt, setModifiedAtAt] = useState<string>()
+
     const author: User = post.author;
 
     const [topics, setTopics] = useState<{ status: "success" | "error" | "loading" | "", data: Topic[] }>({ status: "", data: [] })
 
+    const [alerts, setAlerts] = useState<{ [key: string]: string[] }>({})
+
+    const [comments, setComments] = useState<Comment[]>([])
+
+    const HandleLoadComments = () => {
+        if (post?._id)
+            api.get("/posts/comments", { params: { post_id: post._id } }).then(resp => {
+                setComments(resp.data?.comments);
+            }).catch(err => {
+                console.error(err)
+                setAlerts({ ...alerts, "comment-errors": [err?.response?.data?.message || "Ocorreu um erro ao carregar comentários!"] });
+            })
+    }
+
     useEffect(() => {
-        if (topics.status === "loading") return;
+        setPostedAt(moment(post?.postedAt).format("LLL"));
+        setModifiedAtAt(moment(post?.modifiedAt).format("LLL"));
+
         setTopics({ status: "loading", data: [] });
 
         api.get("/topics/list").then(resp => {
@@ -52,6 +71,8 @@ const Index = ({ serverData }) => {
             console.error(err)
             setTopics({ status: "error", data: [] });
         })
+
+        HandleLoadComments();
     }, [])
 
     return (
@@ -60,7 +81,7 @@ const Index = ({ serverData }) => {
                 <div className="container mx-auto">
                     {serverData?.status === 200 &&
                         <>
-                            <Head title={post?.title} author={author?.username} description={post?.description} />
+                            <Head title={post?.title} image={post?.image} author={author?.username} description={post?.description}  />
                             <div className="h-96 lg:h-72 w-full">
                                 <img className="w-full h-full object-cover" src={post?.image || postplaceholderImage} alt="" />
                                 <div className="h-full flex flex-col bg-gradient-to-t from-black via-black/70 -translate-y-full p-4">
@@ -68,7 +89,7 @@ const Index = ({ serverData }) => {
                                     <h1 className="text-3xl text-white font-bold">{post?.title}</h1>
                                     <p className="text-gray-100 md:mr-16 mt-4 mb-2">{truncate(post?.description, 180)}</p>
                                     <div className="flex items-center gap-2 sm:gap-6 flex-wrap">
-                                        <span className="text-gray-300 text-semibold text-sm"><span>Postado em: </span>{moment(post?.postedAt).format("DD/MM/YYYY hh:mm")}</span>
+                                        <span className="text-gray-300 text-semibold text-sm"><span>Postado em: </span>{postedAt}</span>
                                         <Link to={``} className="flex items-center gap-2">
                                             <span className="h-6 w-6 flex items-center justify-center">
                                                 {post?.author?.profilePicture ?
@@ -82,28 +103,22 @@ const Index = ({ serverData }) => {
                             </div>
                         </>}
                     <div className="py-4 grid lg:grid-cols-4 gap-4">
-                        <div className="overflow-x-auto max-w-screen col-span-4 lg:col-span-3 border-r">
+                        <div className="overflow-x-auto max-w-screen col-span-4 lg:col-span-3">
                             {serverData?.status === 200 ?
                                 <>
                                     <div className="mb-4 mr-4 rounded-lg sun-editor-editable bg-white" dangerouslySetInnerHTML={{ __html: post?.content }}></div>
                                     <div className="mx-4 my-4 flex flex-wrap gap-4">
-                                        <span className="text-gray-800 text-semibold text-sm"><span>Postado em: </span>{moment(post?.postedAt).format("DD/MM/YYYY hh:mm")}</span>
-                                        <span className="text-gray-800 text-semibold text-sm"><span>Editado em: </span>{moment(post?.modifiedAt).format("DD/MM/YYYY hh:mm")}</span>
+                                        <span className="text-gray-800 text-semibold text-sm"><span>Data de postagem: </span>{postedAt}</span>
+                                        <span className="text-gray-800 text-semibold text-sm"><span>Data de edição: </span>{modifiedAt}</span>
                                     </div>
-                                    <hr className="my-4" />
-                                    {/* <div>
-                                        <h2 className="text-lg mx-2 text-zinc-800 font-semibold">Comentários</h2>
-                                        <hr className="my-2" />
-                                        <div className="mr-4 border px-2 pt-2 bg-white rounded-lg">
-                                            <form>
-                                                <textarea className="w-full rounded-lg resize-none p-2 text-zinc-600" placeholder="Escreva um comentário"> </textarea>
-                                                <hr />
-                                                <div className="my-2">
-                                                    <button className="text-white bg-purple-500 px-4 py-2 rounded-lg">Comentar</button>
-                                                </div>
-                                            </form>
+                                    <div>
+                                        <h2 className="text-lg mx-2 text-zinc-800 font-semibold mb-4">Comentários</h2>
+                                        <div className="mr-4">
+                                            {alerts["comment-errors"]?.map((message, index) => <Alert key={index} message={message} type="error" />)}
+                                            <CommentForm post_id={post._id} referenceComment={""} CommentCallback={HandleLoadComments} />
+                                            <CommentsSection ReloadComments={HandleLoadComments} comments={comments} />
                                         </div>
-                                    </div> */}
+                                    </div>
                                 </>
                                 :
                                 <div className="w-full flex flex-col my-16 items-center justify-center">

@@ -22,7 +22,7 @@ import { Topic, Post } from "types/blog.type";
 import { VscLoading } from "react-icons/vsc";
 import { BiUpload } from "react-icons/bi";
 
-const PostForm = (post: Omit<Post, "topics"> & { topics: string[], imageFile: { file: File, preview: string } }) => {
+const PostForm = (post: Omit<Post, "topics"> & { topics: string[] }) => {
     const { cookies } = useAuth()
 
     const [alerts, setAlerts] = useState<{ [key: string]: string[] }>({})
@@ -31,7 +31,7 @@ const PostForm = (post: Omit<Post, "topics"> & { topics: string[], imageFile: { 
 
     const [content, setContent] = useState(post.content)
 
-    const [form, setForm] = useState({ ...post, imageFile: { file: null, preview: "" } });
+    const [form, setForm] = useState<Omit<Post, "topics"> & { topics: string[], imageFile: { file: File, preview: string } }>({ ...post, imageFile: { file: null, preview: "" } });
 
     const [formStatus, setFormStatus] = useState<"loading" | "success" | "error" | "input-warnings" | "">("")
 
