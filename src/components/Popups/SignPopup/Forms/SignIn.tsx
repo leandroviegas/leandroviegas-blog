@@ -17,22 +17,23 @@ const SignInForm = ({ onSuccess }) => {
 
     const HandleSignIn = (evt: React.FormEvent<HTMLFormElement>) => {
         evt.preventDefault()
-        if (status === "loading") return;
 
-        if (["username-or-email-error", "password-error"].some(errors => alerts[errors]?.length > 0)) {
+        if (status === "loading" || ["username-or-email-error", "password-error"].some(errors => alerts[errors]?.length > 0)) {
             setStatus("input-warnings")
-        } else {
-            setStatus("loading")
-            signIn(form.usernameOrEmail, form.password)
-                .then(() => {
-                    setStatus("success")
-                    onSuccess()
-                }).catch(err => {
-                    console.error(err)
-                    setStatus("error")
-                    setAlerts({ ...alerts, "signin-error": [err.response?.data?.message || "Erro ao fazer login"] })
-                })
+            return ;
         }
+
+        setStatus("loading")
+        signIn(form.usernameOrEmail, form.password)
+            .then(() => {
+                setStatus("success")
+                onSuccess()
+            }).catch(err => {
+                console.error(err)
+                setStatus("error")
+                setAlerts({ ...alerts, "signin-error": [err.response?.data?.message || "Erro ao fazer login"] })
+            })
+
     }
 
     useEffect(() => {

@@ -70,7 +70,7 @@ const Index = ({ search_ = "" }) => {
                                                     <button onClick={() => setUserDropdown(!userDropdown)} className={`flex items-center gap-1 text-zinc-700 hover:text-zinc-900`}>
                                                         {
                                                             user.profilePicture &&
-                                                            <img className="rounded-full h-7 mr-1" src={user.profilePicture} alt={user.username + " profile picture"} referrerPolicy="no-referrer" />
+                                                            <img className="rounded-full h-7 w-7 mr-1" src={user.profilePicture} alt={user.username + " profile picture"} referrerPolicy="no-referrer" />
                                                         }
                                                         <span>{user.username}</span>
 

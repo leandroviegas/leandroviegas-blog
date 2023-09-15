@@ -22,7 +22,7 @@ import "@styles/blog-post.css"
 import postplaceholderImage from "@images/post_placeholder.jpg"
 import notFoundImage from "@images/notfound.svg"
 
-export async function getServerData({ params}) {
+export async function getServerData({ params }) {
     try {
         let data = await api.get("posts", { params }).then(resp => ({ ...resp.data, status: resp.status })).catch(err => ({ status: err?.response?.status || 500, post: {} }))
         return { status: data.status === 404 ? 404 : 200, props: data }
@@ -91,6 +91,19 @@ const Index = ({ serverData }) => {
                                         <span className="text-gray-800 text-semibold text-sm"><span>Editado em: </span>{moment(post?.modifiedAt).format("DD/MM/YYYY hh:mm")}</span>
                                     </div>
                                     <hr className="my-4" />
+                                    {/* <div>
+                                        <h2 className="text-lg mx-2 text-zinc-800 font-semibold">Comentários</h2>
+                                        <hr className="my-2" />
+                                        <div className="mr-4 border px-2 pt-2 bg-white rounded-lg">
+                                            <form>
+                                                <textarea className="w-full rounded-lg resize-none p-2 text-zinc-600" placeholder="Escreva um comentário"> </textarea>
+                                                <hr />
+                                                <div className="my-2">
+                                                    <button className="text-white bg-purple-500 px-4 py-2 rounded-lg">Comentar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div> */}
                                 </>
                                 :
                                 <div className="w-full flex flex-col my-16 items-center justify-center">
@@ -113,8 +126,8 @@ const Index = ({ serverData }) => {
                             <div className="sticky top-4">
                                 <div className="hover:scale-105 ease-in duration-300 writer-card rounded-lg shadow-xl border pb-8 pt-6 bg-white hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
                                     <img src={author?.profilePicture || "https://via.placeholder.com/150"} alt={`${author?.username} Profile Picture`}
-                                        className="object-cover z-10 relative w-24 h-24 mx-auto rounded-full shadow-xl p-[3px]" />
-                                    <blockquote className="flex flex-col justify-between text-center">
+                                        className="object-cover z-10 relative w-24 h-24 mx-auto rounded-full shadow-xl border-white border-[3px]" />
+                                    <blockquote className="flex flex-col justify-between text-center mt-2">
                                         <p className="username text-lg font-bold text-gray-700">{author?.username}</p>
                                         <p className="role mt-1 text-xs font-medium text-gray-500">
                                             {author?.ocupation}
@@ -132,7 +145,7 @@ const Index = ({ serverData }) => {
                                             {author?.github && <a href={"https://www.github.com/" + author.github} target="_blank">
                                                 <BsGithub />
                                             </a>}
-                                    </div>}
+                                        </div>}
                                 </div>
 
                                 <div className="shadow-lg rounded-lg w-full bg-white p-4 relative top-6">

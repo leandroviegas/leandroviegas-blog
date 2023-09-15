@@ -21,7 +21,7 @@ const Index = ({ children }) => {
         <Redirects>
             <div className="w-screen h-screen bg-zinc-200 flex flex-col">
                 <div className="flex justify-between shadow-lg z-10 bg-white shadow-black/20 p-4">
-                    <div className="flex items-center font-bold text-xl gap-2 text-zinc-600"><span><ImBlog /></span><span>Leandro Viegas</span></div>
+                    <Link to="/" className="flex items-center font-bold text-xl gap-2 text-zinc-600"><span><ImBlog /></span><span>Leandro Viegas</span></Link>
                     <Outclick callback={() => setUserDropdown(false)}>
                         <div onClick={() => setUserDropdown(true)} className="flex items-center gap-3 text-zinc-600 relative">
                             <span className="cursor-pointer text-zinc-700 font-semibold">{user?.username}</span>

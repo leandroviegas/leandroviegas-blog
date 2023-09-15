@@ -20,8 +20,9 @@ import "@styles/suneditor.min.css";
 import { Topic, Post } from "types/blog.type";
 
 import { VscLoading } from "react-icons/vsc";
+import { BiUpload } from "react-icons/bi";
 
-const PostForm = (post: Omit<Post, "topics"> & { topics: string[]}) => {
+const PostForm = (post: Omit<Post, "topics"> & { topics: string[], imageFile: { file: File, preview: string } }) => {
     const { cookies } = useAuth()
 
     const [alerts, setAlerts] = useState<{ [key: string]: string[] }>({})
@@ -30,7 +31,7 @@ const PostForm = (post: Omit<Post, "topics"> & { topics: string[]}) => {
 
     const [content, setContent] = useState(post.content)
 
-    const [form, setForm] = useState(post);
+    const [form, setForm] = useState({ ...post, imageFile: { file: null, preview: "" } });
 
     const [formStatus, setFormStatus] = useState<"loading" | "success" | "error" | "input-warnings" | "">("")
 
@@ -48,14 +49,32 @@ const PostForm = (post: Omit<Post, "topics"> & { topics: string[]}) => {
 
             try {
                 const headers = { authorization: `Bearer ${cookies.authentication}` }
+
+                const formdata = new FormData();
+
+                formdata.append("title", form.title);
+                formdata.append("link", form.link);
+                formdata.append("content", content);
+                formdata.append("topics", JSON.stringify(form.topics));
+                formdata.append("_id", form._id);
+                formdata.append("author", form.author?._id);
+                formdata.append("postedAt", String(form.postedAt));
+                formdata.append("modifiedAt", String(form.modifiedAt));
+                formdata.append("description", form.description);
+                formdata.append("keywords", form.keywords);
+                formdata.append("active", form.active.toString());
+                formdata.append("readTime", form.readTime.toString());
+                formdata.append("imageFile", form.imageFile.file);
+
                 if (form?._id) {
-                    await api.put("/posts", { ...form, content, author: form.author?._id }, { headers })
+                    await api.put("/posts", formdata, { headers })
                 } else {
                     await api.post("/posts", { ...form, content }, { headers })
                 }
 
                 navigate("/dashboard/posts/list")
             } catch (err) {
+                console.error(err)
                 setFormStatus("error");
                 setAlerts({ ...alerts, "post-form": [err?.response?.data?.message || `Ocorreu um erro ao ${form?._id ? "editar" : "adicionar"} postagem.`] })
             }
@@ -70,6 +89,11 @@ const PostForm = (post: Omit<Post, "topics"> & { topics: string[]}) => {
             setTopics({ status: "error", data: [] });
             setAlerts({ ...alerts, "post-form": [err?.response?.data?.message || `Ocorreu um erro ao carregar tópicos.`] })
         })
+    }
+
+    const HandleChangeImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files.length > 0)
+            setForm({ ...form, imageFile: { file: event.target.files[0], preview: URL.createObjectURL(event.target.files[0]) } })
     }
 
     useEffect(() => {
@@ -181,6 +205,18 @@ const PostForm = (post: Omit<Post, "topics"> & { topics: string[]}) => {
                             </div>
                         </div>
                         <div className="px-3">
+                            <div className="w-full mt-5">
+                                <div className='flex items-center justify-center'>
+                                    <label htmlFor="image" className='relative cursor-pointer'>
+                                        <div className='absolute right-2 top-2 z-10'><div className='bg-white p-2 rounded-full shadow-lg'><BiUpload /></div></div>
+                                        <img src={form.imageFile.preview || form?.image || "https://via.placeholder.com/150"} alt={`${form?.title} Profile Picture`}
+                                            className="object-cover relative h-[200px] w-full mx-auto rounded shadow-xl mb-4" />
+                                        <input type="file" onClick={(evt) => evt.currentTarget.value = null} onChange={HandleChangeImage} className='hidden' accept='image/*' id="image" name="image" />
+                                    </label>
+                                </div>
+                                <div className='flex items-center justify-center flex-wrap gap-2 grow'>
+                                </div>
+                            </div>
                             <div className="my-5">
                                 <div className="flex">
                                     <div className="grow">

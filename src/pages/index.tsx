@@ -5,7 +5,7 @@ import Head from "@components/Head";
 
 import { FaGithub, FaLinkedinIn } from "react-icons/fa";
 
-import leandroViegasVintage from "@images/leandro_viegas_vintage.png"
+import leandroViegas from "@images/leandro_viegas.png"
 import perfilBackground from "@images/perfil_background.svg"
 
 const Index = () => {
@@ -35,7 +35,7 @@ const Index = () => {
                 <div className="order-1">
                     <div className="max-w-[280px] relative mx-3">
                         <img className="w-full rotate-6 position absolute bottom-0 drop-shadow-2xl" src={perfilBackground} alt="" />
-                        <img style={{ borderRadius: "7.4rem" }} className="w-full relative z-10 grayscale hover:grayscale-[30%] transition-all hover:scale-110 ease-in delay-150" src={leandroViegasVintage} alt="" />
+                        <img style={{ borderRadius: "7.4rem" }} className="w-full relative z-10 grayscale hover:grayscale-[30%] transition-all hover:scale-110 ease-in delay-150" src={leandroViegas} alt="" />
                     </div>
                 </div>
             </section>

@@ -18,22 +18,23 @@ const SignInForm = ({ onSuccess }) => {
 
     const HandleSignUp = (evt: React.FormEvent<HTMLFormElement>) => {
         evt.preventDefault()
-        if (status === "loading") return;
 
-        if (["username-error", "email-error", "password-error"].some(errors => alerts[errors]?.length > 0)) {
+        if (status === "loading" || ["username-error", "email-error", "password-error"].some(errors => alerts[errors]?.length > 0)) {
             setStatus("input-warnings")
-        } else {
-            setStatus("loading")
-            signUp(form.username, form.email, form.password)
-                .then(() => {
-                    setStatus("success")
-                    onSuccess()
-                }).catch(err => {
-                    console.error(err)
-                    setStatus("error")
-                    setAlerts({ ...alerts, "signup-error": [err.response.data?.message || "Erro ao se registrar"] })
-                })
+            return;
         }
+        
+        setStatus("loading")
+        signUp(form.username, form.email, form.password)
+            .then(() => {
+                setStatus("success")
+                onSuccess()
+            }).catch(err => {
+                console.error(err)
+                setStatus("error")
+                setAlerts({ ...alerts, "signup-error": [err.response.data?.message || "Erro ao se registrar"] })
+            })
+
     }
 
     useEffect(() => {
