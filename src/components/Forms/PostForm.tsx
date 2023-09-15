@@ -64,6 +64,7 @@ const PostForm = (post: Omit<Post, "topics"> & { topics: string[] }) => {
                 formdata.append("keywords", form.keywords);
                 formdata.append("active", form.active.toString());
                 formdata.append("readTime", form.readTime.toString());
+                formdata.append("image", form.image);
                 formdata.append("imageFile", form.imageFile.file);
 
                 if (form?._id) {
@@ -129,9 +130,9 @@ const PostForm = (post: Omit<Post, "topics"> & { topics: string[] }) => {
             </OpaqueBackground>
 
             <div className="flex items-center px-4 py-2 rounded-t-lg bg-gradient-to-r to-violet-600 from-indigo-600 text-white justify-between">
-                <h1 className="text-xl font-bold">Nova postagem</h1>
+                <h1 className="text-xl font-bold">{form?.title ? "editar - " + form?.title : "Nova postagem"}</h1>
                 <div className="flex items-center my-2">
-                    <label htmlFor="active" className="rounded-t-xl font-semibold mx-2">Ativo</label>
+                    <label htmlFor="active" className="rounded-t-xl font-semibold mx-2">Rascunho:</label>
                     <Toggle defaultChecked={form.active} onChange={value => setForm({ ...form, active: value.target.checked })} name="active" />
                 </div>
             </div>

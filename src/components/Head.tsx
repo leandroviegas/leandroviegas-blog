@@ -3,6 +3,8 @@ import { Helmet } from 'react-helmet'
 import PropTypes from "prop-types"
 
 function Head({ title, description, author, lang, image, children }) {
+    console.log(image)
+
     return (
         <Helmet htmlAttributes={{ lang }}>
             <title>{title}</title>
@@ -10,15 +12,12 @@ function Head({ title, description, author, lang, image, children }) {
             <meta property="og:title" content={title} />
             <meta property="og:description" content={description} />
             <meta property="og:type" content="website" />
+            <meta property="og:image" content={image} />
             <meta name="twitter:card" content="summary" />
             <meta name="twitter:creator" content={author} />
             <meta name="twitter:title" content={title} />
             <meta name="twitter:description" content={description} />
-            {image &&
-                <>
-                    <meta name="twitter:image" content={image} />
-                    <meta property="og:image" content={image} />
-                </>}
+            <meta name="twitter:image" content={image} />
             <meta name="robots" content="all" />
             {children}
         </Helmet>
@@ -36,6 +35,7 @@ Head.defaultProps = {
 Head.propTypes = {
     lang: PropTypes.string,
     author: PropTypes.string,
+    image: PropTypes.string,
     description: PropTypes.string,
     title: PropTypes.string.isRequired,
 }

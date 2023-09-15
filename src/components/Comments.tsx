@@ -51,7 +51,7 @@ const Comment = (comment: RelatedCommentT & { ReloadComments: () => void }) => {
                     </div>
                     <button onClick={HandleDeleteComment} className="py-2 px-4 hover:bg-red-100 text-red-800 hover:text-red-900 rounded flex items-center gap-1"><FaTrash />Apagar</button>
                 </footer>
-                {comment.relatedComment && (comment.relatedComment?.user?._id !== user._id || ["admin"].includes(user.role)) &&
+                {comment.relatedComment && (comment.relatedComment?.user?._id !== user?._id || ["admin"].includes(user.role)) &&
                     <span className="text-xs">Mencionou: <Link className="text-cyan-500 hover:text-cyan-600 hover:underline" to={`/user/${comment.relatedComment?.user?.link}`}>@{comment.relatedComment?.user?.username}</Link></span>}
                 <p className="text-gray-500 mt-2">{comment.content} {comment.postedAt !== comment.modifiedAt && <span className="text-xs text-gray-400 italic">(Mensagem editada)</span>}</p>
                 {!reply &&
@@ -60,7 +60,7 @@ const Comment = (comment: RelatedCommentT & { ReloadComments: () => void }) => {
                             <BiPaperPlane />
                             Responder
                         </button>
-                        {user._id == comment?.user?._id &&
+                        {user?._id == comment?.user?._id &&
                             <button className="flex items-center gap-2 text-sm text-gray-500 hover:underline font-medium">Editar</button>}
                     </div>}
             </article>
