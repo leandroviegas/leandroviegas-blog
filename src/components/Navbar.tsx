@@ -8,17 +8,17 @@ import { MdClose } from "react-icons/md"
 import { BiMenu } from "react-icons/bi"
 import { AiFillHome, AiFillProject, AiFillRead, AiOutlineHome, AiOutlineProject, AiOutlineRead } from "react-icons/ai"
 
+import SignPopup from "@components/Popups/SignPopup"
 import Outclick from '@components/Outclick'
 
 import { useAuth } from "@hooks/Auth"
-import SignPopup from "@components/Popups/SignPopup/Index"
 
 const Index = ({ search_ = "" }) => {
+    const { signOut, user } = useAuth();
+
     const location = useLocation();
 
     const SignRef = useRef<{ setPopup: (string) => void, popped: boolean }>();
-
-    const { signOut, user } = useAuth();
 
     const [showNavbar, setShowNavbar] = useState<boolean>(false);
 
@@ -68,10 +68,9 @@ const Index = ({ search_ = "" }) => {
                                             <div>
                                                 <Outclick callback={() => setUserDropdown(false)}>
                                                     <button onClick={() => setUserDropdown(!userDropdown)} className={`flex items-center gap-1 text-zinc-700 hover:text-zinc-900`}>
-                                                        {
-                                                            user.profilePicture &&
-                                                            <img className="rounded-full h-7 w-7 mr-1" src={user.profilePicture} alt={user.username + " profile picture"} referrerPolicy="no-referrer" />
-                                                        }
+                                                        {user.profilePicture &&
+                                                            <img className="rounded-full h-7 w-7 mr-1" src={user.profilePicture} alt={user.username + " profile picture"} referrerPolicy="no-referrer" />}
+
                                                         <span>{user.username}</span>
 
                                                         {!userDropdown && <span><FaAngleDown /></span>}

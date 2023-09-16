@@ -81,7 +81,7 @@ const Index = ({ serverData }) => {
                 <div className="container mx-auto">
                     {serverData?.status === 200 &&
                         <>
-                            <Head title={post?.title} image={post?.image} author={author?.username} description={post?.description}  />
+                            <Head title={post?.title} image={post?.image} author={author?.username} description={post?.description} />
                             <div className="h-96 lg:h-72 w-full">
                                 <img className="w-full h-full object-cover" src={post?.image || postplaceholderImage} alt="" />
                                 <div className="h-full flex flex-col bg-gradient-to-t from-black via-black/70 -translate-y-full p-4">
@@ -103,19 +103,18 @@ const Index = ({ serverData }) => {
                             </div>
                         </>}
                     <div className="py-4 grid lg:grid-cols-4 gap-4">
-                        <div className="overflow-x-auto max-w-screen col-span-4 lg:col-span-3">
+                        <div className="max-w-screen col-span-4 lg:col-span-3">
                             {serverData?.status === 200 ?
                                 <>
-                                    <div className="mb-4 mr-4 rounded-lg sun-editor-editable bg-white" dangerouslySetInnerHTML={{ __html: post?.content }}></div>
-                                    <div className="mx-4 my-4 flex flex-wrap gap-4">
-                                        <span className="text-gray-800 text-semibold text-sm"><span>Data de postagem: </span>{postedAt}</span>
-                                        <span className="text-gray-800 text-semibold text-sm"><span>Data de edição: </span>{modifiedAt}</span>
+                                    <div className="mb-4 mr-4 rounded-lg sun-editor-editable bg-white">
+                                        <div dangerouslySetInnerHTML={{ __html: post?.content }}></div>
+                                        <span className="text-xs" style={{ color: "rgb(107, 114, 128)" }}><span>Editado em </span>{modifiedAt}</span>
                                     </div>
                                     <div>
                                         <h2 className="text-lg mx-2 text-zinc-800 font-semibold mb-4">Comentários</h2>
                                         <div className="mr-4">
                                             {alerts["comment-errors"]?.map((message, index) => <Alert key={index} message={message} type="error" />)}
-                                            <Comment.Form post_id={post._id} referenceComment={""} CommentCallback={HandleLoadComments} />
+                                            <Comment.Create post_id={post._id} referenceComment={""} CommentCallback={HandleLoadComments} />
                                             <Comment.Section ReloadComments={HandleLoadComments} comments={comments} />
                                         </div>
                                     </div>
@@ -139,7 +138,7 @@ const Index = ({ serverData }) => {
                         </div>
                         <div className="col-span-4 lg:col-span-1">
                             <div className="sticky top-4">
-                                <div className="hover:scale-105 ease-in duration-300 writer-card rounded-lg shadow-xl border pb-8 pt-6 bg-white hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+                                <div className="lg:hover:scale-[1.03] ease-in duration-300 writer-card rounded-lg shadow-xl border pb-8 pt-6 bg-white hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
                                     <img src={author?.profilePicture || "https://via.placeholder.com/150"} alt={`${author?.username} Profile Picture`}
                                         className="object-cover z-10 relative w-24 h-24 mx-auto rounded-full shadow-xl border-white border-[3px]" />
                                     <blockquote className="flex flex-col justify-between text-center mt-2">
