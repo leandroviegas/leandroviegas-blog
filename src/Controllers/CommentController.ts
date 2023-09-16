@@ -12,7 +12,7 @@ export class CommentController {
     }
 
     async post(request: Request, response: Response) {
-        const {user, post, referenceComment, content } = Object.assign(request.body,
+        const { user, post, referenceComment, content } = Object.assign(request.body,
             {
                 user: new Types.ObjectId(request.user_id),
                 post: new Types.ObjectId(request.body.post.toString()),
@@ -35,19 +35,24 @@ export class CommentController {
     async delete(request: Request, response: Response) {
         const { _id } = request.query;
 
-        let post
+        let comment
 
         if (!["admin"].includes(request.user_role)) {
-            post = await Comment.findById(_id).exec()
+            comment = await Comment.findById(_id).exec()
         } else {
-            post = await Comment.findOne({ _id, user: request.user_id }).exec()
+            comment = await Comment.findOne({ _id, user: request.user_id }).exec()
         }
 
-        if (!post)
+        if (!comment)
             throw new Error("comment/not-found")
 
-        await post.remove()
+        let postComments = await Comment.find({ referenceComment: comment._id, _id: { $ne: comment._id } }).exec()
 
-        return response.send({ post: post.toJSON() });
+        if (postComments.length > 0)
+            await Comment.findByIdAndUpdate(comment._id, { content: "" }, { runValidators: false }).exec()
+        else
+            await comment.remove()
+
+        return response.send({});
     }
 }
