@@ -17,7 +17,7 @@ const Section = ({ comments, ReloadComments }: CommentProps) => {
 
                 function getRelatedComments(referenceComment: CommentClass) {
                     comments?.filter(thisComment => referenceComment._id == thisComment.referenceComment)?.forEach(parentComment => {
-                        relatedComments.push({ ...parentComment, parentComment })
+                        relatedComments.push({ ...parentComment, parentComment: comments.find(cmnt => cmnt._id === parentComment.referenceComment) })
                         getRelatedComments(parentComment);
                     })
                 }

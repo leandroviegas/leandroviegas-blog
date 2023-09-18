@@ -11,6 +11,10 @@ const OpaqueBackground = ({ open, closeCallback, children }: Props) => {
     const [opened, setOpened] = useState<boolean>(open);
 
     useEffect(() => {
+        document.body.style.overflowY = open ? "hidden" : "auto";
+    }, [open])
+
+    useEffect(() => {
         if (open)
             setOpened(open)
         else

@@ -23,10 +23,6 @@ const WorkPopup = ({ open, closeCallback, children }: { open: boolean, closeCall
 const Index = () => {
     const [popup, setPopup] = useState<string>("")
 
-    useEffect(() => {
-        document.body.style.overflowY = popup !== "" ? "hidden" : "auto";
-    }, [popup])
-
     return (
         <Layout>
             <Head title="Sobre mim - Leandro Viegas" description="Sou desenvolvedor e trabalho com diversas tecnologias" />

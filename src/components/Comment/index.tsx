@@ -77,9 +77,9 @@ const Comment = (comment: CommentProps) => {
                 </footer>
 
 
-                {comment.parentComment && (comment.parentComment?.user?._id !== user?._id) &&
+                {comment.parentComment &&
                     <span className="text-xs">
-                        Mencionou:
+                        Mencionou: <span>{comment.parentComment.content?.substring(0, 9)}{comment.parentComment.content.length > 10 && "..."}</span> de
                         <Link className="text-cyan-500 hover:text-cyan-600 hover:underline" to={`/user/${comment.parentComment?.user?.link}`}>
                             @{comment.parentComment?.user?.username}
                         </Link>

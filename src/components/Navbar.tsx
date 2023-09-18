@@ -18,17 +18,13 @@ const Index = ({ search_ = "" }) => {
 
     const location = useLocation();
 
-    const SignRef = useRef<{ setPopup: (string) => void, popped: boolean }>();
+    const SignRef = useRef<{ setPopup: (string) => void }>();
 
     const [showNavbar, setShowNavbar] = useState<boolean>(false);
 
     const [userDropdown, setUserDropdown] = useState<boolean>(false);
 
     const [search, setSearch] = useState<string>(search_ ?? "");
-
-    useEffect(() => {
-        document.body.style.overflowY = (SignRef.current?.popped || showNavbar) ? "hidden" : "auto";
-    }, [SignRef.current?.popped, showNavbar])
 
     return (
         <>

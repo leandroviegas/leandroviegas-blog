@@ -3,8 +3,6 @@ import { Helmet } from 'react-helmet'
 import PropTypes from "prop-types"
 
 function Head({ title, description, author, lang, image, children }) {
-    console.log(image)
-
     return (
         <Helmet htmlAttributes={{ lang }}>
             <title>{title}</title>
