@@ -19,7 +19,7 @@ export class CommentController {
                 referenceComment: Types.ObjectId.isValid(request.body.referenceComment) ? new Types.ObjectId(request.body.referenceComment) : null,
             });
 
-        const comment = await new Comment({ _id: new Types.ObjectId(), user, post, referenceComment, content, modifiedAt: new Date(), postedAt: new Date() }, { runValidators: true }).save();
+        const comment = await new Comment({ _id: new Types.ObjectId(), user, post, referenceComment, content, modifiedAt: new Date(), postedAt: new Date() }, { runValidators: true, new: true }).save();
 
         return response.send({ comment: comment.toJSON() });
     }
@@ -27,7 +27,7 @@ export class CommentController {
     async put(request: Request, response: Response) {
         const { _id, content } = request.body;
 
-        const comment = await Comment.findOneAndUpdate({ _id, user: request.user_id }, { content, modifiedAt: new Date() }, { runValidators: true });
+        const comment = await Comment.findOneAndUpdate({ _id, user: request.user_id }, { content, modifiedAt: new Date() }, { runValidators: true, new: true });
 
         return response.send({ comment: comment.toJSON() });
     }
@@ -38,20 +38,42 @@ export class CommentController {
         let comment
 
         if (!["admin"].includes(request.user_role)) {
-            comment = await Comment.findById(_id).exec()
+            comment = await Comment.findByIdAndUpdate(_id, { content: "" }, { new: true }).exec()
         } else {
-            comment = await Comment.findOne({ _id, user: request.user_id }).exec()
+            comment = await Comment.findOneAndUpdate({ _id, user: request.user_id }, { content: "" }, { new: true }).exec()
         }
 
         if (!comment)
             throw new Error("comment/not-found")
 
-        let postComments = await Comment.find({ referenceComment: comment._id, _id: { $ne: comment._id } }).exec()
+        let comments = await Comment.find({ post: comment.post }).exec()
 
-        if (postComments.length > 0)
-            await Comment.findByIdAndUpdate(comment._id, { content: "" }, { runValidators: false }).exec()
-        else
-            await comment.remove()
+        let commentsToDelete: Types.ObjectId[] = [];
+
+        /* Delete all the parents that have no children(children, grandchildren...) with content */
+
+        function ChildrenHasContent(commentToCheck) {
+            let childWContent = false;
+
+            (function CheckChildComments(comment) {
+                if (comment.content.length > 0)
+                    childWContent = true;
+                else
+                    comments.filter(cmnt => cmnt.referenceComment == comment._id?.toString()).forEach(CheckChildComments)
+            })(commentToCheck)
+
+            return childWContent
+        }
+
+        let topParent = comment;
+
+        while (topParent) {
+            if (!ChildrenHasContent(topParent))
+                commentsToDelete.push(topParent._id);
+            topParent = comments.find(cmnt => cmnt._id?.toString() == topParent.referenceComment?.toString());
+        }
+
+        await Comment.deleteMany({ _id: { $in: commentsToDelete } }).exec();
 
         return response.send({});
     }

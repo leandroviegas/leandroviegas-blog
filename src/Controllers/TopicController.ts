@@ -33,7 +33,7 @@ class TopicController {
   async update(request: Request, response: Response) {
     const { _id, name, link, description, image } = request.body;
 
-    const topic = await Topic.findByIdAndUpdate(_id, { name, link, description, image }, { runValidators: true }).exec()
+    const topic = await Topic.findByIdAndUpdate(_id, { name, link, description, image }, { runValidators: true, new: true }).exec()
 
     return response.send({ topic: topic.toJSON() });
   }

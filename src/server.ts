@@ -72,6 +72,8 @@ app.get('/auth/callback/failure', (req, res) => {
 
 app.use(
     (err: any, request: Request, response: Response, next: NextFunction) => {
+
+        console.error(err)
         if (err.code === 11000) {
             let messages = [];
             Object.keys(err.keyValue).forEach(key => {
