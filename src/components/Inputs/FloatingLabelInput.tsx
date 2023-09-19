@@ -20,24 +20,24 @@ interface Props {
 const Input = ({ status, messages, onChange, defaultValue, value, name, label, type, autoComplete, children, readOnly }: Props) => {
     const color = { error: "red", info: "indigo" }
 
-    const inputClassName = `block py-2.5 w-full transition duration-300 text-sm text-${status === "error" ? color[status] : "zinc"}-600 bg-transparent border-0 border-b-2 border-${status === "error" ? `${color[status]}-600` : "zinc-200"} focus:border-${color[status]}-700 focus:outline-none focus:ring-0 peer`
+    const inputClassName = `block py-2.5 w-full transition duration-300 text-sm text-${status === "error" ? color[status] : "zinc"}-600 dark:text-${status === "error" ? color[status] : "zinc"}-300 bg-transparent border-0 border-b-2 border-${status === "error" ? `${color[status]}-600` : "zinc-200"} focus:border-${color[status]}-700 focus:outline-none focus:ring-0 peer`
 
     const inputProps = { onChange, readOnly, autoComplete, className: inputClassName, name, type, ...(value !== undefined ? { value } : { defaultValue }) }
 
     return (
         <>
-            <div className="relative z-0">
+            <div className={`relative ${type === "textarea" ? "dark:bg-zinc-800" : ""} z-0`}>
                 {type === "select" ?
                     <select {...{ ...inputProps, className: inputClassName + " pr-3" }}>
                         {children}
                     </select>
                     : type === "textarea" ?
-                        <ReactTextareaAutosize {...{ ...inputProps, className: inputClassName + " px-3 rounded-lg border-2"}} placeholder=" " minRows={2} />
-                : <input {...inputProps} placeholder=" " />
+                        <ReactTextareaAutosize {...{ ...inputProps, className: inputClassName + " px-3 rounded-lg border-2" }} placeholder=" " minRows={2} />
+                        : <input {...inputProps} placeholder=" " />
                 }
-                <label htmlFor={name} className={`absolute text-sm text-${status === "error" ? "red-600" : "zinc-500"} ${type === "textarea" ? "left-2 px-2 bg-white " : ""}peer-focus:z-10 z-10 peer-placeholder-shown:-z-10 duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-focus:left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:text-${color[status]}-700 peer-focus:scale-75 peer-focus:-translate-y-6`}>{label}</label>
+                <label htmlFor={name} className={`absolute text-sm text-${status === "error" ? "red-600" : "zinc-500"} rounded dark:text-${status === "error" ? "red-600" : "zinc-400"} ${type === "textarea" ? "left-2 px-2 bg-white dark:bg-zinc-800 " : ` peer-focus:text-${color[status]}-700 darkpeer-focus:text-${color[status]}-400 `}peer-focus:z-10 z-10 peer-placeholder-shown:-z-10 duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-focus:left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6`}>{label}</label>
             </div>
-            {messages?.map(message => <p key={name + message} id="standard_error_help" className={`mt-2 text-xs text-${status === "error" ? color[status] : "zinc"}-600`}>* {message}</p>)}
+            {messages?.map(message => <p key={name + message} id="standard_error_help" className={`mt-2 text-xs text-${status === "error" ? color[status] : "zinc"}-600 dark:text-${status === "error" ? color[status] : "zinc"}-400`}>* {message}</p>)}
         </>
     )
 }

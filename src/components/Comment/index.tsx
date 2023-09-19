@@ -41,6 +41,7 @@ const Comment = (comment: CommentProps) => {
 
         api.delete("/posts/comments", { headers, params: { _id: comment._id } }).then(() => {
             comment.ReloadComments()
+            setOptionsDrodown(false);
         }).catch(err => {
             console.error(err)
             setAlerts({ ...alerts, "comment-errors": [err?.response?.data?.message || "Erro ao apagar comentário"] })
@@ -48,26 +49,26 @@ const Comment = (comment: CommentProps) => {
     }
 
     return (
-        <div className="bg-white rounded-lg">
+        <div className="bg-white dark:bg-zinc-900 rounded-lg">
             <article className="px-6 py-4 mt-3 text-base">
                 <footer className="flex justify-between items-center">
                     <div className="flex items-center">
-                        <Link to={`/user/${comment?.user?.link}`} className="inline-flex items-center gap-2 mr-3 text-gray-900 font-semibold">
+                        <Link to={`/blog/user/${comment?.user?.link}`} className="inline-flex items-center gap-2 mr-3 text-gray-900 dark:text-zinc-50 font-semibold">
                             {comment?.user?.profilePicture ?
                                 <img className="mr-2 w-6 h-6 rounded-full" src={comment?.user?.profilePicture} alt={comment?.user?.username} />
                                 : <BsPersonFill size={20} />}
                             {comment?.user?.username}
                         </Link>
-                        <p className="text-xs text-gray-600">{moment(comment.postedAt).format('LLL')}</p>
+                        <p className="text-xs text-gray-600 dark:text-zinc-400">{moment(comment.postedAt).format('LLL')}</p>
                     </div>
                     <div className="relative h-0">
                         <Outclick callback={() => setOptionsDrodown(false)}>
                             {(user?._id === comment?.user?._id || ["admin"].includes(user?.role)) &&
-                                <button onClick={() => setOptionsDrodown(true)} className="py-2 px-4 hover:bg-zinc-100 text-zinc-800 hover:text-zinc-900 rounded flex items-center gap-1"><BsThreeDots /></button>}
+                                <button onClick={() => setOptionsDrodown(true)} className="py-2 px-4 hover:bg-zinc-100 text-zinc-800 hover:text-zinc-900  dark:hover:bg-zinc-700 dark:text-zinc-100 dark:hover:text-zinc-50 rounded flex items-center gap-1"><BsThreeDots /></button>}
                             {optionsDrodown &&
-                                <div className="z-10 absolute right-0 bg-white rounded shadow w-28">
-                                    <ul className="py-1 text-sm text-gray-700">
-                                        <li className="hover:bg-gray-100">
+                                <div className="z-10 absolute right-0 bg-white dark:bg-zinc-800 rounded shadow w-28">
+                                    <ul className="py-1 text-sm text-gray-700 dark:text-gray-200">
+                                        <li className="hover:bg-gray-100 dark:hover:bg-zinc-600">
                                             <button onClick={HandleDeleteComment} className="block gap-2 px-3 py-1 text-left w-full">Apagar</button>
                                         </li>
                                     </ul>
@@ -78,19 +79,19 @@ const Comment = (comment: CommentProps) => {
 
 
                 {comment.parentComment &&
-                    <span className="text-xs">
-                        Mencionou: <span>{comment.parentComment.content?.substring(0, 9)}{comment.parentComment.content.length > 10 && "..."}</span> de
-                        <Link className="text-cyan-500 hover:text-cyan-600 hover:underline" to={`/user/${comment.parentComment?.user?.link}`}>
+                    <span className="text-xs dark:text-zinc-400">
+                        Mencionou: <span>{comment.parentComment.content?.substring(0, 9)}{comment.parentComment.content.length > 10 && "..."}</span> de&nbsp;
+                        <Link className="text-cyan-500 hover:text-cyan-600 hover:underline" to={`/blog/user/${comment.parentComment?.user?.link}`}>
                             @{comment.parentComment?.user?.username}
                         </Link>
                     </span>}
 
                 {formSelected === "edit" ?
                     <EditForm comment_id={comment?._id} initialContent={comment?.content} CommentCallback={() => { comment.ReloadComments(); setFormSelected(""); }}>
-                        <button onClick={() => setFormSelected("")} type="button" className="text-gray-500 hover:text-gray-600 py-2 rounded-lg text-sm font-medium flex items-center"><VscClose />Cancelar</button>
+                        <button onClick={() => setFormSelected("")} type="button" className="text-gray-500 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-400 py-2 rounded-lg text-sm font-medium flex items-center"><VscClose />Cancelar</button>
                     </EditForm>
                     :
-                    <p className="text-gray-500 mt-2">
+                    <p className="text-gray-500 dark:text-gray-300 mt-2">
                         {comment.content !== "" ?
                             <>
                                 {comment.content}
@@ -102,12 +103,12 @@ const Comment = (comment: CommentProps) => {
 
                 {formSelected === "" && user?._id &&
                     <div className="flex items-center mt-2 space-x-4">
-                        <button onClick={() => setFormSelected("reply")} type="button" className="flex items-center gap-2 text-sm text-gray-500 hover:underline font-medium">
+                        <button onClick={() => setFormSelected("reply")} type="button" className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-300 hover:underline font-medium">
                             <BsChatRightText />
                             Responder
                         </button>
                         {user?._id == comment?.user?._id &&
-                            <button onClick={() => setFormSelected("edit")} className="flex items-center gap-2 text-sm text-gray-500 hover:underline font-medium">Editar</button>}
+                            <button onClick={() => setFormSelected("edit")} className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-300 hover:underline font-medium">Editar</button>}
                     </div>}
             </article>
 
@@ -115,7 +116,7 @@ const Comment = (comment: CommentProps) => {
 
             {formSelected === "reply" &&
                 <CreateForm referenceComment={comment?._id} post_id={comment.post} CommentCallback={() => { comment.ReloadComments(); setFormSelected(""); }}>
-                    <button onClick={() => setFormSelected("")} type="button" className="text-gray-500 hover:text-gray-600 py-2 rounded-lg text-sm font-medium flex items-center"><VscClose />Cancelar</button>
+                    <button onClick={() => setFormSelected("")} type="button" className="text-gray-500 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-400 py-2 rounded-lg text-sm font-medium flex items-center"><VscClose />Cancelar</button>
                 </CreateForm>}
         </div >
     )

@@ -127,8 +127,8 @@ const Index = () => {
         <DashboardLayout>
             <Head title={`Customizar perfil`} />
             <div className="container">
-                <div className="bg-white rounded-lg p-4 mx-4 my-8 shadow-lg">
-                    <h1 className='text-2xl font-bold text-zinc-700'>Customizar perfil</h1>
+                <div className="bg-white dark:bg-zinc-900 rounded-lg p-4 mx-4 my-8 shadow-lg">
+                    <h1 className='text-2xl font-bold text-zinc-700 dark:text-zinc-100'>Customizar perfil</h1>
                     <hr className='my-3' />
                     {alerts["form-success"]?.map((message, index) => <Alert key={index} message={message} type="success" />)}
                     {alerts["form-error"]?.map((message, index) => <Alert key={index} message={message} type="error" />)}

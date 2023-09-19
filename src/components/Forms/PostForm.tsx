@@ -122,9 +122,9 @@ const PostForm = (post: Omit<Post, "topics"> & { topics: string[] }) => {
     }, [])
 
     return (
-        <div className="bg-white rounded-lg shadow-lg shadow-black-50/10">
+        <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-lg shadow-black-50/10">
             <OpaqueBackground open={popup === "topic-form"} closeCallback={() => setPopup("")}>
-                <div data-aos="fade-down" className="bg-white shadow-lg shadow-violet-700/40 rounded-lg w-96 max-w-screen">
+                <div data-aos="fade-down" className="bg-white dark:bg-zinc-900 shadow-lg shadow-violet-700/40 rounded-lg w-96 max-w-screen">
                     <TopicForm onClose={() => setPopup("")} onSuccess={() => { setPopup(""); HandleLoadTopics(); }} />
                 </div>
             </OpaqueBackground>
@@ -144,7 +144,7 @@ const PostForm = (post: Omit<Post, "topics"> & { topics: string[] }) => {
                     </div>}
                 {formStatus !== "loading" &&
                     <div className="grid grid-cols-1 lg:grid-cols-2">
-                        <div className="lg:border-r px-3">
+                        <div className="px-3">
                             <form onSubmit={HandleSendPost}>
                                 <div className="w-full my-5">
                                     <FloatingLabelInput label="Título" name="title" defaultValue={form.title} onChange={evt => setForm({ ...form, title: evt.target.value, link: linkfy(evt.target.value) })} status={(formStatus === "input-warnings" && alerts["post-form-title"]?.length > 0) ? "error" : "info"} messages={alerts["post-form-title"]} />
@@ -223,11 +223,11 @@ const PostForm = (post: Omit<Post, "topics"> & { topics: string[] }) => {
                                     <div className="grow">
                                         <FloatingLabelInput label="Procurar por tópico" name="topic-input" />
                                     </div>
-                                    <button type="button" onClick={() => setPopup("topic-form")} className="shadow-lg shadow-indigo-500/30 bg-indigo-600 hover:bg-indigo-700 my-0.5 transition font-semibold text-white px-3 rounded">Novo tópico</button>
+                                    <button type="button" onClick={() => setPopup("topic-form")} className="shadow-md shadow-indigo-500/30 bg-indigo-600 hover:bg-indigo-700 my-0.5 transition font-semibold text-white px-3 rounded">Novo tópico</button>
                                 </div>
                                 <div className="flex flex-wrap gap-2 pt-3">
                                     {topics.data.filter(topic => form.topics.includes(topic?._id ?? "")).map(topic => <button type="button" onClick={() => setForm(f => ({ ...f, topics: f.topics.filter(t => t !== topic?._id) }))} className="cursor-pointer text-sm px-2 border border-indigo-700 text-indigo-700 rounded" key={topic?._id}>{topic.name}</button>)}
-                                    {topics.data.filter(topic => !form.topics.includes(topic?._id ?? "")).map(topic => <button type="button" onClick={() => setForm(f => ({ ...f, topics: [...f.topics, topic?._id ?? ""] }))} className="cursor-pointer text-sm px-2 border border-zinc-400 text-zinc-600 rounded" key={topic?._id}>{topic.name}</button>)}
+                                    {topics.data.filter(topic => !form.topics.includes(topic?._id ?? "")).map(topic => <button type="button" onClick={() => setForm(f => ({ ...f, topics: [...f.topics, topic?._id ?? ""] }))} className="cursor-pointer text-sm px-2 border border-zinc-500 text-zinc-300 rounded" key={topic?._id}>{topic.name}</button>)}
                                 </div>
                             </div>
                             <form onSubmit={HandleSendPost}>
@@ -258,7 +258,7 @@ const PostForm = (post: Omit<Post, "topics"> & { topics: string[] }) => {
                     </div>}
                 <hr className="my-2" />
                 <div className="py-2">
-                    <button onClick={() => HandleSendPost()} className="shadow-lg shadow-indigo-500/30 hover:scale-110 bg-indigo-600 hover:bg-indigo-700 transition font-semibold text-white px-3 py-1 rounded">
+                    <button onClick={() => HandleSendPost()} className="shadow-md shadow-indigo-500/30 hover:scale-110 bg-indigo-600 hover:bg-indigo-700 transition font-semibold text-white px-3 py-1 rounded">
                         {status === "loading" ? <VscLoading className="animate-spin text-lg mx-6 my-0.5" /> : form?._id ? "Salvar alterações" : "Publicar"}
                     </button>
                 </div>

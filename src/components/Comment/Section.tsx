@@ -27,7 +27,7 @@ const Section = ({ comments, ReloadComments }: CommentProps) => {
                 return (
                     <React.Fragment key={comment?._id}>
                         <Comment ReloadComments={ReloadComments} {...comment} />
-                        <div className="border-l-2 border-gray-600 ml-6 pl-3">
+                        <div className="border-l-2 border-gray-600 dark:border-gray-300 ml-6 pl-3">
                             {relatedComments.map(comment => <Comment ReloadComments={ReloadComments} key={comment._id} {...comment} />)}
                         </div>
                     </React.Fragment>

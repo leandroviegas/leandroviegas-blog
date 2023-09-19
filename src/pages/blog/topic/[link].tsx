@@ -45,16 +45,16 @@ const TopicPage = ({ serverData }) => {
             <Head title={`${data.topic.name} - Leandro Viegas`} description="Sou desenvolvedor e trabalho com diversas tecnologias" />
 
             <div className="container grid grid-cols-1 lg:grid-cols-4 mx-auto">
-                <div className="col-span-3 px-4 md:px-8 bg-white my-8 rounded">
+                <div className="col-span-3 px-4 md:px-8 bg-white dark:bg-zinc-900 my-8 rounded">
                     <div className="my-12">
-                        <h1 className="text-2xl mx-4 font-semibold text-zinc-900">{data.topic.name}</h1>
-                        <hr className="my-2 border-gray-800" />
+                        <h1 className="text-2xl mx-4 font-semibold text-zinc-900 dark:text-zinc-50">{data.topic.name}</h1>
+                        <hr className="my-2 border-gray-800 dark:border-zinc-200" />
                         <div className="md:my-6">
                             {data.posts.map((p) => <PostCard key={p.link}  {...p} />)}
                         </div>
                         <div className="my-4 flex justify-center">
                             {Math.max(1, page) >= (data.total / 25) ??
-                                <button onClick={HandleLoadMorePosts} className="rounded-xl hover:bg-gray-200 text-gray-600 hover:text-gray-700 transition border px-3 py-1">
+                                <button onClick={HandleLoadMorePosts} className="rounded-xl hover:bg-gray-200 text-gray-600 hover:text-gray-700 dark:hover:bg-zinc-500 dark:text-gray-300 dark:hover:text-gray-100 transition border px-3 py-1">
                                     Carregar mais
                                 </button>}
                         </div>

@@ -90,7 +90,7 @@ const Index = ({ serverData }) => {
                                     <p className="text-gray-100 md:mr-16 mt-4 mb-2">{truncate(post?.description, 180)}</p>
                                     <div className="flex items-center gap-2 sm:gap-6 flex-wrap">
                                         <span className="text-gray-300 text-semibold text-sm"><span>Postado em: </span>{postedAt}</span>
-                                        <Link to={``} className="flex items-center gap-2">
+                                        <Link to={`/blog/user/${author?.link}`} className="flex items-center gap-2">
                                             <span className="h-6 w-6 flex items-center justify-center">
                                                 {post?.author?.profilePicture ?
                                                     <img className="w-full h-full object-cotain rounded-full bg-gray-300" src={author.profilePicture} alt={author?.username} />
@@ -106,9 +106,9 @@ const Index = ({ serverData }) => {
                         <div className="max-w-screen col-span-4 lg:col-span-3">
                             {serverData?.status === 200 ?
                                 <>
-                                    <div className="mb-4 mr-4 rounded-lg sun-editor-editable bg-white">
+                                    <div className="mb-4 mr-4 rounded-lg sun-editor-editable bg-white dark:bg-zinc-900">
                                         <div dangerouslySetInnerHTML={{ __html: post?.content }}></div>
-                                        <span className="text-xs" style={{ color: "rgb(107, 114, 128)" }}><span>Editado em </span>{modifiedAt}</span>
+                                        <span className="text-xs" style={{ color: "rgb(146, 146, 146)" }}><span>Editado em </span>{modifiedAt}</span>
                                     </div>
                                     <div>
                                         <h2 className="text-lg mx-2 text-zinc-800 font-semibold mb-4">Comentários</h2>
@@ -138,21 +138,21 @@ const Index = ({ serverData }) => {
                         </div>
                         <div className="col-span-4 lg:col-span-1">
                             <div className="sticky top-4">
-                                <div className="lg:hover:scale-[1.03] ease-in duration-300 writer-card rounded-lg shadow-xl border pb-8 pt-6 bg-white hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+                                <div className="lg:hover:scale-[1.03] ease-in duration-300 writer-card rounded-lg shadow-xl hover:border pb-8 pt-6 bg-white dark:bg-zinc-900 hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
                                     <img src={author?.profilePicture || "https://via.placeholder.com/150"} alt={`${author?.username} Profile Picture`}
                                         className="object-cover z-10 relative w-24 h-24 mx-auto rounded-full shadow-xl border-white border-[3px]" />
                                     <blockquote className="flex flex-col justify-between text-center mt-2">
-                                        <p className="username text-lg font-bold text-gray-700">{author?.username}</p>
-                                        <p className="role mt-1 text-xs font-medium text-gray-500">
+                                        <p className="username text-lg font-bold text-gray-700 dark:text-zinc-100">{author?.username}</p>
+                                        <p className="role mt-1 text-xs font-medium text-gray-500 dark:text-zinc-200">
                                             {author?.ocupation}
                                         </p>
                                         {author?.about &&
-                                            <p className="about mt-4 text-sm text-gray-500">
+                                            <p className="about mt-4 text-sm text-gray-500 dark:text-zinc-200">
                                                 {author?.about}
                                             </p>}
                                     </blockquote>
                                     {(author?.linkedin || author?.github) &&
-                                        <div className="flex justify-center gap-3 mt-4 text-xl text-zinc-800">
+                                        <div className="flex justify-center gap-3 mt-4 text-xl text-zinc-800 dark:text-zinc-100">
                                             {author?.linkedin && <a href={"https://www.linkedin.com/in/" + author.linkedin} target="_blank">
                                                 <BsLinkedin />
                                             </a>}
@@ -162,8 +162,8 @@ const Index = ({ serverData }) => {
                                         </div>}
                                 </div>
 
-                                <div className="shadow-lg rounded-lg w-full bg-white p-4 relative top-6">
-                                    <h2 className="text-lg text-zinc-800 font-semibold">Tópicos</h2>
+                                <div className="shadow-lg rounded-lg w-full bg-white dark:bg-zinc-900 p-4 relative top-6">
+                                    <h2 className="text-lg text-zinc-800 dark:text-zinc-100 font-semibold">Tópicos</h2>
                                     <hr className="my-2" />
                                     <div className="flex flex-wrap gap-2 my-3">
                                         {topics.data.map(topic => {

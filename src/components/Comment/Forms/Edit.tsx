@@ -38,13 +38,13 @@ const CommentForm = ({ comment_id, initialContent, CommentCallback, children }: 
     return (
         <>
             {user?._id ?
-                <div className="bg-white rounded-lg">
+                <div className="bg-white dark:bg-zinc-900 rounded-lg">
                     {alerts["comment-errors"]?.map((message, index) => <Alert key={index} message={message} type="error" />)}
                     <form onSubmit={HandleComment}>
-                        <textarea value={content} onChange={e => setContent(e.target.value)} className="w-full h-12 rounded-lg resize-none py-2 text-zinc-600 outline-none" placeholder="Escreva um comentário" />
+                        <textarea value={content} onChange={e => setContent(e.target.value)} className="w-full h-12 rounded-lg resize-none py-2 bg-transparent text-zinc-600 dark:text-zinc-300 outline-none" placeholder="Escreva um comentário" />
                         <hr />
                         <div className="flex items-center gap-4" >
-                            <button type={content.trim() ? "submit" : "button"} className="text-gray-500 text-sm hover:text-gray-600 py-2 rounded-lg font-medium flex items-center gap-1">
+                            <button type={content.trim() ? "submit" : "button"} className="text-gray-500 text-sm hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-400 py-2 rounded-lg font-medium flex items-center gap-1">
                                 <BiPaperPlane size={18} />Editar
                             </button>
                             {children}

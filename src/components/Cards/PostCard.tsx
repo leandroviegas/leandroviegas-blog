@@ -18,20 +18,20 @@ const PostCardComponent = ({ link = "", title = "", description = "", postedAt, 
             </div>
             <div className="mx-4 md:mx-8 md:w-full flex flex-col">
                 <Link to={`/blog/post/${link}`} className="grow">
-                    <h2 className="text-xl font-semibold text-gray-800 my-1">{title}</h2>
-                    <p className="text-gray-700 font-thin my-1">{truncate(description, 360)}</p>
+                    <h2 className="text-xl font-semibold text-gray-800 dark:text-zinc-100 my-1">{title}</h2>
+                    <p className="text-gray-700 dark:text-zinc-200 font-thin my-1">{truncate(description, 360)}</p>
                 </Link>
                 <div className="mt-3 flex items-center gap-2 sm:gap-6 flex-wrap">
                     <Link to={`/blog/post/${link}`}>
-                        <span className="text-gray-700 font-thin text-sm"><span>Postado em: </span>{moment(postedAt).format("DD/MM/YYYY hh:mm")}</span>
+                        <span className="text-gray-700 dark:text-zinc-300 font-thin text-sm"><span>Postado em: </span>{moment(postedAt).format("DD/MM/YYYY hh:mm")}</span>
                     </Link>
                     <Link to={``} className="flex items-center gap-2">
                         <span className="h-6 w-6 flex items-center justify-center">
                             {author?.profilePicture ?
-                                <img className="w-full h-full object-cotain rounded-full bg-gray-600" src={author.profilePicture} alt={author?.username || ""} />
-                                : <FaUser className="text-gray-500" />}
+                                <img className="w-full h-full object-cotain rounded-full bg-gray-600 dark:bg-zinc-300" src={author.profilePicture} alt={author?.username || ""} />
+                                : <FaUser className="text-gray-500 dark:text-zinc-200" />}
                         </span>
-                        <span className="text-sm font-thin text-gray-500">{author?.username || "??"}</span>
+                        <span className="text-sm font-thin text-gray-500 dark:text-zinc-300">{author?.username || "??"}</span>
                     </Link>
                 </div>
                 <hr className="my-6 md:mt-2 md:mb-0 border-gray-400 w-full" />

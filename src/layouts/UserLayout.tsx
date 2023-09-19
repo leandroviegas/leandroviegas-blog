@@ -13,7 +13,7 @@ type LayoutProps = {
 
 const Index = ({ children, search_ = "", BgClass, style }: LayoutProps) => {
     return (
-        <div className={`flex flex-col justify between min-h-screen ${"bg-zinc-100" || BgClass}`} style={style}>
+        <div className={`flex flex-col justify between min-h-screen ${"bg-zinc-100 dark:bg-zinc-800" || BgClass}`} style={style}>
             <Navbar search_={search_} />
             <div className="grow">
                 {children}
