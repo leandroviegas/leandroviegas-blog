@@ -25,7 +25,7 @@ const PostCardComponent = ({ link = "", title = "", description = "", postedAt, 
                     <Link to={`/blog/post/${link}`}>
                         <span className="text-gray-700 dark:text-zinc-300 font-thin text-sm"><span>Postado em: </span>{moment(postedAt).format("DD/MM/YYYY hh:mm")}</span>
                     </Link>
-                    <Link to={``} className="flex items-center gap-2">
+                    <Link to={`/blog/user/${author?.link}`} className="flex items-center gap-2">
                         <span className="h-6 w-6 flex items-center justify-center">
                             {author?.profilePicture ?
                                 <img className="w-full h-full object-cotain rounded-full bg-gray-600 dark:bg-zinc-300" src={author.profilePicture} alt={author?.username || ""} />

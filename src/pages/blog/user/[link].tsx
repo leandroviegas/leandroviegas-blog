@@ -48,7 +48,7 @@ const TopicPage = ({ serverData }) => {
             <div className="container grid grid-cols-1 lg:grid-cols-4 mx-auto">
                 <div className="col-span-3 px-4 md:px-8 bg-white dark:bg-zinc-900 my-8 rounded">
                     <div className="my-12">
-                        <div className="duration-300 mb-6 writer-card rounded-lg shadow-xl pb-8 pt-6 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+                        <div className="duration-300 mb-6 rounded-lg shadow-xl pb-8 pt-6 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
                             <img src={data?.user?.profilePicture || "https://via.placeholder.com/150"} alt={`${data?.user?.username} Profile Picture`}
                                 className="object-cover z-10 relative w-24 h-24 mx-auto rounded-full shadow-xl border-white border-[3px]" />
                             <blockquote className="flex flex-col justify-between text-center mt-2">
