@@ -44,7 +44,7 @@ class UserController {
       }
     );
 
-    if (!["admin"].includes(request.user_role) && _id !== request.user_id) throw Error("access-denied")
+    if (["admin"].includes(request.user_role) && _id !== request.user_id) throw Error("access-denied")
 
     const user = await User.findOne({ _id: _id }).exec()
 
@@ -62,7 +62,7 @@ class UserController {
   async deactive(request: Request, response: Response) {
     const { _id } = request.query;
 
-    if (!["admin"].includes(request.user_role) && _id !== request.user_id) throw Error("access-denied")
+    if (["admin"].includes(request.user_role) && _id !== request.user_id) throw Error("access-denied")
 
     const user = await User.findById(_id).exec()
 
@@ -77,7 +77,7 @@ class UserController {
   async active(request: Request, response: Response) {
     const { _id } = request.query;
 
-    if (!["admin"].includes(request.user_role) && _id !== request.user_id) throw Error("access-denied")
+    if (["admin"].includes(request.user_role) && _id !== request.user_id) throw Error("access-denied")
 
 
     const user = await User.findById(_id).exec()

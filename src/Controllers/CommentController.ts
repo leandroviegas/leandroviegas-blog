@@ -37,7 +37,7 @@ export class CommentController {
 
         let comment
 
-        if (!["admin"].includes(request.user_role)) {
+        if (["admin"].includes(request.user_role)) {
             comment = await Comment.findByIdAndUpdate(_id, { content: "" }, { new: true }).exec()
         } else {
             comment = await Comment.findOneAndUpdate({ _id, user: request.user_id }, { content: "" }, { new: true }).exec()
@@ -53,16 +53,9 @@ export class CommentController {
         /* Delete all the parents that have no children(children, grandchildren...) with content */
 
         function ChildrenHasContent(commentToCheck) {
-            let childWContent = false;
-
-            (function CheckChildComments(comment) {
-                if (comment.content.length > 0)
-                    childWContent = true;
-                else
-                    comments.filter(cmnt => cmnt.referenceComment == comment._id?.toString()).forEach(CheckChildComments)
+            return (function CheckChildComments(comment) {
+                return comment.content.length > 0 || comments.filter(cmnt => cmnt.referenceComment == comment._id?.toString()).some(CheckChildComments)
             })(commentToCheck)
-
-            return childWContent
         }
 
         let topParent = comment;

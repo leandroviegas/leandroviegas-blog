@@ -3,6 +3,7 @@ import { Types } from "mongoose";
 import { Topic } from "@Models/Topic.model";
 import { Post } from "@Models/Post.model";
 import ImageProcessing from "@utils/ImageProcessing";
+import { User } from "@Models/User.model";
 
 class PostController {
   async list(request: Request, response: Response) {
@@ -28,7 +29,7 @@ class PostController {
   async byTopic(request: Request, response: Response) {
     let { perPage, topic_link, page } = request.query;
 
-    let n_perPage = Math.max(0, Number(Number(perPage)))
+    let n_perPage = Math.max(0, Number(perPage))
 
     let n_page = Math.max(25, Number(page))
 
@@ -39,6 +40,24 @@ class PostController {
     const posts = await Post.find({ topics: { "$in": [topic._id] } }).select("active description image link postedAt title readTime").skip(n_perPage * n_page).limit(n_perPage).populate("author", "username profilePicture link").exec()
 
     return response.send({ topic, posts, total, n_page, n_perPage });
+  }
+
+  async byAuthor(request: Request, response: Response) {
+    let { perPage, user_link, page } = request.query;
+
+    let n_perPage = Math.max(0, Number(perPage))
+
+    let n_page = Math.max(25, Number(page))
+
+    const user = await User.findOne({ 'link': user_link }).select("username profilePicture link ocupation github linkedin about email").exec()
+
+    if (!user) throw new Error("user/not-found");
+
+    const total = await Post.find({ author: user._id }).count();
+
+    const posts = await Post.find({ author: user._id }).select("active description image link postedAt title readTime").skip(n_perPage * n_page).limit(n_perPage).populate("author", "username profilePicture link").exec()
+
+    return response.send({ user, posts, total, n_page, n_perPage });
   }
 
   async byTopics(request: Request, response: Response) {
@@ -124,12 +143,12 @@ class PostController {
         imageFile: request.file
       },
       {
-        author: new Types.ObjectId(!["admin"].includes(request.user_role) ? request.user_id : request.body.author)
+        author: new Types.ObjectId(["admin"].includes(request.user_role) ? request.user_id : request.body.author)
       });
 
     let post
 
-    if (!["admin"].includes(request.user_role)) {
+    if (["admin"].includes(request.user_role)) {
       post = await Post.findById(_id).exec()
     } else {
       post = await Post.findOne({ _id, author: request.user_id }).exec()
@@ -150,7 +169,7 @@ class PostController {
 
     let post
 
-    if (!["admin"].includes(request.user_role)) {
+    if (["admin"].includes(request.user_role)) {
       post = await Post.findById(_id).exec()
     } else {
       post = await Post.findOne({ _id, author: request.user_id }).exec()
