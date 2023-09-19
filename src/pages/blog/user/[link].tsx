@@ -53,11 +53,11 @@ const TopicPage = ({ serverData }) => {
                                 className="object-cover z-10 relative w-24 h-24 mx-auto rounded-full shadow-xl border-white border-[3px]" />
                             <blockquote className="flex flex-col justify-between text-center mt-2">
                                 <p className="username text-2xl font-bold text-white">{data?.user?.username}</p>
-                                <p className="role mt-1 text-xs font-medium white">
+                                <p className="role mt-1 text-xs font-medium white text-white">
                                     {data?.user?.ocupation}
                                 </p>
                                 {data?.user?.about &&
-                                    <p className="about mt-4 text-sm text-white dark:bg-black">
+                                    <p className="about mt-4 text-sm text-white">
                                         {data?.user?.about}
                                     </p>}
                             </blockquote>
