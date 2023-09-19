@@ -110,8 +110,9 @@ const Index = ({ serverData }) => {
                                         <div dangerouslySetInnerHTML={{ __html: post?.content }}></div>
                                         <span className="text-xs" style={{ color: "rgb(146, 146, 146)" }}><span>Editado em </span>{modifiedAt}</span>
                                     </div>
-                                    <div>
-                                        <h2 className="text-lg mx-2 text-zinc-800 font-semibold mb-4">Comentários</h2>
+                                    <div className="mr-4">
+                                        <h2 className="text-lg mx-2 text-zinc-800 dark:text-zinc-100 font-semibold mb-4">Comentários</h2>
+                                        <hr className="border-zinc-300 mb-4" />
                                         <div className="mr-4">
                                             {alerts["comment-errors"]?.map((message, index) => <Alert key={index} message={message} type="error" />)}
                                             <Comment.Create post_id={post._id} referenceComment={""} CommentCallback={HandleLoadComments} />
