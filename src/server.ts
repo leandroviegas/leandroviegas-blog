@@ -16,14 +16,18 @@ const authenticateUserService = new AuthenticateUserService();
 const app = express();
 
 app.use(
-    cors()
+    cors({
+        origin: JSON.parse(process.env.CORS_ORIGIN),
+        credentials: true,
+        optionsSuccessStatus: 200,
+    })
 );
 
 app.use(express.json());
 
 app.use(cookieSession({
     name: 'google-auth-session',
-    keys: ['key1', 'key2']
+    keys: JSON.parse(process.env.COOKIE_SESSION)
 }));
 
 app.use(passport.initialize());
