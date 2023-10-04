@@ -29,6 +29,7 @@
   "devDependencies": {
     "@types/react-helmet": "^6.1.5",
     "autoprefixer": "^10.4.8",
+    "gatsby-plugin-netlify": "^5.1.1",
     "gatsby-plugin-postcss": "^5.20.0",
     "postcss": "^8.4.16",
     "prettier": "^2.7.1",
