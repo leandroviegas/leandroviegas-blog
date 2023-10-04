@@ -17,7 +17,9 @@ const app = express();
 
 app.use(
     cors({
-        origin: '*'
+        origin: ["127.0.0.1", "https://leandroviegas.netlify.app"],
+        credentials: true,
+        optionsSuccessStatus: 200,
     })
 );
 
