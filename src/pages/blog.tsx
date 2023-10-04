@@ -6,10 +6,11 @@ import api from "@services/api"
 import { Topic, Post } from "@classes/blog"
 import PostCard from "@components/Cards/PostCard"
 import Head from "@components/Head"
+import axios from "axios"
 
 export async function getServerData() {
     try {
-        const data = await api.get("/posts/by-topics").then(resp => resp.data)
+        const data = await axios.get("https://leandroviegas.onrender.com/posts/by-topics").then(resp => resp.data)
 
         return {
             props: data,
