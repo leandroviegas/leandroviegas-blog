@@ -10,7 +10,11 @@ import axios from "axios"
 
 export async function getServerData() {
     try {
-        const data = await axios.get("https://leandroviegas.onrender.com/posts/by-topics").then(resp => resp.data)
+        const data = await fetch('https://leandroviegas.onrender.com/posts/by-topics', {
+            method: 'GET'
+          }).then(res => res.json())
+        
+        // await axios.get("https://leandroviegas.onrender.com/posts/by-topics").then(resp => resp.data)
 
         return {
             props: data,
