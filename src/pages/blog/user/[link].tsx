@@ -17,6 +17,7 @@ export async function getServerData({ params }) {
             props: data,
         }
     } catch (error) {
+        console.error(error)
         return {
             status: 500,
             headers: {},

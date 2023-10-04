@@ -27,6 +27,7 @@ export async function getServerData({ params }) {
         let data = await api.get("posts", { params }).then(resp => ({ ...resp.data, status: resp.status })).catch(err => ({ status: err?.response?.status || 500, post: {} }))
         return { status: data.status === 404 ? 404 : 200, props: data }
     } catch (error) {
+        console.error(error)
         return {
             status: 500,
             headers: {},
