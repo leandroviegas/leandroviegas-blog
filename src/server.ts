@@ -16,11 +16,7 @@ const authenticateUserService = new AuthenticateUserService();
 const app = express();
 
 app.use(
-    cors({
-        origin: ["127.0.0.1", "https://leandroviegas.netlify.app"],
-        credentials: true,
-        optionsSuccessStatus: 200,
-    })
+    cors()
 );
 
 app.use(express.json());
