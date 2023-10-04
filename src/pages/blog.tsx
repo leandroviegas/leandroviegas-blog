@@ -13,6 +13,10 @@ export async function getServerData() {
 
         return {
             props: data,
+            headers: {
+                "Cache-Control":
+                  "public, max-age=600, s-maxage=600, stale-while-revalidate=300",
+              },
         }
     } catch (error) {
         console.error(error)
