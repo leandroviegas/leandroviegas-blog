@@ -15,7 +15,7 @@ import { useAuth } from "@hooks/Auth"
 import api from "@services/api"
 
 import { Comment as CommentClass } from "@classes/blog"
-import Outclick from "@components/Outclick"
+import Outclick from 'outclick-react';
 
 export class RelatedComment extends CommentClass {
     parentComment?: CommentClass;
@@ -62,7 +62,7 @@ const Comment = (comment: CommentProps) => {
                         <p className="text-xs text-gray-600 dark:text-zinc-400">{moment(comment.postedAt).format('LLL')}</p>
                     </div>
                     <div className="relative h-0">
-                        <Outclick callback={() => setOptionsDrodown(false)}>
+                        <Outclick onOutClick={() => setOptionsDrodown(false)}>
                             {(user?._id === comment?.user?._id || ["admin"].includes(user?.role)) &&
                                 <button onClick={() => setOptionsDrodown(true)} className="py-2 px-4 hover:bg-zinc-100 text-zinc-800 hover:text-zinc-900  dark:hover:bg-zinc-700 dark:text-zinc-100 dark:hover:text-zinc-50 rounded flex items-center gap-1"><BsThreeDots /></button>}
                             {optionsDrodown &&

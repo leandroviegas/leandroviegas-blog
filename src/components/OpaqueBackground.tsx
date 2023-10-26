@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Outclick from '@components/Outclick'
+import Outclick from 'outclick-react';
 
 interface Props {
     children?: React.ReactNode;
@@ -23,7 +23,7 @@ const OpaqueBackground = ({ open, closeCallback, children }: Props) => {
 
     return opened ?
         <div className={`fixed h-screen overflow-auto ${open !== true ? "backdrop-filter-none blur opacity-0" : "backdrop-blur-sm bg-black/60 blur-none opacity-100"} transition duration-300 w-screen top-0 left-0 flex items-center justify-center z-30`}>
-            <Outclick callback={closeCallback}>
+            <Outclick onOutClick={closeCallback}>
                 {children}
             </Outclick>
         </div>

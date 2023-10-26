@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import { Link, navigate } from "gatsby"
 import { useLocation } from '@reach/router';
 
@@ -10,7 +10,7 @@ import { BsMoon, BsSun } from "react-icons/bs";
 import { AiFillHome, AiFillProject, AiFillRead, AiOutlineHome, AiOutlineProject, AiOutlineRead } from "react-icons/ai"
 
 import SignPopup from "@components/Popups/SignPopup"
-import Outclick from '@components/Outclick'
+import Outclick from 'outclick-react';
 
 import { useAuth } from "@hooks/Auth"
 import { useTheme } from "@hooks/Theme";
@@ -48,7 +48,7 @@ const Index = ({ search_ = "" }) => {
                     </div>
 
                     <div className={`${showNavbar ? "" : "hidden"} lg:block w-screen h-screen lg:w-auto lg:h-auto fixed lg:relative right-0 top-0 z-20 flex justify-end backdrop-blur-sm bg-black/70 dark:lg:bg-transparent lg:bg-transparent`}>
-                        <Outclick callback={() => setShowNavbar(false)}>
+                        <Outclick onOutClick={() => setShowNavbar(false)}>
                             <div className={`${showNavbar ? "max-w-[16rem] " : "max-w-0 "}w-full navbar lg:max-w-none lg:block duration-300 h-full bg-white dark:bg-black/90 lg:bg-transparent dark:lg:bg-transparent overflow-auto lg:max-w-auto`}>
                                 <div className="p-4 lg:p-0 justify-start flex flex-col lg:flex-row lg:items-center gap-5 font-medium">
                                     <Link to="/" className={`order-1 py-1 rounded ${location.pathname === "/" ? "text-black dark:text-white" : "text-zinc-600 hover:text-zinc-700 dark:text-zinc-200 dark:hover:text-zinc-100"} flex items-center gap-1`}>
@@ -71,7 +71,7 @@ const Index = ({ search_ = "" }) => {
                                         </button>
                                         {user?.username ?
                                             <div>
-                                                <Outclick callback={() => setUserDropdown(false)}>
+                                                <Outclick onOutClick={() => setUserDropdown(false)}>
                                                     <button onClick={() => setUserDropdown(!userDropdown)} className={`mt-1 ml-2 lg:mt-0 lg:ml-0 flex items-center gap-1 text-zinc-700 hover:text-zinc-900 dark:text-zinc-200 dark:hover:text-zinc-50`}>
                                                         {user.profilePicture &&
                                                             <img className="rounded-full h-7 w-7 mr-1" src={user.profilePicture} alt={user.username + " profile picture"} referrerPolicy="no-referrer" />}

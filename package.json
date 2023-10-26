@@ -15,6 +15,7 @@
     "gatsby-plugin-react-helmet": "^5.20.0",
     "install": "^0.13.0",
     "npm": "^9.8.1",
+    "outclick-react": "^1.1.19",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-cookie": "^4.1.1",

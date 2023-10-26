@@ -4,7 +4,7 @@ import { Link } from "gatsby";
 import { useAuth } from "@hooks/Auth";
 import { useTheme } from "@hooks/Theme";
 
-import Outclick from '@components/Outclick';
+import Outclick from 'outclick-react';
 
 import { Admin as Redirects } from "../Redirects";
 
@@ -32,7 +32,7 @@ const Index = ({ children }) => {
                             <BsMoon className="text-zinc-600 hover:text-zinc-700 dark:text-zinc-50 dark:hover:text-zinc-50 text-lg cursor-pointer" /> :
                             <BsSun className="text-zinc-600 hover:text-zinc-700 dark:text-zinc-50 dark:hover:text-zinc-50 text-lg cursor-pointer" />}
                     </button>
-                    <Outclick callback={() => setUserDropdown(false)}>
+                    <Outclick onOutClick={() => setUserDropdown(false)}>
                         <div onClick={() => setUserDropdown(true)} className="flex items-center gap-3 text-zinc-600 dark:text-zinc-300 relative">
                             <span className="cursor-pointer text-zinc-700 dark:text-zinc-200 font-semibold">{user?.username}</span>
                             <span className="cursor-pointer border-l pl-3"><FaUser /></span>
