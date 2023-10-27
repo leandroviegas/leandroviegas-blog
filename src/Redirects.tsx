@@ -1,6 +1,5 @@
 import React from "react";
-import { navigate } from "gatsby"
-import { useLocation } from "@reach/router"
+import { navigate } from "gatsby";
 import { useAuth } from "@hooks/Auth";
 
 import { BiLoaderAlt } from "react-icons/bi"
@@ -23,8 +22,9 @@ const permissions = [
 const RouteTreat = (route) => route.replace(new RegExp("/", 'g'), " ").trim().replace(new RegExp(" ", 'g'), "/").toLowerCase();
 
 export function Admin({ children }) {
-    const location = useLocation();
     const { cookies } = useAuth();
+
+    const location = typeof window !== "undefined" ? window.location : { pathname: "/" };
 
     const routePermissions = permissions.find(permission => permission.valid ? permission.valid(location.pathname) : RouteTreat(permission.route) === RouteTreat(location.pathname));
 

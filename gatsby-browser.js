@@ -13,7 +13,6 @@ import AOS from "aos"
 AOS.init();
 
 export const wrapRootElement = ({ element }) => {
-
     if (
         localStorage.getItem('color-theme') === 'dark' ||
         (!('color-theme' in localStorage) &&

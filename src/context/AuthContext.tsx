@@ -26,8 +26,10 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
 
     const [cookies, setCookie, removeCookie] = useCookies(['authentication', "role"]);
 
+    const location = typeof window !== "undefined" ? window.location : { pathname: "",search: "" };
+
     useEffect(() => {
-        const google_token_string = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : "").get('token') || "{}";
+        const google_token_string = new URLSearchParams(location.search ?? "").get('token') || "{}";
         const google_token: {
             token: string,
             user: {
@@ -41,7 +43,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
 
         if (google_token?.token && typeof window !== 'undefined') {
             setCookie("authentication", google_token.token, { path: '/' });
-            window.history.pushState({}, document.title, window.location.pathname);
+            window.history.pushState({}, document.title, location.pathname);
         }
 
         if (cookies.authentication || google_token?.token) {

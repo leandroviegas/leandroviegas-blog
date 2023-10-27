@@ -6,7 +6,7 @@ import api from "@services/api";
 import { Post } from "@classes/blog";
 
 import PostCard from "@components/Cards/PostCard";
-import Head from "@components/Head";
+import SeoHead from "@components/Head";
 
 export async function getServerData({ params }) {
   try {
@@ -26,6 +26,15 @@ export async function getServerData({ params }) {
   }
 }
 
+export function Head({ serverData }) {
+  return (
+    <SeoHead
+      title={`Procurar - ${serverData.params?.search} - Leandro Viegas`}
+      description="Sou desenvolvedor e trabalho com diversas tecnologias"
+    />
+  );
+}
+
 const SearchPage = ({ serverData }) => {
   const [data, setData] = useState<{
     status: "loading" | "error" | "success";
@@ -34,6 +43,7 @@ const SearchPage = ({ serverData }) => {
   }>({ ...serverData, status: "success" });
 
   const [page, setPage] = useState<number>(Math.max(0, serverData.page));
+
 
   const HandleLoadMorePosts = () => {
     setData({ ...data, status: "loading" });
@@ -57,11 +67,6 @@ const SearchPage = ({ serverData }) => {
 
   return (
     <Layout search_={serverData.params?.search}>
-      <Head
-        title={`Procurar - ${serverData.params?.search} - Leandro Viegas`}
-        description="Sou desenvolvedor e trabalho com diversas tecnologias"
-      />
-
       <div className="container grid grid-cols-1 lg:grid-cols-4 mx-auto">
         <div className="col-span-3 my-8 rounded">
           <div className="my-12">

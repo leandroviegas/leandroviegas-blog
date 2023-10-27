@@ -6,7 +6,7 @@ import api from "@services/api";
 import { Topic, Post } from "@classes/blog";
 
 import PostCard from "@components//Cards/PostCard";
-import Head from "@components/Head";
+import SeoHead from "@components/Head";
 
 export async function getServerData({ params }) {
   try {
@@ -29,6 +29,15 @@ export async function getServerData({ params }) {
       props: {},
     };
   }
+}
+
+export function Head({ serverData }) {
+  return (
+    <SeoHead
+      title={`${serverData.topic.name} - Leandro Viegas`}
+      description="Sou desenvolvedor e trabalho com diversas tecnologias"
+    />
+  );
 }
 
 const TopicPage = ({ serverData }) => {
@@ -63,11 +72,6 @@ const TopicPage = ({ serverData }) => {
 
   return (
     <Layout>
-      <Head
-        title={`${data.topic.name} - Leandro Viegas`}
-        description="Sou desenvolvedor e trabalho com diversas tecnologias"
-      />
-
       <div className="container grid grid-cols-1 lg:grid-cols-4 mx-auto">
         <div className="col-span-3 my-8 rounded">
           <div className="my-12">

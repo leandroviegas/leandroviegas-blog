@@ -40,7 +40,7 @@ const PostForm = (post: Omit<Post, "topics"> & { topics: string[] }) => {
     const HandleSendPost = async (evt?: React.FormEvent<HTMLFormElement>) => {
         evt?.preventDefault && evt.preventDefault()
 
-        if (status === "loading") return;
+        if (formStatus === "loading") return;
 
         if (["post-form-title", "post-form-link"].some(input => alerts[input].length > 0)) {
             setFormStatus("input-warnings");
@@ -259,7 +259,7 @@ const PostForm = (post: Omit<Post, "topics"> & { topics: string[] }) => {
                 <hr className="my-2" />
                 <div className="py-2">
                     <button onClick={() => HandleSendPost()} className="shadow-md shadow-indigo-500/30 hover:scale-110 bg-indigo-600 hover:bg-indigo-700 transition font-semibold text-white px-3 py-1 rounded">
-                        {status === "loading" ? <VscLoading className="animate-spin text-lg mx-6 my-0.5" /> : form?._id ? "Salvar alterações" : "Publicar"}
+                        {formStatus === "loading" ? <VscLoading className="animate-spin text-lg mx-6 my-0.5" /> : form?._id ? "Salvar alterações" : "Publicar"}
                     </button>
                 </div>
             </div>

@@ -2,7 +2,7 @@ import React from "react";
 
 import Layout from "@layouts/UserLayout";
 
-import Head from "@components/Head";
+import SeoHead from "@components/Head";
 
 // import RegisterFormThumbnail from "@images/projects_thumbnail/register-form.png";
 import { BiLogoGithub, BiSquare } from "react-icons/bi";
@@ -96,14 +96,18 @@ function ProjectCard({
   );
 }
 
+export function Head() {
+  return (
+    <SeoHead
+      title="Sobre mim - Leandro Viegas"
+      description="Sou desenvolvedor e trabalho com diversas tecnologias"
+    />
+  );
+}
+
 function Index() {
   return (
     <Layout>
-      <Head
-        title="Sobre mim - Leandro Viegas"
-        description="Sou desenvolvedor e trabalho com diversas tecnologias"
-      />
-
       <div className="container grid grid-cols-1 m-auto mx-auto">
         <div className="m-6 rounded-lg">
           <section className="my-12">
@@ -164,7 +168,8 @@ function Index() {
                   title: "Formulário de cadastro de usuário",
                   description:
                     "Formulário de cadastro com validação de campos sem uso de biblioteca de gerenciamento de formulário.",
-                  Thumbnail: "https://media.discordapp.net/attachments/1047545921799467041/1167308875951784057/image.png?ex=654da81b&is=653b331b&hm=30e01df910f8e28c11572639b5ec28f0d8478d4ec3bc1e2904a319900e801180&=&width=862&height=555",
+                  Thumbnail:
+                    "https://media.discordapp.net/attachments/1047545921799467041/1167308875951784057/image.png?ex=654da81b&is=653b331b&hm=30e01df910f8e28c11572639b5ec28f0d8478d4ec3bc1e2904a319900e801180&=&width=862&height=555",
                   refers: {
                     codesandbox:
                       "https://codesandbox.io/s/formulario-cadastro-de-usuario-pd50z8",

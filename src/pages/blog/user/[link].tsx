@@ -6,7 +6,7 @@ import api from "@services/api";
 import { Post, User } from "@classes/blog";
 
 import PostCard from "@components/Cards/PostCard";
-import Head from "@components/Head";
+import SeoHead from "@components/Head";
 import { BsGithub, BsLinkedin } from "react-icons/bs";
 
 export async function getServerData({ params }) {
@@ -30,6 +30,15 @@ export async function getServerData({ params }) {
       props: {},
     };
   }
+}
+
+export function Head({ serverData }) {
+  return (
+    <SeoHead
+      title={`${serverData.user.username} - Leandro Viegas`}
+      description="Sou desenvolvedor e trabalho com diversas tecnologias"
+    />
+  );
 }
 
 const TopicPage = ({ serverData }) => {
@@ -64,11 +73,6 @@ const TopicPage = ({ serverData }) => {
 
   return (
     <Layout>
-      <Head
-        title={`${data.user.username} - Leandro Viegas`}
-        description="Sou desenvolvedor e trabalho com diversas tecnologias"
-      />
-
       <div className="container grid grid-cols-1 lg:grid-cols-4 mx-auto">
         <div className="col-span-3 px-4 md:px-8 bg-white dark:bg-zinc-900 my-8 rounded">
           <div className="my-12">

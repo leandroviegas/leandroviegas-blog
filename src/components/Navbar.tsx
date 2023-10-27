@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import { Link, navigate } from "gatsby";
-import { useLocation } from "@reach/router";
 
 import { FaAngleDown, FaAngleUp, FaSearch } from "react-icons/fa";
 import { TiCode } from "react-icons/ti";
@@ -27,7 +26,7 @@ const Index = ({ search_ = "" }) => {
 
   const { theme, SwitchTheme } = useTheme();
 
-  const location = useLocation();
+  const location = typeof window !== "undefined" ? window.location : { pathname: "/" };
 
   const SignRef = useRef<{ setPopup: (string) => void }>();
 
@@ -42,7 +41,7 @@ const Index = ({ search_ = "" }) => {
       <SignPopup ref={SignRef} />
       <nav
         className={`w-full max-w-screen ${
-          typeof window !== "undefined" && window.location.pathname != "/" && "bg-zinc-50 dark:bg-zinc-900 shadow"
+          location.pathname != "/" && "bg-zinc-50 dark:bg-zinc-900 shadow"
         }`}
       >
         <div className="container mx-auto flex flex-row justify-between lg:items-center py-6">

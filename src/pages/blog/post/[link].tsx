@@ -3,7 +3,7 @@ import { Link } from "gatsby";
 
 import moment from "moment";
 import Layout from "@layouts/UserLayout";
-import Head from "@components/Head";
+import SeoHead from "@components/Head";
 import Comment from "@components/Comment";
 
 import api from "@services/api";
@@ -107,7 +107,7 @@ const Index = ({ serverData }) => {
         <div className="container mx-auto">
           {serverData?.status === 200 && (
             <>
-              <Head
+              <SeoHead
                 title={post?.title}
                 image={post?.image}
                 author={author?.username}
@@ -197,7 +197,7 @@ const Index = ({ serverData }) => {
                 <div className="w-full flex flex-col my-16 items-center justify-center">
                   {serverData?.status === 404 ? (
                     <>
-                      <Head
+                      <SeoHead
                         title="404 - Postagem não encontrada - Leandro Viegas"
                         description="A postagem que você estava procurando não foi encontrada."
                       />
@@ -218,7 +218,7 @@ const Index = ({ serverData }) => {
                     </>
                   ) : (
                     <>
-                      <Head
+                      <SeoHead
                         title="Ocorreu um erro ao tentar carregar os dados - Leandro Viegas"
                         description="Ocorreu um erro ao tentar carregar os dados tente novamente mais tarde."
                       />

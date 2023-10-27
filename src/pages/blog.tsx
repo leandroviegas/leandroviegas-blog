@@ -5,7 +5,7 @@ import api from "@services/api"
 
 import { Topic, Post } from "@classes/blog"
 import PostCard from "@components/Cards/PostCard"
-import Head from "@components/Head"
+import SeoHead from "@components/Head"
 
 export async function getServerData() {
     try {
@@ -33,7 +33,7 @@ const BlogPage = ({ serverData }) => {
 
     return (
         <Layout>
-            <Head title={`Veja as postagens dos mais diversos assuntos de tecnologia e programação - Leandro Viegas`} />
+            <SeoHead title={`Veja as postagens dos mais diversos assuntos de tecnologia e programação - Leandro Viegas`} />
 
             <div className="container grid grid-cols-1 lg:grid-cols-4 mx-auto">
                 <div className="col-span-3 my-6 rounded">

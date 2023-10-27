@@ -5,22 +5,15 @@
   "version": "0.1.0",
   "author": "Leandro Viegas <l3androviegas@gmail.com>",
   "dependencies": {
-    "@reach/router": "^1.3.4",
+    "@types/react-dom": "^18.2.14",
     "aos": "^2.3.4",
     "axios": "^0.27.2",
-    "gatsby": "^4.20.0",
-    "gatsby-plugin-env-variables": "^2.3.0",
-    "gatsby-plugin-nprogress": "^4.20.0",
-    "gatsby-plugin-page-creator": "^4.20.0",
-    "gatsby-plugin-react-helmet": "^5.20.0",
-    "install": "^0.13.0",
-    "npm": "^9.8.1",
+    "gatsby": "^5.12.4",
+    "gatsby-plugin-nprogress": "^5.12.0",
     "outclick-react": "^1.1.19",
-    "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-cookie": "^4.1.1",
-    "react-dom": "^18.1.0",
-    "react-helmet": "^6.1.0",
+    "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
     "react-textarea-autosize": "^8.3.4",
     "suneditor": "^2.43.14",
@@ -28,13 +21,13 @@
     "validator": "^13.7.0"
   },
   "devDependencies": {
-    "@types/react-helmet": "^6.1.5",
+    "@types/react": "^18.2.33",
     "autoprefixer": "^10.4.8",
     "gatsby-plugin-netlify": "^5.1.1",
-    "gatsby-plugin-postcss": "^5.20.0",
+    "gatsby-plugin-postcss": "^6.12.0",
     "postcss": "^8.4.16",
     "prettier": "^2.7.1",
-    "tailwindcss": "^3.1.8"
+    "tailwindcss": "^3.3.5"
   },
   "keywords": [
     "gatsby"
@@ -46,5 +39,8 @@
     "start": "gatsby develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
