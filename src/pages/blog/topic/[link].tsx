@@ -69,7 +69,7 @@ const TopicPage = ({ serverData }) => {
       />
 
       <div className="container grid grid-cols-1 lg:grid-cols-4 mx-auto">
-        <div className="col-span-3 px-4 md:px-8 bg-white dark:bg-zinc-900 my-8 rounded">
+        <div className="col-span-3 my-8 rounded">
           <div className="my-12">
             <h1 className="text-2xl mx-4 font-semibold text-zinc-900 dark:text-zinc-50">
               {data.topic.name}

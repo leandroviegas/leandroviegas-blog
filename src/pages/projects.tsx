@@ -1,98 +1,190 @@
-import React, { useState } from "react";
+import React from "react";
 
-import Layout from "@layouts/UserLayout"
+import Layout from "@layouts/UserLayout";
 
-import Head from "@components/Head"
-import OpaqueBackground from "@components/OpaqueBackground";
+import Head from "@components/Head";
 
-import RegisterFormThumbnail from "@images/projects_thumbnail/register-form.png"
-import { GrClose } from "react-icons/gr";
-import { BiSquare } from "react-icons/bi";
+// import RegisterFormThumbnail from "@images/projects_thumbnail/register-form.png";
+import { BiLogoGithub, BiSquare } from "react-icons/bi";
+import { MdOutlineWeb } from "react-icons/md";
 
-const WorkPopup = ({ open, closeCallback, children }: { open: boolean, closeCallback: () => any, children: any }) => {
-    return (
-        <OpaqueBackground open={open} closeCallback={closeCallback}>
-            <div data-aos="fade-down" className="top-0 md:top-4 absolute md:h-auto mx-auto min-h-screen sm:min-h-0 bg-white dark:bg-zinc-900 sm:rounded-lg max-w-screen max-w-[800px] w-full shadow">
-                <button onClick={closeCallback} className="absolute top-3 right-3 px-2 py-2 bg-white rounded-full shadow-lg border"><GrClose /></button>
-                {children}
-            </div>
-        </OpaqueBackground>
-    )
+interface ProjectCardProps {
+  title: string;
+  description: string;
+  Thumbnail: any;
+  refers: { [referName: string]: string };
+  tags: string[];
 }
 
-const Index = () => {
-    const [popup, setPopup] = useState<string>("")
-
-    return (
-        <Layout>
-            <Head title="Sobre mim - Leandro Viegas" description="Sou desenvolvedor e trabalho com diversas tecnologias" />
-
-            <div className="container grid grid-cols-1 m-auto mx-auto">
-                <div className="px-4 md:px-8 bg-white dark:bg-zinc-900 m-6 rounded-lg">
-                    <section className="my-12">
-                        <h1 className="text-2xl mx-2 font-semibold text-zinc-900 dark:text-white">Projetos</h1>
-                        <hr className="my-2 border-gray-800 dark:border-gray-200" />
-                        <div className="md:my-6 mx-2">
-                            <p className="text-md dark:text-zinc-200 font-thin">A aplicação de aprendizados no mundo real é a etapa mais importante na jornada de um desenvolvedor.</p>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-6 gap-6 pt-4 md:pt-0">
-
-
-                            {/* register-react-form */}
-                            <div className="sm:col-span-3 lg:col-span-2">
-                                <div>
-                                    <img className="rounded-t-lg" src={RegisterFormThumbnail} alt="Thumbnail projeto formulário de registro react" />
-                                    <div className="shadow-lg border border-t-0 rounded-b-lg p-4">
-                                        <h2 className="text-xl text-zinc-700 dark:text-zinc-300 font-bold">Formulário de cadastro - react</h2>
-                                        <p className="py-2 dark:text-zinc-200">Formulário de cadastro com validação de campos feito em reactJS.</p>
-                                        <div className="my-1">
-                                            <a className="inline-flex items-center gap-1 text-xs text-white bg-black px-2 py-1 rounded" href="https://codesandbox.io/s/formulario-cadastro-de-usuario-pd50z8" target="_blank">
-                                                <BiSquare /><span>CodeSandbox</span>
-                                            </a>
-                                        </div>
-                                        <div className="pb-2">
-                                            <hr className="my-4" />
-                                            <button onClick={() => setPopup("register-react-form")} className="shrink-0 text-white bg-purple-700 hover:bg-purple-800 rounded py-1 px-3 font-semibold">Mais sobre o projeto</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <WorkPopup open={popup === "register-react-form"} closeCallback={() => setPopup("")}>
-                                <section className="m-5 mb-6">
-                                    <img src={RegisterFormThumbnail} alt="Thumbnail projeto formulário de registro react" />
-                                    <div className="mt-4 px-4 pt-4">
-                                        <a className="inline-flex items-center gap-1 text-xs text-white bg-black px-2 py-1 rounded" href="https://codesandbox.io/s/formulario-cadastro-de-usuario-pd50z8" target="_blank">
-                                            <BiSquare /><span>CodeSandbox</span>
-                                        </a>
-                                        <div className="my-4">
-                                            <h2 className="font-semibold text-xl dark:text-white">Sobre</h2>
-                                            <hr className="my-2 border-gray-800 dark:border-zinc-200" />
-                                            <p className="text-zinc-700 dark:text-zinc-300">Formulário de cadastro com validação de campos feito em reactJS sem uso de biblioteca de gerenciamento de formulário.</p>
-                                        </div>
-                                        <div className="my-4">
-                                            <h2 className="font-semibold text-lg dark:text-white">Tecnologias Utilizadas</h2>
-                                            <hr className="my-2 border-gray-800 dark:border-zinc-200" />
-                                            <ul className="list-disc pl-4 text-zinc-700 dark:text-zinc-300">
-                                                <li>React JS</li>
-                                            </ul>
-                                        </div>
-                                        <div className="my-4">
-                                            <h2 className="font-semibold text-lg dark:text-white">Bibliotecas Utilizadas</h2>
-                                            <hr className="my-2 border-gray-800 dark:border-zinc-200" />
-                                            <ul className="list-disc pl-4 text-zinc-700 dark:text-zinc-300">
-                                                <li>Styled-Components</li>
-                                                <li>MUI components</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </section>
-                            </WorkPopup>
-                        </div>
-                    </section>
-                </div>
-            </div>
-        </Layout>
-    )
+function ProjectCard({
+  title,
+  description,
+  Thumbnail,
+  refers,
+  tags,
+}: ProjectCardProps) {
+  return (
+    <div className="col-span-3">
+      <div className="md:flex">
+        <div className="w-full shrink-0 md:w-60 rounded items-center">
+          <img
+            className="w-full h-full object-cover px-4 md:px-0"
+            src={Thumbnail}
+            alt={title + " Thumbnail"}
+          />
+        </div>
+        <div className="grow mx-4 md:w-full flex flex-col">
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-zinc-100 my-1">
+            {title}
+          </h2>
+          <p className="text-gray-700 dark:text-zinc-200 font-thin my-1">
+            {description}
+          </p>
+          <div className="my-1 flex flex-wrap">
+            {Object.keys(refers).map((key) => {
+              switch (key) {
+                case "github":
+                  return (
+                    <a
+                      href={refers[key]}
+                      target="_blank"
+                      className="inline-flex items-center gap-1 text-xs text-white bg-black px-2 py-1 mr-2 rounded"
+                    >
+                      <BiLogoGithub />
+                      <span>Github</span>
+                    </a>
+                  );
+                case "codesandbox":
+                  return (
+                    <a
+                      href={refers[key]}
+                      target="_blank"
+                      className="inline-flex items-center gap-1 text-xs text-white bg-black px-2 py-1 mr-2 rounded whitespace-nowrap"
+                    >
+                      <BiSquare />
+                      <span>CodeSandbox</span>
+                    </a>
+                  );
+                default:
+                  return (
+                    <a
+                      href={refers[key]}
+                      target="_blank"
+                      className="inline-flex items-center gap-1 text-xs text-white bg-black px-2 py-1 mr-2 rounded whitespace-nowrap"
+                    >
+                      <MdOutlineWeb />
+                      <span>Website</span>
+                    </a>
+                  );
+              }
+            })}
+          </div>
+          <div className="py-2 flex flex-wrap">
+            {tags.map((item, index) => (
+              <span
+                key={index}
+                className="bg-purple-700 text-white rounded-full px-3 py-1 text-xs my-1 mr-2 whitespace-nowrap"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+      <hr className="my-6 md:mt-2 md:mb-0 border-gray-400 w-full" />
+    </div>
+  );
 }
 
-export default Index
+function Index() {
+  return (
+    <Layout>
+      <Head
+        title="Sobre mim - Leandro Viegas"
+        description="Sou desenvolvedor e trabalho com diversas tecnologias"
+      />
+
+      <div className="container grid grid-cols-1 m-auto mx-auto">
+        <div className="m-6 rounded-lg">
+          <section className="my-12">
+            <h1 className="text-2xl mx-2 font-semibold text-zinc-900 dark:text-white">
+              Projetos
+            </h1>
+            <hr className="my-2 border-gray-800 dark:border-gray-200" />
+            <div className="md:my-6 mx-2">
+              <p className="text-md dark:text-zinc-200 font-thin">
+                A aplicação de aprendizados no mundo real é a etapa mais
+                importante na jornada de um desenvolvedor.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 pt-4 md:pt-0">
+              {[
+                {
+                  title: "Torch Images",
+                  description:
+                    "Plataforma que reúne diversos bancos de imagens gratuitos em um só lugar.",
+                  Thumbnail:
+                    "https://media.discordapp.net/attachments/1047545921799467041/1167301851528568892/image.png?ex=654da190&is=653b2c90&hm=6228c0227db1562e8ecea8b2bb02790e47fa30c33cb84252a3a7f4536386577e&=&width=1002&height=558",
+                  refers: {
+                    github: "https://github.com/leandroviegas/torch-image",
+                    website: "https://torch-images.netlify.app",
+                  },
+                  tags: [
+                    "Next.js",
+                    "React.js",
+                    "Styled-Components",
+                    "Sequelize",
+                    "Postgres",
+                    "TypeScript",
+                    "Next-Auth",
+                  ],
+                },
+                {
+                  title: "Blog Pessoal",
+                  description:
+                    "Blog pessoal para apresentar meu conhecimento pessoal e alguns dos resultados da minha jornada como desenvolvedor.",
+                  Thumbnail:
+                    "https://media.discordapp.net/attachments/1047545921799467041/1167307344724635688/image.png?ex=654da6ae&is=653b31ae&hm=ea422ca304f5370c423dc55a5dc96ed801752099ae8a678f5e0c3a73a9bd7777&=&width=1057&height=558",
+                  refers: {
+                    github: "https://github.com/leandroviegas/personal-blog",
+                    website: "https://leandroviegas.netlify.app",
+                  },
+                  tags: [
+                    "Gatsby",
+                    "MongoDB",
+                    "Express",
+                    "React.js",
+                    "NodeJS",
+                    "Mongoose",
+                    "TailwindCSS",
+                    "Google Authentication",
+                  ],
+                },
+                {
+                  title: "Formulário de cadastro de usuário",
+                  description:
+                    "Formulário de cadastro com validação de campos sem uso de biblioteca de gerenciamento de formulário.",
+                  Thumbnail: "https://media.discordapp.net/attachments/1047545921799467041/1167308875951784057/image.png?ex=654da81b&is=653b331b&hm=30e01df910f8e28c11572639b5ec28f0d8478d4ec3bc1e2904a319900e801180&=&width=862&height=555",
+                  refers: {
+                    codesandbox:
+                      "https://codesandbox.io/s/formulario-cadastro-de-usuario-pd50z8",
+                  },
+                  tags: [
+                    "React JS",
+                    "Styled-Components",
+                    "MUI components",
+                    "JavaScript",
+                  ],
+                },
+              ].map((item, index) => (
+                <ProjectCard key={index} {...item} />
+              ))}
+            </div>
+          </section>
+        </div>
+      </div>
+    </Layout>
+  );
+}
+
+export default Index;

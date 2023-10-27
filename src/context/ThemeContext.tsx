@@ -15,7 +15,7 @@ type ThemeContextProviderProps = {
 
 export function ThemeContextProvider(props: ThemeContextProviderProps) {
   const [theme, setTheme] = useState<Theme>(
-    localStorage.getItem("color-theme") == "dark" ? "dark" : "light"
+    localStorage.getItem("color-theme") == "light" ? "light" : "dark"
   );
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export function ThemeContextProvider(props: ThemeContextProviderProps) {
       ? (localStorage.getItem("color-theme") as Theme)
       : "light";
 
-    localTheme = localTheme === "dark" ? "light" : "dark";
+    localTheme = localTheme === "light" ? "dark" : "light";
 
     localStorage.setItem("color-theme", localTheme);
     setTheme(localTheme);

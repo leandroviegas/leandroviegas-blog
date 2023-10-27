@@ -16,7 +16,7 @@ const PostCardComponent = ({ link = "", title = "", description = "", postedAt, 
                     <img className="w-full h-32 object-cover px-4 md:px-0" src={image || postplaceholderImage} alt="" />
                 </Link>
             </div>
-            <div className="mx-4 md:mx-8 md:w-full flex flex-col">
+            <div className="mx-4 md:w-full flex flex-col">
                 <Link to={`/blog/post/${link}`} className="grow">
                     <h2 className="text-xl font-semibold text-gray-800 dark:text-zinc-100 my-1">{title}</h2>
                     <p className="text-gray-700 dark:text-zinc-200 font-thin my-1">{truncate(description, 360)}</p>
