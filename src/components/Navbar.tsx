@@ -42,7 +42,7 @@ const Index = ({ search_ = "" }) => {
       <SignPopup ref={SignRef} />
       <nav
         className={`w-full max-w-screen ${
-          window.location.pathname != "/" && "bg-zinc-50 dark:bg-zinc-900 shadow"
+          typeof window !== "undefined" && window.location.pathname != "/" && "bg-zinc-50 dark:bg-zinc-900 shadow"
         }`}
       >
         <div className="container mx-auto flex flex-row justify-between lg:items-center py-6">
