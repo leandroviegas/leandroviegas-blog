@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import api from "@services/api";
 
-import Form from "@components/Forms/PostForm";
+import Form from "@components/Forms/Post/Form";
 import SeoHead from "@components/Head";
 import Alert from "@components/Alert";
 import DashboardLayout from "@layouts/DashboardLayout";

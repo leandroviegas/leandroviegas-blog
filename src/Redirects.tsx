@@ -1,6 +1,6 @@
 import React from "react";
 import { navigate } from "gatsby";
-import { useAuth } from "@hooks/Auth";
+import { useAuth } from "@hooks/useAuth";
 
 import { BiLoaderAlt } from "react-icons/bi"
 

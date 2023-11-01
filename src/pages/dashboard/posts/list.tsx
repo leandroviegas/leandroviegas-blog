@@ -3,7 +3,7 @@ import { Link } from "gatsby";
 
 import moment from "moment";
 import api from "@services/api";
-import { useAuth } from "@hooks/Auth";
+import { useAuth } from "@hooks/useAuth";
 import truncate from "@utils/truncate";
 
 import { Post } from "@classes/blog";

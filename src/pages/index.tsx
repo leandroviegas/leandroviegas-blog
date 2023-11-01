@@ -5,7 +5,7 @@ import SeoHead from "@components/Head";
 
 import { FaGithub, FaLinkedinIn } from "react-icons/fa";
 
-import leandroViegas from "@images/leandro_viegas.png";
+import leandroViegas from "@images/leandro_viegas.webp";
 import perfilBackground from "@images/perfil_background.svg";
 
 export function Head() {
@@ -46,11 +46,13 @@ const Index = () => {
               target="_blink"
               className="hover:scale-125 transition hover:text-indigo-700"
               href="https://www.linkedin.com/in/l3androviegas"
+              title="Linkedin"
             >
               <FaLinkedinIn />
             </a>
             <a
               target="_blink"
+              title="GitHub"
               className="hover:scale-125 transition hover:text-indigo-700"
               href="https://github.com/leandroviegas"
             >

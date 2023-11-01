@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "gatsby";
 
-import { useAuth } from "@hooks/Auth";
-import { useTheme } from "@hooks/Theme";
+import { useAuth } from "@hooks/useAuth";
+import { useTheme } from "@hooks/useTheme";
 
 import Outclick from 'outclick-react';
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "@hooks/Auth";
+import { useAuth } from "@hooks/useAuth";
 
 import Alert from "@components/Alert";
 import FloatingLabelInput from "@components/Inputs/FloatingLabelInput";

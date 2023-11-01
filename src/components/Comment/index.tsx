@@ -11,7 +11,7 @@ import CreateForm from "@components/Comment/Forms/Create"
 import EditForm from "@components/Comment/Forms/Edit"
 import Alert from "@components/Alert"
 
-import { useAuth } from "@hooks/Auth"
+import { useAuth } from "@hooks/useAuth"
 import api from "@services/api"
 
 import { Comment as CommentClass } from "@classes/blog"

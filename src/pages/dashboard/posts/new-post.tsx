@@ -1,5 +1,5 @@
 import React from "react";
-import Form from "@components/Forms/PostForm";
+import Form from "@components/Forms/Post/Form";
 import DashboardLayout from "@layouts/DashboardLayout";
 import SeoHead from "@components/Head";
 

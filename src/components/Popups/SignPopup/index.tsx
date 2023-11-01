@@ -61,7 +61,7 @@ const SignPopup = forwardRef<unknown, any>((_, ref) => {
             <button className="bg-red-500 rounded-lg text-white transition hover:bg-red-600">
               <a
                 className="flex items-center px-4 py-2 gap-2 font-semibold"
-                href={`${process.env.API_URL}/auth?originRequestLink=${
+                href={`${process.env.GATSBY_API_URL}/auth?originRequestLink=${
                   location.href ?? ""
                 }`}
               >

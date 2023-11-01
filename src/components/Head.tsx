@@ -11,6 +11,11 @@ function SeoHead({
   return (
     <>
       <title>{title}</title>
+      <meta charSet="utf-8" />
+      <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta name="language" content={lang} />
+      <meta name="robots" content="all" />
       <meta name="description" content={description} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
@@ -21,7 +26,7 @@ function SeoHead({
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
-      <meta name="robots" content="all" />
+      <link rel="icon" href="/favicon.ico" />
       {children}
     </>
   );

@@ -18,15 +18,16 @@ import {
 import SignPopup from "@components/Popups/SignPopup";
 import Outclick from "outclick-react";
 
-import { useAuth } from "@hooks/Auth";
-import { useTheme } from "@hooks/Theme";
+import { useAuth } from "@hooks/useAuth";
+import { useTheme } from "@hooks/useTheme";
 
 const Index = ({ search_ = "" }) => {
   const { signOut, user } = useAuth();
 
   const { theme, SwitchTheme } = useTheme();
 
-  const location = typeof window !== "undefined" ? window.location : { pathname: "/" };
+  const location =
+    typeof window !== "undefined" ? window.location : { pathname: "/" };
 
   const SignRef = useRef<{ setPopup: (string) => void }>();
 
@@ -139,6 +140,7 @@ const Index = ({ search_ = "" }) => {
                   <button
                     className="order-1 border border-zinc-500 rounded-full p-1"
                     onClick={SwitchTheme}
+                    name="theme-switch"
                   >
                     {theme === "light" ? (
                       <BsMoon className="text-zinc-600 hover:text-zinc-700 dark:text-zinc-50 dark:hover:text-zinc-50 text-lg cursor-pointer" />
@@ -147,7 +149,7 @@ const Index = ({ search_ = "" }) => {
                     )}
                   </button>
                   <div className="order-0 lg:order-1 flex items-start">
-                    <button className="lg:hidden">
+                    <button className="lg:hidden" name="navbar-toggler">
                       <MdClose
                         onClick={() => setShowNavbar(false)}
                         className="text-zinc-200 hover:text-zinc-5 0 text-4xl cursor-pointer"
@@ -234,7 +236,7 @@ const Index = ({ search_ = "" }) => {
             </Outclick>
           </div>
         </div>
-        <button className="text-zinc-600 hover:text-zinc-700 dark:text-zinc-50 dark:hover:text-zinc-50 absolute top-0 right-0 text-3xl p-4 lg:hidden">
+        <button name="navbar-toggler" className="text-zinc-600 hover:text-zinc-700 dark:text-zinc-50 dark:hover:text-zinc-50 absolute top-0 right-0 text-3xl p-4 lg:hidden">
           <BiMenu onClick={() => setShowNavbar(true)} />
         </button>
       </nav>

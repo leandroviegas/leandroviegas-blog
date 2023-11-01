@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react"
 import api from "@services/api"
 import { useState } from "react"
-import { useAuth } from "@hooks/Auth"
+import { useAuth } from "@hooks/useAuth"
 import Alert from "@components/Alert"
 
 import { BiPaperPlane } from 'react-icons/bi'
