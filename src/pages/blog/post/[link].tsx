@@ -4,7 +4,7 @@ import { Link } from "gatsby";
 import moment from "moment";
 import Layout from "@layouts/UserLayout";
 import SeoHead from "@components/Head";
-import Comment from "@components/Comment";
+import * as Comment from "@components/Comment";
 
 import api from "@services/api";
 import truncate from "@utils/truncate";
@@ -21,6 +21,7 @@ import { BsLinkedin, BsGithub } from "react-icons/bs";
 import { FaUser } from "react-icons/fa";
 
 import Alert from "@components/Alert";
+import { PromiseT } from "types/promise.types";
 
 export async function getServerData({ params }) {
   try {
@@ -46,46 +47,89 @@ export async function getServerData({ params }) {
   }
 }
 
-const Index = ({ serverData }) => {
+export function Head({ serverData }) {
   const post: Omit<Post, "author"> & { author: User } = serverData?.post;
 
-  const [postedAt, setPostedAt] = useState<string>();
-  const [modifiedAt, setModifiedAtAt] = useState<string>();
+  return (
+    <>
+      {
+        {
+          200: (
+            <SeoHead
+              title={`${post?.title} - Leandro Viegas`}
+              image={post?.image}
+              author={post?.author?.username}
+              description={post?.description}
+            />
+          ),
+          404: (
+            <SeoHead
+              title={`Postagem não encontrada - Leandro Viegas`}
+              description="Sou desenvolvedor e trabalho com diversas tecnologias"
+            />
+          ),
+        }[serverData?.status]
+      }
+      {![200, 404].includes(serverData?.status) && (
+        <SeoHead
+          title="Ocorreu um erro ao tentar carregar os dados - Leandro Viegas"
+          description="Ocorreu um erro ao tentar carregar os dados tente novamente mais tarde."
+        />
+      )}
+    </>
+  );
+}
+
+function Index({ serverData }) {
+  const post: Omit<Post, "author"> & { author: User } = serverData?.post;
+
+  const postedAt = moment(post?.postedAt).format("LLL");
+  const modifiedAt = moment(post?.modifiedAt).format("LLL");
 
   const author: User = post.author;
 
-  const [topics, setTopics] = useState<{
-    status: "success" | "error" | "loading" | "";
-    data: Topic[];
-  }>({ status: "", data: [] });
+  const [topics, setTopics] = useState<PromiseT<Topic[]>>({
+    status: "idle",
+    data: [],
+  });
 
   const [alerts, setAlerts] = useState<{ [key: string]: string[] }>({});
 
-  const [comments, setComments] = useState<CommentClass[]>([]);
+  const [comments, setComments] = useState<PromiseT<CommentClass[]>>({
+    status: "idle",
+    data: [],
+  });
 
-  const HandleLoadComments = () => {
-    if (post?._id)
+  async function HandleLoadComments() {
+    if (post?._id) {
+      if (comments.status === "loading") return;
+      setComments((prevComments) => ({ ...prevComments, status: "loading" }));
+
       api
         .get("/posts/comments", { params: { post_id: post._id } })
         .then((resp) => {
-          setComments(resp.data?.comments);
+          setComments({
+            status: "success",
+            data: resp.data?.comments,
+          });
         })
         .catch((err) => {
           console.error(err);
+          setComments((prevComments) => ({
+            ...prevComments,
+            status: "error",
+          }));
           setAlerts({
             ...alerts,
             "comment-errors": [
-              err?.response?.data?.message ||
-                "Ocorreu um erro ao carregar comentários!",
+              err.message || "Ocorreu um erro ao carregar comentários!",
             ],
           });
         });
-  };
+    }
+  }
 
   useEffect(() => {
-    setPostedAt(moment(post?.postedAt).format("LLL"));
-    setModifiedAtAt(moment(post?.modifiedAt).format("LLL"));
-
     setTopics({ status: "loading", data: [] });
 
     api
@@ -106,55 +150,45 @@ const Index = ({ serverData }) => {
       <div className="h-full w-full">
         <div className="container mx-auto">
           {serverData?.status === 200 && (
-            <>
-              <SeoHead
-                title={post?.title}
-                image={post?.image}
-                author={author?.username}
-                description={post?.description}
+            <div className="h-96 lg:h-72 w-full">
+              <img
+                className="w-full h-full object-cover"
+                src={post?.image || postplaceholderImage}
+                alt=""
               />
-              <div className="h-96 lg:h-72 w-full">
-                <img
-                  className="w-full h-full object-cover"
-                  src={post?.image || postplaceholderImage}
-                  alt=""
-                />
-                <div className="h-full flex flex-col bg-gradient-to-t from-black via-black/70 -translate-y-full p-4">
-                  <div className="grow"></div>
-                  <h1 className="text-3xl text-white font-bold">
-                    {post?.title}
-                  </h1>
-                  <p className="text-gray-100 md:mr-16 mt-4 mb-2">
-                    {truncate(post?.description, 180)}
-                  </p>
-                  <div className="flex items-center gap-2 sm:gap-6 flex-wrap">
-                    <span className="text-gray-300 text-semibold text-sm">
-                      <span>Postado em: </span>
-                      {postedAt}
+              <div className="h-full flex flex-col bg-gradient-to-t from-black via-black/70 -translate-y-full p-4">
+                <div className="grow"></div>
+                <h1 className="text-3xl text-white font-bold">{post?.title}</h1>
+                <p className="text-gray-100 md:mr-16 mt-4 mb-2">
+                  {truncate(post?.description, 180)}
+                </p>
+                <div className="flex items-center gap-2 sm:gap-6 flex-wrap">
+                  <span className="text-gray-300 text-semibold text-sm">
+                    <span>Postado em: </span>
+                    {postedAt}
+                  </span>
+                  <Link
+                    to={`/blog/user/${author?.link}`}
+                    className="flex items-center gap-2"
+                  >
+                    <span className="h-6 w-6 flex items-center justify-center">
+                      {post?.author?.profilePicture ? (
+                        <img
+                          className="w-full h-full object-cotain rounded-full bg-gray-300"
+                          src={author.profilePicture}
+                          alt={author?.username}
+                        />
+                      ) : (
+                        <FaUser className="text-gray-100" />
+                      )}
                     </span>
-                    <Link
-                      to={`/blog/user/${author?.link}`}
-                      className="flex items-center gap-2"
-                    >
-                      <span className="h-6 w-6 flex items-center justify-center">
-                        {post?.author?.profilePicture ? (
-                          <img
-                            className="w-full h-full object-cotain rounded-full bg-gray-300"
-                            src={author.profilePicture}
-                            alt={author?.username}
-                          />
-                        ) : (
-                          <FaUser className="text-gray-100" />
-                        )}
-                      </span>
-                      <span className="text-sm text-gray-100">
-                        {author.username}
-                      </span>
-                    </Link>
-                  </div>
+                    <span className="text-sm text-gray-100">
+                      {author.username}
+                    </span>
+                  </Link>
                 </div>
               </div>
-            </>
+            </div>
           )}
           <div className="py-4 grid lg:grid-cols-4 gap-4">
             <div className="max-w-screen col-span-4 lg:col-span-3">
@@ -188,7 +222,7 @@ const Index = ({ serverData }) => {
                       />
                       <Comment.Section
                         ReloadComments={HandleLoadComments}
-                        comments={comments}
+                        comments={comments.data || []}
                       />
                     </div>
                   </div>
@@ -197,10 +231,6 @@ const Index = ({ serverData }) => {
                 <div className="w-full flex flex-col my-16 items-center justify-center">
                   {serverData?.status === 404 ? (
                     <>
-                      <SeoHead
-                        title="404 - Postagem não encontrada - Leandro Viegas"
-                        description="A postagem que você estava procurando não foi encontrada."
-                      />
                       <img
                         className="mx-auto w-64 max-w-screen my-4"
                         src={notFoundImage}
@@ -218,10 +248,6 @@ const Index = ({ serverData }) => {
                     </>
                   ) : (
                     <>
-                      <SeoHead
-                        title="Ocorreu um erro ao tentar carregar os dados - Leandro Viegas"
-                        description="Ocorreu um erro ao tentar carregar os dados tente novamente mais tarde."
-                      />
                       <img
                         className="mx-auto w-64 max-w-screen my-4"
                         src={notFoundImage}
@@ -243,7 +269,7 @@ const Index = ({ serverData }) => {
             </div>
             <div className="col-span-4 lg:col-span-1">
               <div className="sticky top-4">
-                <div className="lg:hover:scale-[1.03] ease-in duration-300 writer-card rounded-lg shadow-xl hover:border pb-8 pt-6 bg-white dark:bg-zinc-900 hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+                <div className="lg:hover:scale-[1.03] ease-in duration-300 writer-card rounded-lg shadow-xl pb-8 pt-6 bg-white dark:bg-zinc-900 hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
                   <img
                     src={
                       author?.profilePicture ||
@@ -295,11 +321,11 @@ const Index = ({ serverData }) => {
                   </h2>
                   <hr className="my-2" />
                   <div className="flex flex-wrap gap-2 my-3">
-                    {topics.data.map((topic) => {
+                    {topics.data?.map((topic) => {
                       return (
                         <Link key={topic.link} to={`/blog/topic/${topic.link}`}>
                           <button
-                            className="bg-purple-500 hover:bg-violet-00 rounded text-white py-0.5 px-3"
+                            className="bg-purple-600 hover:bg-purple-700 rounded-xl text-white py-0.5 px-3"
                             key={topic._id}
                           >
                             {topic.name}
@@ -316,6 +342,6 @@ const Index = ({ serverData }) => {
       </div>
     </Layout>
   );
-};
+}
 
 export default Index;

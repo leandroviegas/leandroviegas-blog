@@ -1,38 +1,39 @@
-import React, { useEffect, useState } from "react";
-import Outclick from 'outclick-react';
+import React, { createRef, useEffect } from "react";
 
 interface Props {
-    children?: React.ReactNode;
-    open: boolean;
-    closeCallback: () => void;
+  children?: React.ReactNode;
+  closeCallback: () => void;
 }
 
-const OpaqueBackground = ({ open, closeCallback, children }: Props) => {
-    const [opened, setOpened] = useState<boolean>(open);
+function OpaqueBackground({ closeCallback, children }: Props) {
+  const opbgRef = createRef<HTMLDivElement>();
 
-    useEffect(() => {
-        document.body.style.overflowY = open ? "hidden" : "initial";
-    }, [open])
+  function HandleBackgroundClick(event: MouseEvent) {
+    if (event.target == opbgRef.current) {
+      closeCallback();
+    }
+  }
 
-    useEffect(() => {
-        if (open)
-            setOpened(open)
-        else
-            setTimeout(() => { setOpened(open) }, 300);
-    }, [open])
+  useEffect(() => {
+    opbgRef.current?.addEventListener("click", HandleBackgroundClick, true);
 
-    return opened ?
-        <div className={`fixed h-screen overflow-auto ${open !== true ? "backdrop-filter-none blur opacity-0" : "backdrop-blur-sm bg-black/60 blur-none opacity-100"} transition duration-300 w-screen top-0 left-0 flex items-center justify-center z-30`}>
-            <Outclick onOutClick={closeCallback}>
-                {children}
-            </Outclick>
-        </div>
-        : <></>
-}
+    return () => {
+      opbgRef.current?.removeEventListener(
+        "click",
+        HandleBackgroundClick,
+        true
+      );
+    };
+  }, [opbgRef]);
 
-OpaqueBackground.defaultProps = {
-    open: false,
-    callback: () => { }
+  return (
+    <div
+      ref={opbgRef}
+      className={`fixed h-screen overflow-auto backdrop-blur-sm bg-black/60 blur-none opacity-100 transition duration-300 w-screen top-0 left-0 flex items-center justify-center z-30`}
+    >
+      {children}
+    </div>
+  );
 }
 
 export default OpaqueBackground;

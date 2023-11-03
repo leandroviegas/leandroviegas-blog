@@ -1,4 +1,5 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react";
+import { Slide, ToastContainer } from "react-toastify";
 
 type Theme = "light" | "dark";
 
@@ -28,7 +29,9 @@ export function ThemeContextProvider(props: ThemeContextProviderProps) {
 
   function SwitchTheme() {
     // if set via local storage previously
-    let localTheme: Theme = ["light", "dark"].includes(localStorage.getItem("color-theme"))
+    let localTheme: Theme = ["light", "dark"].includes(
+      localStorage.getItem("color-theme")
+    )
       ? (localStorage.getItem("color-theme") as Theme)
       : "light";
 
@@ -39,6 +42,18 @@ export function ThemeContextProvider(props: ThemeContextProviderProps) {
   }
   return (
     <ThemeContext.Provider value={{ theme, SwitchTheme }}>
+      <ToastContainer
+        position="top-center"
+        transition={Slide}
+        autoClose={false}
+        newestOnTop={false}
+        closeOnClick
+        hideProgressBar
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        theme={theme}
+      />
       {props.children}
     </ThemeContext.Provider>
   );

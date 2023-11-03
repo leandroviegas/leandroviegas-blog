@@ -22,7 +22,7 @@ import { VscLoading } from "react-icons/vsc";
 import { BiUpload } from "react-icons/bi";
 
 import merge from "lodash/merge";
-import usePromise from "@hooks/usePromise";
+import { PromiseT } from "types/promise.types";
 
 type FormType = Omit<Post, "topics"> & {
   topics: string[];
@@ -38,7 +38,7 @@ const PostForm = (post: Omit<Post, "topics"> & { topics: string[] }) => {
 
   const [popup, setPopup] = useState<"topic-form" | "">("");
 
-  const [submitPost, setSubmitPost, ExecSubmitPost] = usePromise<FormType>({
+  const [submitPost, setSubmitPost] = useState<PromiseT<FormType>>({
     data: merge(
       {
         title: "",
@@ -59,7 +59,7 @@ const PostForm = (post: Omit<Post, "topics"> & { topics: string[] }) => {
     status: "idle",
   });
 
-  const [topics, setTopics, ExecTopics] = usePromise<Topic[]>({
+  const [topics, setTopics] = useState<PromiseT<Topic[]>>({
     status: "idle",
     data: [],
   });
@@ -77,6 +77,12 @@ const PostForm = (post: Omit<Post, "topics"> & { topics: string[] }) => {
         status: "input-warnings",
       }));
     } else {
+      if (submitPost.status === "loading") return;
+      setSubmitPost((prevFormSubmit) => ({
+        ...prevFormSubmit,
+        status: "loading",
+      }));
+
       const headers = { authorization: `Bearer ${cookies.authentication}` };
 
       const formdata = new FormData();
@@ -89,44 +95,43 @@ const PostForm = (post: Omit<Post, "topics"> & { topics: string[] }) => {
         formdata.append(key, String(value));
       });
 
-      const result = await ExecSubmitPost(
-        submitPost.data?._id
-          ? api.put("/posts", formdata, { headers })
-          : api.post("/posts", formdata, { headers })
-      );
-
-      if (result.status === "success") navigate("/dashboard/posts/list");
-
-      if (result.status === "error") {
-        console.error(result.error);
-        setSubmitPost((prevFormSubmit) => ({
-          ...prevFormSubmit,
-          status: "input-warnings",
-        }));
-      }
+      (submitPost.data?._id
+        ? api.put("/posts", formdata, { headers })
+        : api.post("/posts", formdata, { headers })
+      )
+        .then(() => {
+          navigate("/dashboard/posts/list");
+        })
+        .catch((err) => {
+          console.error(err);
+          setSubmitPost((prevFormSubmit) => ({
+            ...prevFormSubmit,
+            status: "error",
+          }));
+        });
     }
   }
 
   const HandleLoadTopics = async () => {
-    const result = await ExecTopics(api.get("/topics/list"));
+    if (topics.status === "loading") return;
+    setTopics((prevTopics) => ({ ...prevTopics, status: "loading" }));
 
-    if (result.status === "success")
-      setTopics((prevTopics) => ({
-        ...prevTopics,
-        data: result.response.data?.topics,
-      }));
-
-    if (result.status === "error") {
-      console.error(result.error);
-      setTopics({ status: "error", data: [] });
-      setInputsMessages({
-        ...inputsMessages,
-        "post-form": [
-          result.error?.response?.data?.message ||
-            `Ocorreu um erro ao carregar tópicos.`,
-        ],
+    api
+      .get("/topics/list")
+      .then((result) => {
+        setTopics({ status: "success", data: result.data?.topics });
+      })
+      .catch((err) => {
+        console.error(err);
+        setTopics((prevTopics) => ({
+          ...prevTopics,
+          status: "error",
+        }));
+        setInputsMessages({
+          ...inputsMessages,
+          "post-form": [err.message || `Ocorreu um erro ao carregar tópicos.`],
+        });
       });
-    }
   };
 
   function HandleChangeInput(event: React.ChangeEvent<HTMLInputElement>) {
@@ -211,24 +216,22 @@ const PostForm = (post: Omit<Post, "topics"> & { topics: string[] }) => {
 
   return (
     <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-lg shadow-black-50/10">
-      <OpaqueBackground
-        open={popup === "topic-form"}
-        closeCallback={() => setPopup("")}
-      >
-        <div
-          data-aos="fade-down"
-          className="bg-white dark:bg-zinc-900 shadow-lg shadow-violet-700/40 rounded-lg w-96 max-w-screen"
-        >
-          <TopicForm
-          
-            onClose={() => setPopup("")}
-            onSuccess={() => {
-              setPopup("");
-              HandleLoadTopics();
-            }}
-          />
-        </div>
-      </OpaqueBackground>
+      {popup !== "" && (
+        <OpaqueBackground closeCallback={() => setPopup("")}>
+          <div
+            data-aos="fade-down"
+            className="bg-white dark:bg-zinc-900 shadow-lg shadow-violet-700/40 rounded-lg w-96 max-w-screen"
+          >
+            <TopicForm
+              onClose={() => setPopup("")}
+              onSuccess={() => {
+                setPopup("");
+                HandleLoadTopics();
+              }}
+            />
+          </div>
+        </OpaqueBackground>
+      )}
 
       <div className="flex items-center px-4 py-2 rounded-t-lg bg-gradient-to-r to-violet-600 from-indigo-600 text-white justify-between">
         <h1 className="text-xl font-bold">

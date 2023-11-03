@@ -96,24 +96,23 @@ function Index() {
 
   return (
     <DashboardLayout>
-      <OpaqueBackground
-        open={popup === "user-form"}
-        closeCallback={() => setPopup("")}
-      >
-        <div
-          data-aos="fade-down"
-          className="bg-white dark:bg-zinc-900 shadow-md shadow-indigo-800/40 rounded-lg w-96 max-w-screen"
-        >
-          <UserForm
-            onClose={() => setPopup("")}
-            onSuccess={() => {
-              setPopup("");
-              HandleLoadUsers();
-            }}
-            user={selectedUser}
-          />
-        </div>
-      </OpaqueBackground>
+      {popup === "user-form" && (
+        <OpaqueBackground closeCallback={() => setPopup("")}>
+          <div
+            data-aos="fade-down"
+            className="bg-white dark:bg-zinc-900 shadow-md shadow-indigo-800/40 rounded-lg w-96 max-w-screen"
+          >
+            <UserForm
+              onClose={() => setPopup("")}
+              onSuccess={() => {
+                setPopup("");
+                HandleLoadUsers();
+              }}
+              user={selectedUser}
+            />
+          </div>
+        </OpaqueBackground>
+      )}
 
       <DeletePopup
         status={deleteStatus === "loading" ? deleteStatus : ""}

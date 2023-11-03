@@ -10,9 +10,9 @@ import { Topic } from "@classes/blog";
 
 import { IoIosClose } from "react-icons/io";
 import { VscLoading } from "react-icons/vsc";
-import usePromise from "@hooks/usePromise";
+import { PromiseT } from "types/promise.types";
 
-type Status = "loading" | "success" | "error" | "input-warnings" | "";
+type Status = "loading" | "success" | "error" | "input-warnings" | "idle";
 
 interface TopicForm {
   topic?: Topic;
@@ -27,13 +27,13 @@ const TopicForm = ({
 }) => {
   const { cookies } = useAuth();
 
-  const [status, setStatus] = useState<Status>("");
+  const [status, setStatus] = useState<Status>("idle");
 
   const [inputsMessages, setInputsMessages] = useState<{
     [key: string]: string[];
   }>({});
 
-  const [submitTopic, setSubmitTopic, ExecSubmitTopic] = usePromise<Topic>({
+  const [submitTopic, setSubmitTopic] = useState<PromiseT<Topic>>({
     status: "idle",
     data: topic,
   });
@@ -48,30 +48,38 @@ const TopicForm = ({
     ) {
       setStatus("input-warnings");
     } else {
+
+      if(submitTopic.status === "loading") return;
+      setSubmitTopic((prevSubmitTopic) => ({
+        ...prevSubmitTopic,
+        status: "loading",
+      }))
+
       let headers = { authorization: `Bearer ${cookies.authentication}` };
 
-      const result = await ExecSubmitTopic(
-        submitTopic.data?._id
-          ? api.put("/topics", submitTopic.data, { headers })
-          : api.post("/topics", submitTopic.data, { headers })
-      );
-
-      if (result.status === "success") onSuccess();
-
-      if (result.status === "error") {
-        console.error(result.error);
-        setStatus("error");
-
-        setInputsMessages((prevaterts) => ({
-          ...prevaterts,
-          "topic-form": [
-            result.error?.response?.data?.message ||
-              `Ocorreu um erro ao ${
-                submitTopic.data?._id ? "editar" : "adicionar"
-              } tópico!`,
-          ],
-        }));
-      }
+      (submitTopic.data?._id
+        ? api.put("/topics", submitTopic.data, { headers })
+        : api.post("/topics", submitTopic.data, { headers })
+      )
+        .then(() => {
+          onSuccess();
+        })
+        .catch((err) => {
+          console.error(err);
+          setSubmitTopic((prevSubmitTopic) => ({
+            ...prevSubmitTopic,
+            status: "error",
+          }));
+          setInputsMessages((prevaterts) => ({
+            ...prevaterts,
+            "topic-form": [
+              err?.message ||
+                `Ocorreu um erro ao ${
+                  submitTopic.data?._id ? "editar" : "adicionar"
+                } tópico!`,
+            ],
+          }));
+        });
     }
   };
 

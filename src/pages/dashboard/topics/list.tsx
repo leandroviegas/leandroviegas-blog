@@ -105,24 +105,23 @@ function Index() {
 
   return (
     <DashboardLayout>
-      <OpaqueBackground
-        open={popup === "topic-form"}
-        closeCallback={() => setPopup("")}
-      >
-        <div
-          data-aos="fade-down"
-          className="bg-white dark:bg-zinc-900 shadow-md shadow-indigo-800/40 rounded-lg w-96 max-w-screen"
-        >
-          <TopicForm
-            onClose={() => setPopup("")}
-            onSuccess={() => {
-              setPopup("");
-              HandleLoadTopics();
-            }}
-            topic={selectedTopic}
-          />
-        </div>
-      </OpaqueBackground>
+      {popup === "topic-form" && (
+        <OpaqueBackground closeCallback={() => setPopup("")}>
+          <div
+            data-aos="fade-down"
+            className="bg-white dark:bg-zinc-900 shadow-md shadow-indigo-800/40 rounded-lg w-96 max-w-screen"
+          >
+            <TopicForm
+              onClose={() => setPopup("")}
+              onSuccess={() => {
+                setPopup("");
+                HandleLoadTopics();
+              }}
+              topic={selectedTopic}
+            />
+          </div>
+        </OpaqueBackground>
+      )}
 
       <DeletePopup
         status={deleteStatus === "loading" ? deleteStatus : ""}
