@@ -16,10 +16,12 @@ const SignPopup = forwardRef<unknown, any>((_, ref) => {
   const { triggerLogin, setTriggerLogin } = useAuth();
 
   useEffect(() => {
-    setTriggerLogin(false);
-    setPopped(true);
-    setTab("SignIn");
-  }, [triggerLogin])
+    if (triggerLogin == true) {
+      setTriggerLogin(false);
+      setPopped(true);
+      setTab("SignIn");
+    }
+  }, [triggerLogin]);
 
   useImperativeHandle(ref, () => ({
     setPopup: (tab: Tabs) => {
