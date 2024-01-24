@@ -19,6 +19,7 @@ const permissions = [
     },
 ];
 
+const RouteTreat = (route) => route.replace(new RegExp("/", 'g'), " ").trim().replace(new RegExp(" ", 'g'), "/").toLowerCase();
 
 export function Admin({ children }) {
     const { cookies } = useAuth();
@@ -28,8 +29,6 @@ export function Admin({ children }) {
     const routePermissions = permissions.find(permission => permission.valid ? permission.valid(location.pathname) : RouteTreat(permission.route) === RouteTreat(location.pathname));
 
     let hasPermission = true;
-
-    console.log(cookies.role)
 
     if (routePermissions) {
         hasPermission = validateCookies(cookies?.authentication);
