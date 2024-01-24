@@ -15,11 +15,11 @@ function OpaqueBackground({ closeCallback, children }: Props) {
   }
 
   useEffect(() => {
-    opbgRef.current?.addEventListener("click", HandleBackgroundClick, true);
+    opbgRef.current?.addEventListener("mousedown", HandleBackgroundClick, true);
 
     return () => {
       opbgRef.current?.removeEventListener(
-        "click",
+        "mousedown",
         HandleBackgroundClick,
         true
       );

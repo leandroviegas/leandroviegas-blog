@@ -23,13 +23,18 @@ import { BiUpload } from "react-icons/bi";
 
 import merge from "lodash/merge";
 import { PromiseT } from "types/promise.types";
+import { toast } from "react-toastify";
 
 type FormType = Omit<Post, "topics"> & {
   topics: string[];
   imageFile: { file: File; preview: string };
 };
 
-const PostForm = (post: Omit<Post, "topics"> & { topics: string[] }) => {
+function PostForm({
+  post,
+}: {
+  post?: Omit<Post, "topics"> & { topics: string[] };
+}) {
   const { cookies } = useAuth();
 
   const [inputsMessages, setInputsMessages] = useState<{
@@ -104,6 +109,16 @@ const PostForm = (post: Omit<Post, "topics"> & { topics: string[] }) => {
         })
         .catch((err) => {
           console.error(err);
+          toast(
+            `Erro ao ${
+              submitPost.data?._id ? "atualizar" : "criar"
+            } postagem:\n ${err.response?.data?.message || err.message}`,
+            {
+              position: "top-center",
+              autoClose: 3000,
+              type: "error",
+            }
+          );
           setSubmitPost((prevFormSubmit) => ({
             ...prevFormSubmit,
             status: "error",
@@ -482,6 +497,6 @@ const PostForm = (post: Omit<Post, "topics"> & { topics: string[] }) => {
       </div>
     </div>
   );
-};
+}
 
 export default PostForm;

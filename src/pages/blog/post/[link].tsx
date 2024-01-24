@@ -175,7 +175,7 @@ function Index({ serverData }) {
                       {post?.author?.profilePicture ? (
                         <img
                           className="w-full h-full object-cotain rounded-full bg-gray-300"
-                          src={author.profilePicture}
+                          src={author?.profilePicture}
                           alt={author?.username}
                         />
                       ) : (
@@ -183,7 +183,7 @@ function Index({ serverData }) {
                       )}
                     </span>
                     <span className="text-sm text-gray-100">
-                      {author.username}
+                      {author?.username}
                     </span>
                   </Link>
                 </div>

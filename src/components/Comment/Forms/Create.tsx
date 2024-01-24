@@ -22,7 +22,7 @@ const CommentForm = ({
   CommentCallback,
   children,
 }: CommentFormProps) => {
-  const { cookies, user } = useAuth();
+  const { cookies, user, setTriggerLogin } = useAuth();
 
   const [comment, setComment] = useState<PromiseT<{ content: string }>>({
     status: "idle",
@@ -50,46 +50,64 @@ const CommentForm = ({
       .catch((err) => {
         console.error(err);
         setComment((prevComment) => ({ ...prevComment, status: "error" }));
-        toast(`Erro ao comentar:\n ${err.response?.data?.message || err.message}`, {
-          position: "bottom-left",
-          autoClose: 3000,
-          type: "error",
-        });
+        toast(
+          `Erro ao comentar:\n ${err.response?.data?.message || err.message}`,
+          {
+            position: "bottom-left",
+            autoClose: 3000,
+            type: "error",
+          }
+        );
       });
   }
 
   return (
     <>
-      {user?._id && (
+      {
         <div className="px-6 py-2 bg-white dark:bg-zinc-900 rounded-lg">
           <form onSubmit={HandleComment}>
             <textarea
               value={comment.data?.content}
-              onChange={(e) =>
+              onChange={(e) => {
+                if (!user?._id) {
+                  setTriggerLogin(true);
+                  return;
+                }
                 setComment((prevComment) =>
                   merge(
                     { ...prevComment },
                     { data: { content: e.target.value } }
                   )
-                )
-              }
+                );
+              }}
               className="w-full h-12 rounded-lg resize-none py-2 text-zinc-600 dark:text-zinc-300 bg-transparent outline-none"
               placeholder="Escreva um comentário"
             />
             <hr />
             <div className="my-2 flex items-center gap-4">
-              <button
-                type={comment.data?.content.trim() ? "submit" : "button"}
-                className="text-gray-500 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-400 text-sm py-2 rounded-lg font-medium flex items-center gap-1"
-              >
-                <BiPaperPlane size={18} />
-                {referenceComment ? "Responder" : "Comentar"}
-              </button>
+              {!user?._id ? (
+                <button
+                  onClick={() => setTriggerLogin(true)}
+                  type="button"
+                  className="bg-white dark:bg-zinc-900 py-2 text-gray-500 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-400 rounded-lg font-medium flex items-center gap-2"
+                >
+                  <BiPaperPlane size={18} />
+                  Entrar para comentar
+                </button>
+              ) : (
+                <button
+                  type={comment.data?.content.trim() ? "submit" : "button"}
+                  className="text-gray-500 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-400 text-sm py-2 rounded-lg font-medium flex items-center gap-1"
+                >
+                  <BiPaperPlane size={18} />
+                  {referenceComment ? "Responder" : "Comentar"}
+                </button>
+              )}
               {children}
             </div>
           </form>
         </div>
-      )}
+      }
     </>
   );
 };

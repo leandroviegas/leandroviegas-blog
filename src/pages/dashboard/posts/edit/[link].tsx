@@ -4,13 +4,14 @@ import api from "@services/api";
 
 import Form from "@components/Forms/Post/Form";
 import SeoHead from "@components/Head";
-import Alert from "@components/Alert";
 import DashboardLayout from "@layouts/DashboardLayout";
 
 import { Post } from "@classes/blog";
 import { VscLoading } from "react-icons/vsc";
+import { toast } from "react-toastify";
+import { PromiseT } from "types/promise.types";
 
-export function Head({params}) {
+export function Head({ params }) {
   return (
     <SeoHead title={`${params?.link || "Editar postagem"} - Leandro Viegas`} />
   );
@@ -21,10 +22,8 @@ function Index({ params }) {
     ""
   );
 
-  const [post, setPost] = useState<
-    Omit<Post, "topics"> & { topics: string[] }
-  >();
-  const [alerts, setAlerts] = useState<{ [key: string]: string[] }>({});
+  const [post, setPost] =
+    useState<PromiseT<Omit<Post, "topics"> & { topics: string[] }>>();
 
   useEffect(() => {
     setStatus("loading");
@@ -36,26 +35,31 @@ function Index({ params }) {
       })
       .catch((err) => {
         setStatus("error");
-        setAlerts({
-          page: [err?.response?.data?.message || `Erro ao carregar  postagem.`],
-        });
+        toast(
+          `Ocorreu um erro ao carregar os postagens:\n ${
+            err.response?.data?.message ||
+            err.message ||
+            `Erro ao carregar  postagem.`
+          }`,
+          {
+            position: "top-center",
+            autoClose: 3000,
+            type: "error",
+          }
+        );
       });
   }, [params.link]);
 
   return (
     <DashboardLayout>
       <div className="container pt-8 p-4 h-full">
-        {status === "success" && <Form {...post} />}
+        {status === "success" && <Form post={post} />}
 
         {status === "loading" && (
           <div className="flex justify-center my-44">
             <VscLoading className="text-5xl animate-spin text-indigo-800" />
           </div>
         )}
-
-        {alerts["post-form"]?.map((message, index) => (
-          <Alert key={index} message={message} type="error" />
-        ))}
       </div>
     </DashboardLayout>
   );

@@ -17,6 +17,7 @@ import { FaSearch } from "react-icons/fa";
 import { BsFileEarmarkPost } from "react-icons/bs";
 
 import postplaceholderImage from "@images/post_placeholder.jpg";
+import { toast } from "react-toastify";
 
 type Status = "loading" | "success" | "error" | "";
 
@@ -78,13 +79,16 @@ function Index() {
       .catch((err) => {
         console.error(err);
         setDeleteStatus("error");
-        setAlerts({
-          ...alerts,
-          "post-delete": [
-            err?.response?.data?.message ||
-              "Ocorreu um erro ao deletar postagem!",
-          ],
-        });
+        toast(
+          `Ocorreu um erro ao apagar postagem:\n ${
+            err?.response?.data?.message || err.message
+          }`,
+          {
+            position: "top-center",
+            autoClose: 3000,
+            type: "error",
+          }
+        );
       });
   };
 

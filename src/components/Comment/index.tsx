@@ -78,7 +78,7 @@ const Comment = (comment: CommentProps) => {
           </div>
           <div className="relative h-0">
             <Outclick onOutClick={() => setOptionsDrodown(false)}>
-              {(user?._id === comment?.user?._id ||
+              {user?._id && (user?._id === comment?.user?._id ||
                 ["admin"].includes(user?.role)) && (
                 <button
                   onClick={() => setOptionsDrodown(true)}

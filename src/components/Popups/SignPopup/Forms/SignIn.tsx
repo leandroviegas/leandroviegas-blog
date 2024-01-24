@@ -54,7 +54,7 @@ const SignInForm = ({ onSuccess }) => {
             err.response?.data?.message || err.message
           }`,
           {
-            position: "bottom-left",
+            position: "top-center",
             autoClose: 3000,
             type: "error",
           }

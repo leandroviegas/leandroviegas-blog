@@ -10,7 +10,9 @@ type AuthContextType = {
         authentication?: any;
         role?: any;
     };
+    triggerLogin: boolean;
     signOut: () => Promise<void>;
+    setTriggerLogin: (value: boolean) => void;
     signIn: (usernameOrEmail: string, password: string) => Promise<void>;
     signUp: (username: string, email: string, password: string) => Promise<void>;
 }
@@ -22,7 +24,9 @@ type AuthContextProviderProps = {
 }
 
 export function AuthContextProvider(props: AuthContextProviderProps) {
-    const [user, setUser] = useState<User>()
+    const [user, setUser] = useState<User>();
+
+    const [triggerLogin, setTriggerLogin] = useState(false);
 
     const [cookies, setCookie, removeCookie] = useCookies(['authentication', "role"]);
 
@@ -81,7 +85,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     }
 
     return (
-        <AuthContext.Provider value={{ user, cookies, signUp, signIn, signOut }}>
+        <AuthContext.Provider value={{ user, cookies, triggerLogin, signUp, signIn, signOut, setTriggerLogin }}>
             {props.children}
         </AuthContext.Provider>
     );

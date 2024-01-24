@@ -1,99 +1,203 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@hooks/useAuth";
 
-import Alert from "@components/Alert";
 import FloatingLabelInput from "@components/Inputs/FloatingLabelInput";
 import validator from "validator";
+import merge from "lodash/merge";
 
 import { VscLoading } from "react-icons/vsc";
+import { toast } from "react-toastify";
+import { PromiseT } from "types/promise.types";
 
 const SignInForm = ({ onSuccess }) => {
-    const { signUp } = useAuth()
+  const { signUp } = useAuth();
 
-    const [status, setStatus] = useState<"error" | "loading" | "success" | "input-warnings" | "">("")
+  const [inputsMessages, setInputsMessages] = useState<{
+    [key: string]: string[];
+  }>({});
 
-    const [alerts, setAlerts] = useState<{ [key: string]: string[] }>({})
+  const [form, setForm] = useState<
+    PromiseT<{
+      email: string;
+      username: string;
+      password: string;
+      passwordverification: string;
+    }>
+  >({
+    status: "idle",
+    data: { email: "", username: "", password: "", passwordverification: "" },
+  });
 
-    const [form, setForm] = useState<{ email: string, username: string, password: string, passwordValidation: string }>({ email: "", username: "", password: "", passwordValidation: "" })
+  const HandleSignUp = (evt: React.FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
 
-    const HandleSignUp = (evt: React.FormEvent<HTMLFormElement>) => {
-        evt.preventDefault()
-
-        if (status === "loading" || ["username-error", "email-error", "password-error"].some(errors => alerts[errors]?.length > 0)) {
-            setStatus("input-warnings")
-            return;
-        }
-        
-        setStatus("loading")
-        signUp(form.username, form.email, form.password)
-            .then(() => {
-                setStatus("success")
-                onSuccess()
-            }).catch(err => {
-                console.error(err)
-                setStatus("error")
-                setAlerts({ ...alerts, "signup-error": [err.response.data?.message || "Erro ao se registrar"] })
-            })
-
+    if (
+      ["username-error", "email-error", "password-error"].some(
+        (errors) => inputsMessages[errors]?.length > 0
+      )
+    ) {
+      setForm((prevForm) => ({ ...prevForm, status: "input-warnings" }));
+      return;
     }
 
-    useEffect(() => {
-        if (!(form.username.length > 0))
-            setAlerts(a => ({ ...a, "username-error": ["Nome é obrigatório"] }))
-        else if (!(form.username.length > 3))
-            setAlerts(a => ({ ...a, "username-error": ["Nome precisa ter ao menos 4 caracteres"] }))
-        else
-            setAlerts(a => ({ ...a, "username-error": [] }))
+    if (form.status === "loading") return;
 
-        if (!(form.email.length > 0))
-            setAlerts(a => ({ ...a, "email-error": ["Email é obrigatório"] }))
-        else if (!validator.isEmail(form.email))
-            setAlerts(a => ({ ...a, "email-error": ["Formato de email inválido"] }))
-        else
-            setAlerts(a => ({ ...a, "email-error": [] }))
+    setForm((prevForm) => ({ ...prevForm, status: "loading" }));
 
-        if (!(form.password.length > 0))
-            setAlerts(a => ({ ...a, "password-error": ["Senha é obrigatória"] }))
-        else if (form.password.length < 8)
-            setAlerts(a => ({ ...a, "password-error": ["Senha precisar ter 8 caracteres ou mais"] }))
-        else if (!form.password.match(/[A-Z]/))
-            setAlerts(a => ({ ...a, "password-error": ["Senha precisar ter letras em maisculo"] }))
-        else if (!form.password.match(/[^a-zA-Z\d]/))
-            setAlerts(a => ({ ...a, "password-error": ["Senha precisar ter caracteres especiais"] }))
-        else
-            setAlerts(a => ({ ...a, "password-error": [] }))
+    signUp(form.data.username, form.data.email, form.data.password)
+      .then(() => {
+        setForm({
+          status: "success",
+          data: {
+            email: "",
+            username: "",
+            password: "",
+            passwordverification: "",
+          },
+        });
+        onSuccess();
+      })
+      .catch((err) => {
+        console.error(err);
+        setForm((prevForm) => ({
+          ...prevForm,
+          status: "error",
+        }));
+        toast(
+          `Erro ao registrar-se:\n ${
+            err.response?.data?.message || err.message
+          }`,
+          {
+            position: "top-center",
+            autoClose: 3000,
+            type: "error",
+          }
+        );
+      });
+  };
 
-        if (form.password !== form.passwordValidation)
-            setAlerts(a => ({ ...a, "passwordValidation-error": ["Senhas não são iguais"] }))
-        else
-            setAlerts(a => ({ ...a, "passwordValidation-error": [] }))
-    }, [form])
+  useEffect(() => {
+    let messages = {
+      "username-error": [],
+      "email-error": [],
+      "password-verification": [],
+      "password-error": [],
+    };
+    if (!(form.data.username.length > 0))
+      messages["username-error"] = [
+        "O campo de usuário ou e-mail é obrigatório",
+      ];
+    else if (!(form.data.username.length > 3))
+      messages["username-error"] = [
+        "O campo de usuário ou e-mail deve ter mais de 3 caracteres",
+      ];
 
-    return (
-        <form onSubmit={HandleSignUp} className="flex flex-col gap-3">
-            <div>
-                {alerts["signup-error"]?.map(message => <Alert key={message} type="error" message={message} />)}
-            </div>
-            <div className="my-2">
-                <FloatingLabelInput label="Usuário" status={(status === "input-warnings" && alerts["username-error"]?.length > 0) ? "error" : "info"} messages={alerts["username-error"]} defaultValue="" onChange={evt => setForm({ ...form, username: evt.target.value })} />
-            </div>
-            <div className="my-2">
-                <FloatingLabelInput label="Email" status={(status === "input-warnings" && alerts["email-error"]?.length > 0) ? "error" : "info"} messages={alerts["email-error"]} defaultValue="" onChange={evt => setForm({ ...form, email: evt.target.value })} />
-            </div>
-            <div className="my-2">
-                <FloatingLabelInput label="Senha" status={(status === "input-warnings" && alerts["password-error"]?.length > 0) ? "error" : "info"} messages={alerts["password-error"]} defaultValue="" onChange={evt => setForm({ ...form, password: evt.target.value })} type="password" />
-            </div>
-            <div className="my-2">
-                <FloatingLabelInput label="Validar senha" status={(status === "input-warnings" && alerts["passwordValidation-error"]?.length > 0) ? "error" : "info"} messages={alerts["passwordValidation-error"]} defaultValue="" onChange={evt => setForm({ ...form, passwordValidation: evt.target.value })} type="password" />
-            </div>
-            <hr className="py-1" />
-            <div className="w-full">
-                <button type="submit" className="bg-violet-600 hover:bg-violet-800 hover:text-white text-zinc-200 rounded text-lg font-semibold w-full px-3 py-2 transition">
-                    {status === "loading" ? <VscLoading className="animate-spin mx-auto text-2xl" /> : "Registrar-se"}
-                </button>
-            </div>
-        </form>
-    )
-}
+    if (!(form.data.email.length > 0))
+      messages["email-error"] = ["O campo de e-mail é obrigatório"];
+    else if (!validator.isEmail(form.data.email))
+      messages["email-error"] = ["O campo de e-mail é inválido"];
+
+    if (!(form.data.password.length > 0))
+      messages["password-error"] = ["Senha é obrigatória"];
+    else if (form.data.password.length < 8)
+      messages["password-error"] = ["Senha deve ter pelo menos 8 caracteres"];
+    else if (!form.data.password.match(/[A-Z]/))
+      messages["password-error"] = [
+        "Senha deve ter pelo menos uma letra maiúscula",
+      ];
+    else if (!form.data.password.match(/[a-z]/))
+      messages["password-error"] = [
+        "Senha deve ter pelo menos uma letra minúscula",
+      ];
+    else if (!form.data.password.match(/[^a-zA-Z\d]/))
+      messages["password-error"] = [
+        "Senha deve ter pelo menos um caractere especial",
+      ];
+
+    if (form.data.password !== form.data.passwordverification)
+      messages["password-verification"] = ["Senhas não correspondem"];
+
+    setInputsMessages((previnputsMessages) => ({
+      ...previnputsMessages,
+      ...messages,
+    }));
+  }, [form]);
+
+  function onInputChange(evt: React.ChangeEvent<HTMLInputElement>) {
+    setForm((prevForm) =>
+      merge(
+        { ...prevForm },
+        {
+          data: { [evt.target.name]: evt.target.value },
+        }
+      )
+    );
+  }
+
+  const InputStatus = (inputName: string) =>
+    form.status === "input-warnings" && inputsMessages[inputName]?.length > 0
+      ? "error"
+      : "info";
+
+  return (
+    <form onSubmit={HandleSignUp} className="flex flex-col gap-3">
+      <div className="my-2">
+        <FloatingLabelInput
+          label="Usuário"
+          name="username"
+          status={InputStatus("username-error")}
+          messages={inputsMessages["username-error"]}
+          defaultValue=""
+          onChange={onInputChange}
+        />
+      </div>
+      <div className="my-2">
+        <FloatingLabelInput
+          label="Email"
+          name="email"
+          status={InputStatus("email-error")}
+          messages={inputsMessages["email-error"]}
+          defaultValue=""
+          onChange={onInputChange}
+        />
+      </div>
+      <div className="my-2">
+        <FloatingLabelInput
+          label="Senha"
+          name="password"
+          status={InputStatus("password-error")}
+          messages={inputsMessages["password-error"]}
+          defaultValue=""
+          onChange={onInputChange}
+          type="password"
+        />
+      </div>
+      <div className="my-2">
+        <FloatingLabelInput
+          label="Validar senha"
+          name="passwordverification"
+          status={InputStatus("password-verification")}
+          messages={inputsMessages["password-verification"]}
+          defaultValue=""
+          onChange={onInputChange}
+          type="password"
+        />
+      </div>
+      <hr className="py-1" />
+      <div className="w-full">
+        <button
+          type="submit"
+          className="bg-violet-600 hover:bg-violet-800 hover:text-white text-zinc-200 rounded text-lg font-semibold w-full px-3 py-2 transition"
+        >
+          {form.status === "loading" ? (
+            <VscLoading className="animate-spin mx-auto text-2xl" />
+          ) : (
+            "Registrar-se"
+          )}
+        </button>
+      </div>
+    </form>
+  );
+};
 
 export default SignInForm;

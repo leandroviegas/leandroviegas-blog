@@ -7,6 +7,7 @@ import { Topic, Post } from "@classes/blog";
 
 import PostCard from "@components//Cards/PostCard";
 import SeoHead from "@components/Head";
+import { toast } from "react-toastify";
 
 export async function getServerData({ params }) {
   try {
@@ -40,17 +41,17 @@ export function Head({ serverData }) {
   );
 }
 
-const TopicPage = ({ serverData }) => {
+function TopicPage({ serverData }) {
   const [data, setData] = useState<{
-    status: "loading" | "error" | "success";
+    status: "loading" | "error" | "success" | "idle";
     topic: Topic;
     posts: Post[];
     total: number;
-  }>({ ...serverData, status: "success" });
+  }>({ ...serverData, status: "idle" });
 
   const [page, setPage] = useState<number>(Math.max(0, serverData.page));
 
-  const HandleLoadMorePosts = () => {
+  function HandleLoadMorePosts () {
     setData({ ...data, status: "loading" });
     api
       .get(`/posts/by-topic`, {
@@ -64,9 +65,19 @@ const TopicPage = ({ serverData }) => {
           status: "success",
         });
       })
-      .catch((e) => {
-        console.error(e);
+      .catch((err) => {
+        console.error(err);
         setData({ ...data, status: "error" });
+        toast(
+          `Ocorreu um erro ao carregar os postagens:\n ${
+            err.response?.data?.message || err.message
+          }`,
+          {
+            position: "top-center",
+            autoClose: 3000,
+            type: "error",
+          }
+        );
       });
   };
 
@@ -99,6 +110,6 @@ const TopicPage = ({ serverData }) => {
       </div>
     </Layout>
   );
-};
+}
 
 export default TopicPage;

@@ -1,16 +1,25 @@
-import React, { forwardRef, useImperativeHandle } from "react";
+import React, { forwardRef, useEffect, useImperativeHandle } from "react";
 
 import { BsGoogle } from "react-icons/bs";
 
 import OpaqueBackground from "@components/OpaqueBackground";
 import SignIn from "./Forms/SignIn";
 import SignUp from "./Forms/SignUp";
+import { useAuth } from "@hooks/useAuth";
 
 type Tabs = "SignUp" | "SignIn";
 
 const SignPopup = forwardRef<unknown, any>((_, ref) => {
   const [tab, setTab] = React.useState<Tabs>();
   const [popped, setPopped] = React.useState<boolean>(false);
+
+  const { triggerLogin, setTriggerLogin } = useAuth();
+
+  useEffect(() => {
+    setTriggerLogin(false);
+    setPopped(true);
+    setTab("SignIn");
+  }, [triggerLogin])
 
   useImperativeHandle(ref, () => ({
     setPopup: (tab: Tabs) => {
